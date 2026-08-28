@@ -1,11 +1,43 @@
+'use client';
 import { ChevronRight, Search } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useSearch } from '@/hooks/useSearch';
+import { useFilters } from '@/store/useFilters';
+import { ProductT } from '@/types/ProductT';
 import { Filters } from './Filters';
 import MenuProducts from './MenuProducts';
+import { products } from './data';
 
 export function MenuPage() {
+  const { filters } = useFilters();
+
+  const { query, setQuery, filteredItems } = useSearch<ProductT>(products, (item, query) =>
+    item.name.toLowerCase().includes(query),
+  );
+
+  const filteredProducts = filteredItems
+    .filter((product) => {
+      return (
+        filters.categories.includes('All Categories') ||
+        filters.categories.includes(product.category)
+      );
+    })
+    .filter((product) => {
+      return filters.brand.length === 0 || filters.brand.includes(product.brand);
+    })
+    .filter((product) => {
+      return (
+        filters.priceRange[0] * 500 <= product.price && filters.priceRange[1] * 500 >= product.price
+      );
+    })
+    .sort((a, b) => {
+      if (filters.sortBy === 'Price: Low to High') return a.price - b.price;
+      if (filters.sortBy === 'Price: High to Low') return b.price - a.price;
+      if (filters.sortBy === 'Rating') return Number(b.rating) - Number(a.rating);
+      return 0;
+    });
+
   return (
     <main className="bg-white">
       <section className="mx-auto w-full max-w-[1410px] px-6 py-6 lg:px-10">
@@ -29,17 +61,16 @@ export function MenuPage() {
             <Input
               placeholder="Search for products..."
               className="h-12 rounded-full border-zinc-300 pl-14 pr-28 text-base shadow-sm"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
-            <Button className="absolute right-2 top-1/2 h-9 -translate-y-1/2 rounded-full bg-[#0969ff] px-7 hover:bg-[#0057df]">
-              Search
-            </Button>
           </div>
         </div>
 
         <div className="mt-4 grid w-full gap-8 lg:grid-cols-[250px_minmax(0,1fr)]">
           <Filters />
           <div className="min-w-0">
-            <MenuProducts />
+            <MenuProducts products={filteredProducts} />
           </div>
         </div>
       </section>

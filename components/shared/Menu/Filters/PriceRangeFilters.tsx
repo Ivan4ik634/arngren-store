@@ -26,8 +26,8 @@ const PriceRangeFilters: FC<Props> = (props) => {
         step={1}
       />
       <div className="flex items-center justify-between mt-3">
-        <span className="text-sm text-zinc-600">$20</span>
-        <span className="text-sm text-zinc-600">$80</span>
+        <span className="text-sm text-zinc-600">$0</span>
+        <span className="text-sm text-zinc-600">$50000</span>
       </div>
     </div>
   );

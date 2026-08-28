@@ -2,6 +2,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { useSearch } from '@/hooks/useSearch';
 import { useFilters } from '@/store/useFilters';
 import { useOpenFilters } from '@/store/useOpenFilters';
 import { ChevronDownIcon } from 'lucide-react';
@@ -13,7 +14,9 @@ interface Props {}
 const BrandFilters: FC<Props> = (props) => {
   const { filters, setFilters } = useFilters();
   const { openFilters, setOpenFilters } = useOpenFilters();
-
+  const { query, setQuery, filteredItems } = useSearch<string>(brands, (item, query) =>
+    item.toLowerCase().includes(query),
+  );
   return (
     <div className="flex flex-col w-full mt-8 ">
       <div className="flex w-full  items-center justify-between">
@@ -33,10 +36,13 @@ const BrandFilters: FC<Props> = (props) => {
       {!openFilters.brand && (
         <div className="flex flex-col gap-3 my-3 ">
           <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            type="text"
             placeholder="Search brand..."
             className="h-8 border-zinc-300 pl-3 pr-3 text-sm shadow-sm"
           />
-          {brands.map((brand) => (
+          {filteredItems.map((brand) => (
             <div key={brand} className="flex items-center gap-2">
               <Checkbox
                 id={brand}

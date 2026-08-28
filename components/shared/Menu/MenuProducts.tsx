@@ -9,13 +9,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useFilters } from '@/store/useFilters';
+import { ProductT } from '@/types/ProductT';
 import { FC } from 'react';
-import { categoryFilters, products } from './data';
+import { categoryFilters } from './data';
 import { ProductCard } from './ProductCard';
 
-interface Props {}
+interface Props {
+  products: ProductT[];
+}
 
-const MenuProducts: FC<Props> = (props) => {
+const MenuProducts: FC<Props> = ({ products }) => {
   const { filters, setFilters } = useFilters();
 
   return (

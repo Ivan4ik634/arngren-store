@@ -33,7 +33,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <p className="text-lg font-extrabold text-black">{product.price}</p>
+        <p className="text-lg font-extrabold text-black">$ {product.price}</p>
         <div className="flex items-center gap-1 text-sm">
           <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
           <span className="font-semibold text-[#0969ff]">{product.rating}</span>

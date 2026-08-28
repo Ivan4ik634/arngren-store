@@ -10,7 +10,8 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addProductCard } = useProductCart();
+  const { addProductCard, incrementProductCount, productCards } = useProductCart();
+  const productInCart = productCards.find((card) => card.product?.id === product.id);
   return (
     <Card className="relative gap-0 rounded-lg border border-zinc-200 bg-white p-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] ring-0">
       <button
@@ -43,7 +44,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
       <div className="mt-4 grid grid-cols-[1fr_48px] gap-3">
         <Button
-          onClick={() => addProductCard(product)}
+          onClick={() =>
+            productInCart
+              ? incrementProductCount(product.id)
+              : addProductCard({ product, count: 1 })
+          }
           className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
           + Add to cart
         </Button>

@@ -19,16 +19,23 @@ const BagCartDrawer: FC<Props> = (props) => {
         <ShoppingBag className="size-5" />
         <Badge>{productCards.length}</Badge>
       </DrawerTrigger>
-      <DrawerContent className="w-120 p-5">
+      <DrawerContent className="w-120 pt-5 px-5">
         <DrawerTitle className="font-bold text-2xl">Bag</DrawerTitle>
-        <ScrollArea className="h-[90%]">
+        <ScrollArea className="h-[87%]">
           <div className="flex flex-col mt-10 gap-y-5">
             {productCards.map((product) => (
-              <BagProductCard product={product} key={product.id} />
+              <BagProductCard
+                product={product.product}
+                count={product.count}
+                key={product.product.id}
+              />
             ))}
           </div>
         </ScrollArea>
         <div className="mt-5 w-full">
+          <p className="text-lg font-bold">
+            Total: $ {productCards.reduce((acc, card) => acc + card.count * card.product.price, 0)}
+          </p>
           <Button size="lg" className="mt-5 w-full">
             Order now
           </Button>

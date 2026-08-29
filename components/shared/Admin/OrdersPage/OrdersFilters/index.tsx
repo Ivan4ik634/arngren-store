@@ -21,11 +21,11 @@ const OrdersFilters: FC<Props> = (props) => {
             <span className="text-muted-foreground">Status:All</span>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Status:All">Status:All</SelectItem>
-            <SelectItem value="Status:Pending">Status:Pending</SelectItem>
-            <SelectItem value="Status:Processing">Status:Processing</SelectItem>
-            <SelectItem value="Status:Completed">Status:Completed</SelectItem>
-            <SelectItem value="Status:Cancelled">Status:Cancelled</SelectItem>
+            <SelectItem value="Status:All">All</SelectItem>
+            <SelectItem value="Status:Pending">Pending</SelectItem>
+            <SelectItem value="Status:Processing">Processing</SelectItem>
+            <SelectItem value="Status:Completed">Completed</SelectItem>
+            <SelectItem value="Status:Cancelled">Cancelled</SelectItem>
           </SelectContent>
         </Select>
       </div>

@@ -8,7 +8,7 @@ import { FC } from 'react';
 
 interface Props {}
 
-const ProductsFilters: FC<Props> = (props) => {
+const ApplicationsFilters: FC<Props> = (props) => {
   return (
     <div className="flex  mt-5 justify-between">
       <div className="flex gap-x-5 items-center">
@@ -18,12 +18,23 @@ const ProductsFilters: FC<Props> = (props) => {
         </div>
         <Select>
           <SelectTrigger>
-            <span className="text-muted-foreground">Availability:All</span>
+            <span className="text-muted-foreground">Category:All</span>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Availability:All">All</SelectItem>
-            <SelectItem value="Availability:In stock">In stock</SelectItem>
-            <SelectItem value="Availability:Out of stock">Out of stock</SelectItem>
+            <SelectItem value="Category:All">All</SelectItem>
+            <SelectItem value="Category:Sport">Sport</SelectItem>
+            <SelectItem value="Category:Technology">Technology</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select>
+          <SelectTrigger>
+            <span className="text-muted-foreground">Status:All</span>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Status:All">All</SelectItem>
+            <SelectItem value="Status:Approved">Approved</SelectItem>
+            <SelectItem value="Status:Rejected">Rejected</SelectItem>
+            <SelectItem value="Status:Pending">Pending</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -34,4 +45,4 @@ const ProductsFilters: FC<Props> = (props) => {
   );
 };
 
-export default ProductsFilters;
+export default ApplicationsFilters;

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Lock, Truck, Undo2 } from 'lucide-react';
-import { FC } from 'react';
+import { Button } from "@/components/ui/button";
+import { Lock, Truck, Undo2 } from "lucide-react";
+import { FC } from "react";
 
 interface Props {}
 

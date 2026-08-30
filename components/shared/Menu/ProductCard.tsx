@@ -62,3 +62,4 @@ export function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+//TODO: Мне надо будет сделать этот компонент загальным, для всех, и через children прокидывать кнопки, в корзине можно будет сделать так как там все снизу

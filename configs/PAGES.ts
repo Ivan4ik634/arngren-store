@@ -5,7 +5,9 @@ class Pages {
   CUSTOMERS = '/customers';
   BRANDS = '/brands';
   MENU = '/menu';
-  APPLICATION = '/application';
+  APPLICATION = '/applications';
   SETTINGS = '/settings';
+  LOGIN = '/login';
+  REGISTER = '/register';
 }
 export const PAGES = new Pages();

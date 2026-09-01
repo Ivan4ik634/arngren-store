@@ -19,6 +19,12 @@ export interface ProductCreateT {
   brand: BrandT[number];
   images: string[];
 }
+export interface ProductFormCreateT {
+  name: string;
+  category: CategoryT[number];
+  brand: BrandT[number];
+  price: number;
+}
 export interface ProductUpdateT extends Partial<Omit<ProductCreateT, 'seller'>> {
   id: string;
 }

@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Star } from 'lucide-react';
 import { FC } from 'react';
 import { products } from '../../Menu/data';
+import DialogAddProduct from './DialogAddProduct';
 import UserProductsFilters from './UserProductsFilters';
 
 interface Props {}
@@ -11,8 +12,13 @@ interface Props {}
 const UserProductsPage: FC<Props> = (props) => {
   return (
     <div>
-      <h1 className="font-bold text-2xl">Products</h1>
-      <p className="opacity-50"> Manage your products</p>
+      <div className="flex justify-between">
+        <div>
+          <h1 className="font-bold text-2xl">Products</h1>
+          <p className="opacity-50"> Manage your products</p>
+        </div>
+        <DialogAddProduct />
+      </div>
       <UserProductsFilters />
       <div className="mt-5 grid grid-cols-4 gap-5">
         <Card className="relative gap-0 rounded-lg border border-zinc-200 bg-white p-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] ring-0">

@@ -1,21 +1,32 @@
 import { toast } from '@/components/ui/toast';
 import { supabase } from '@/lib/supabase';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export const useUploadImage = () => {
-  const [image, setImage] = useState<string>('');
+interface UseUploadImageProps {
+  init?: string;
+  action?: (url: string) => void;
+}
+export const useUploadImage = ({ init, action }: UseUploadImageProps) => {
+  const [image, setImage] = useState<string>(init || '');
   const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    console.log(image);
+  }, [image]);
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     const uuid = crypto.randomUUID();
-    if (file) {
-      const { error } = await supabase.storage.from('images').upload(uuid, file);
-      if (!error) return toast.close('Error uploading image');
 
-      const { data } = supabase.storage.from('images').getPublicUrl(uuid);
-      setImage(data.publicUrl);
-    }
+    if (!file) return toast.close('No file selected');
+
+    const { error } = await supabase.storage.from('images').upload(uuid, file);
+    if (error) return toast.close('Error uploading image');
+
+    const { data } = await supabase.storage.from('images').getPublicUrl(uuid);
+    console.log(data);
+    setImage(data.publicUrl);
+
+    action?.(data.publicUrl);
   };
   const handleImageDelete = async () => {
     setImage('');

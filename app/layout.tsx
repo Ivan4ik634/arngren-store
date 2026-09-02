@@ -1,4 +1,5 @@
 import { Header } from '@/components/shared/Header';
+import { Toaster } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       <body className="min-h-full flex flex-col">
         <Header />
         {children}
+        <Toaster />
       </body>
     </html>
   );

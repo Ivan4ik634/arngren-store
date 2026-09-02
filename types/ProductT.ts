@@ -21,8 +21,8 @@ export interface ProductCreateT {
 }
 export interface ProductFormCreateT {
   name: string;
-  category: CategoryT[number];
-  brand: BrandT[number];
+  category: CategoryT[number] | null;
+  brand: BrandT[number] | null;
   price: number;
 }
 export interface ProductUpdateT extends Partial<Omit<ProductCreateT, 'seller'>> {

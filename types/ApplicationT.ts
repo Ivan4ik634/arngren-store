@@ -1,3 +1,5 @@
+import { LucideIcon } from 'lucide-react';
+
 export interface ApplicationT {
   id: string;
   product_id: string;
@@ -10,4 +12,11 @@ export interface ApplicationCreateT {
 }
 export interface ApplicationDeleteT {
   id: string;
+}
+export interface CardStatsT {
+  icon: LucideIcon;
+  title: string;
+  info: string;
+  iconWrapperClassName?: string;
+  iconClassName?: string;
 }

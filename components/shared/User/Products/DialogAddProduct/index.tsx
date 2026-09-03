@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/u
 import { toast } from '@/components/ui/toast';
 import { useUploadImage } from '@/hooks/useUploadImage';
 import { supabase } from '@/lib/supabase';
+import { applicationService } from '@/services/Application.service';
 import { productService } from '@/services/Product.service';
 import { ProductFormCreateT } from '@/types/ProductT';
 import { FC, useState } from 'react';
@@ -41,16 +42,20 @@ const DialogAddProduct: FC<Props> = (props) => {
 
     if (!user) return toast.close('User not found');
 
-    const { error } = await productService.addProduct({
+    const { data, error } = await productService.addProduct({
       name: form.name,
       category: form.category,
       price: form.price,
       brand: form.brand,
       seller: user.id,
-      images: [image],
+      image: image,
     });
 
-    if (error) return toast.close('Error adding product');
+    const { error: errorAddApplication } = await applicationService.addApplication({
+      product_id: data?.id as string,
+    });
+
+    if (error || errorAddApplication) return toast.close('Error adding product');
     toast.close('Product added successfully');
   };
   return (
@@ -62,7 +67,7 @@ const DialogAddProduct: FC<Props> = (props) => {
         <DialogHeader>
           <DialogTitle>Add product</DialogTitle>
         </DialogHeader>
-        <form className="flex flex-col w-full gap-y-3">
+        <div className="flex flex-col w-full gap-y-3">
           {image && <img src={image} alt="Product image" className="w-full h-40 object-cover" />}
           <div className="w-full flex justify-between">
             <Button onClick={() => ref.current?.click()} type="button">
@@ -114,7 +119,7 @@ const DialogAddProduct: FC<Props> = (props) => {
           <div className="flex  justify-end">
             <Button onClick={() => onSubmit()}>Add products</Button>
           </div>
-        </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -9,6 +9,7 @@ export type ProductT = {
   rating: string;
   brand: BrandT[number];
   reviews: string;
+  application: boolean;
   image: string;
 };
 export interface ProductCreateT {
@@ -17,7 +18,7 @@ export interface ProductCreateT {
   category: CategoryT[number];
   price: number;
   brand: BrandT[number];
-  images: string[];
+  image: string;
 }
 export interface ProductFormCreateT {
   name: string;

@@ -9,9 +9,10 @@ interface UseUploadImageProps {
 export const useUploadImage = ({ init, action }: UseUploadImageProps) => {
   const [image, setImage] = useState<string>(init || '');
   const ref = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
-    console.log(image);
-  }, [image]);
+    console.log(image)
+  },[])
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

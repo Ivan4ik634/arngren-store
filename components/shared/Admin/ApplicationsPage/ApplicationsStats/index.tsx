@@ -1,12 +1,12 @@
 'use client';
 
 import { getApplicationsStats } from '@/data/AdminStats';
-import { ApplicationT } from '@/types/ApplicationT';
+import { ApplicationWithProductT } from '@/types/ApplicationT';
 import { FC } from 'react';
 import CardStats from '../../ui/CardStats';
 
 interface Props {
-  applications: ApplicationT[];
+  applications: ApplicationWithProductT[];
 }
 
 const ApplicationsStats: FC<Props> = (props) => {

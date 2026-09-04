@@ -1,28 +1,33 @@
 'use client';
 
 import { applicationService } from '@/services/Application.service';
-import { ApplicationT } from '@/types/ApplicationT';
+import { ApplicationWithProductT } from '@/types/ApplicationT';
+import { FiltersT } from '@/types/FiltersT';
 import { FC, useEffect, useState } from 'react';
 import ApplicationsFilters from './ApplicationsFilters';
 import ApplicationsStats from './ApplicationsStats';
 import ApplicationsTable from './ApplicationsTable';
 
-const ApplicationsPage: FC = () => {
-  const [applications, setApplications] = useState<ApplicationT[]>([]);
+interface Props {}
+
+const ApplicationsPage: FC<Props> = (props) => {
+  const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });
+  const [applications, setApplications] = useState<ApplicationWithProductT[]>([]);
 
   useEffect(() => {
     const getApplications = async () => {
-      const res = await applicationService.getApplications();
-      setApplications(res.data as ApplicationT[]);
+      const res = await applicationService.getApplications(filters);
+      setApplications(res.data as any as ApplicationWithProductT[]);
     };
     getApplications();
-  }, []);
+  }, [filters]);
+
   return (
     <div className="mt-8 w-full">
-      <h1 className="font-bold text-2xl">Products</h1>
+      <h1 className="font-bold text-2xl">Applications</h1>
       <ApplicationsStats applications={applications} />
-      <ApplicationsFilters />
-      <ApplicationsTable />
+      <ApplicationsFilters filters={filters} setFilters={setFilters} />
+      <ApplicationsTable applications={applications} />
     </div>
   );
 };

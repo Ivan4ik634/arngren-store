@@ -1,5 +1,6 @@
 import { BrandT } from './BrandT';
 import { CategoryT } from './CategoryT';
+import { UserT } from './UserT';
 
 export type ProductT = {
   id: string;
@@ -10,6 +11,7 @@ export type ProductT = {
   brand: BrandT[number];
   reviews: string;
   application: boolean;
+  seller: UserT;
   image: string;
 };
 export interface ProductCreateT {

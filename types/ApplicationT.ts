@@ -1,4 +1,5 @@
 import { LucideIcon } from 'lucide-react';
+import { ProductT } from './ProductT';
 
 export interface ApplicationT {
   id: string;
@@ -6,7 +7,9 @@ export interface ApplicationT {
   status: 'pending' | 'approved' | 'rejected';
   created_at: string;
 }
-
+export interface ApplicationWithProductT extends Omit<ApplicationT, 'product_id'> {
+  product_id: ProductT;
+}
 export interface ApplicationCreateT {
   product_id: string;
 }

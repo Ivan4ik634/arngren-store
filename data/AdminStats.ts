@@ -1,4 +1,4 @@
-import { ApplicationT, CardStatsT } from '@/types/ApplicationT';
+import { ApplicationWithProductT, CardStatsT } from '@/types/ApplicationT';
 import {
   Check,
   Clock,
@@ -34,7 +34,7 @@ const formatMoney = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-export const getApplicationsStats = (applications: ApplicationT[]): CardStatsT[] => [
+export const getApplicationsStats = (applications: ApplicationWithProductT[]): CardStatsT[] => [
   {
     icon: FileText,
     title: 'Total applications',

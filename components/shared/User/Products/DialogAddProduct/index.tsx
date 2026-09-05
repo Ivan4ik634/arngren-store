@@ -24,6 +24,7 @@ const DialogAddProduct: FC<Props> = (props) => {
   const [form, setForm] = useState<ProductFormCreateT>({
     name: '',
     price: 0,
+    count: 0,
     category: null,
     brand: null,
   });
@@ -48,6 +49,7 @@ const DialogAddProduct: FC<Props> = (props) => {
       price: form.price,
       brand: form.brand,
       seller: user.id,
+      count: form.count,
       image: image,
     });
 
@@ -115,6 +117,11 @@ const DialogAddProduct: FC<Props> = (props) => {
                 <SelectItem value="Samsung">Samsung</SelectItem>
               </SelectContent>
             </Select>
+            <Input
+              value={form.count}
+              onChange={(e) => setForm({ ...form, count: Number(e.target.value) })}
+              placeholder="Product count..."
+            />
           </div>
           <div className="flex  justify-end">
             <Button onClick={() => onSubmit()}>Add products</Button>

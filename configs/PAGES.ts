@@ -8,7 +8,7 @@ class Pages {
   CUSTOMERS = '/customers';
   BRANDS = '/brands';
   MENU = '/menu';
-  APPLICATION = '/applications';
+  APPLICATION = '/admin/applications';
   SETTINGS = '/settings';
   LOGIN = '/login';
   REGISTER = '/register';

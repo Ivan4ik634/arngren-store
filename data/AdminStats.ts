@@ -1,11 +1,15 @@
 import { ApplicationWithProductT, CardStatsT } from '@/types/ApplicationT';
+import { ProductT } from '@/types/ProductT';
 import {
   Check,
   Clock,
   DollarSign,
   FileText,
   Handbag,
+  MessageSquare,
+  Package,
   ShoppingBag,
+  Star,
   UserPlus,
   Users,
   XCircleIcon,
@@ -141,5 +145,42 @@ export const getCustomersStats = (customers: CustomerStatsItem[]): CardStatsT[] 
     icon: DollarSign,
     title: 'Total spent',
     info: formatMoney(customers.reduce((total, customer) => total + (customer.totalSpent ?? 0), 0)),
+  },
+];
+export const getProductsStats = (products: ProductT[]): CardStatsT[] => [
+  {
+    icon: Package,
+    title: 'Total products',
+    info: formatNumber(products.length),
+  },
+  {
+    icon: Check,
+    title: 'Products with application',
+    info: formatNumber(products.filter((product) => product.application).length),
+    iconWrapperClassName: 'bg-green-500/10',
+    iconClassName: 'text-green-500',
+  },
+  {
+    icon: Star,
+    title: 'Highly rated',
+    info: formatNumber(products.filter((product) => Number(product.rating) >= 4).length),
+    iconWrapperClassName: 'bg-yellow-500/10',
+    iconClassName: 'text-yellow-500',
+  },
+  {
+    icon: MessageSquare,
+    title: 'With reviews',
+    info: formatNumber(products.filter((product) => Number(product.reviews) > 0).length),
+    iconWrapperClassName: 'bg-blue-500/10',
+    iconClassName: 'text-blue-500',
+  },
+  {
+    icon: DollarSign,
+    title: 'Average price',
+    info: formatMoney(
+      products.length
+        ? products.reduce((total, product) => total + product.price, 0) / products.length
+        : 0,
+    ),
   },
 ];

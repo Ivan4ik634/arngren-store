@@ -17,7 +17,12 @@ const ApplicationsPage: FC<Props> = (props) => {
   useEffect(() => {
     const getApplications = async () => {
       const res = await applicationService.getApplications(filters);
-      setApplications(res.data as any as ApplicationWithProductT[]);
+
+      setApplications(
+        res.data?.filter(
+          (application) => application.product_id,
+        ) as any as ApplicationWithProductT[],
+      );
     };
     getApplications();
   }, [filters]);
@@ -27,7 +32,7 @@ const ApplicationsPage: FC<Props> = (props) => {
       <h1 className="font-bold text-2xl">Applications</h1>
       <ApplicationsStats applications={applications} />
       <ApplicationsFilters filters={filters} setFilters={setFilters} />
-      <ApplicationsTable applications={applications} />
+      <ApplicationsTable setApplications={setApplications} applications={applications} />
     </div>
   );
 };

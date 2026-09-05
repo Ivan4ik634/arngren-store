@@ -13,7 +13,7 @@ interface Props {
   label: string;
   value?: string;
   options: SelectFilterOptionT[];
-  onChange:
+  onChange?:
     | ((value: string | null, eventDetails: SelectRootChangeEventDetails) => void)
     | undefined;
 }

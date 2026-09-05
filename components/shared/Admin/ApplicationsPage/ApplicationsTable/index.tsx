@@ -10,16 +10,26 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { applicationService } from '@/services/Application.service';
 import { ApplicationWithProductT } from '@/types/ApplicationT';
 import dayjs from 'dayjs';
 import { Check, Eye, X } from 'lucide-react';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
   applications: ApplicationWithProductT[];
+  setApplications: Dispatch<SetStateAction<ApplicationWithProductT[]>>;
 }
 
-const ApplicationsTable: FC<Props> = ({ applications }) => {
+const ApplicationsTable: FC<Props> = ({ applications, setApplications }) => {
+  const handleReject = async (application: ApplicationWithProductT) => {
+    await applicationService.editApplication(application.product_id.id, 'rejected');
+    setApplications((prev) => prev.filter((app) => app.id !== application.id));
+  };
+  const handleApprove = async (application: ApplicationWithProductT) => {
+    await applicationService.editApplication(application.product_id.id, 'approved');
+    setApplications((prev) => prev.filter((app) => app.id !== application.id));
+  };
   return (
     <Table className="mt-5">
       <TableHeader>
@@ -84,8 +94,8 @@ const ApplicationsTable: FC<Props> = ({ applications }) => {
             <TableCell>
               <div className="flex items-start justify-start  space-x-5">
                 <Eye />
-                <Check className="text-green-500" />
-                <X className="text-red-500" />
+                <Check onClick={() => handleApprove(application)} className="text-green-500" />
+                <X onClick={() => handleReject(application)} className="text-red-500" />
               </div>
             </TableCell>
           </TableRow>

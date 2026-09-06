@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
-import { OrderCreateT, OrderUpdateT } from '@/types/OrderT';
+import { FilterOrdersT } from '@/types/FiltersT';
+import { OrderCreateT } from '@/types/OrderT';
 
 export const orderService = {
   async createOrder(order: OrderCreateT) {
@@ -10,11 +11,35 @@ export const orderService = {
       .single();
     return res;
   },
-  async updateOrder(id: string, data: OrderUpdateT) {
-    const res = await supabase
-      .from('orders')
-      .update({ ...data })
-      .eq('id', id);
-    return res;
+  async getOrdersUser(filters: FilterOrdersT) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    let query = supabase.from('orders').select('*').eq('user_id', user.id);
+
+    if (filters.search) {
+      query = query.ilike('id', `%${filters.search}%`);
+    }
+    if (filters.status && filters.status !== 'all') {
+      query = query.eq('status', filters.status);
+    }
+    return query;
+  },
+  async getOrders(filters: FilterOrdersT) {
+    let query = supabase.from('orders').select(`
+    *,
+    user:profiles(*)
+  `);
+
+    if (filters.search) {
+      query = query.ilike('id', `%${filters.search}%`);
+    }
+    if (filters.status && filters.status !== 'all') {
+      query = query.eq('status', filters.status);
+    }
+    return query;
   },
 };

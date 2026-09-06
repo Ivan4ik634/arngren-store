@@ -5,7 +5,7 @@ import { FC } from 'react';
 import CardStats from '../../ui/CardStats';
 
 interface Props {
-  orders?: Parameters<typeof getOrdersStats>[0];
+  orders?: Parameters<typeof getOrdersStats>[0] | undefined | null;
 }
 
 const OrdersStats: FC<Props> = (props) => {

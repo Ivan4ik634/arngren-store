@@ -8,12 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { OrderT } from '@/types/OrderT';
+import dayjs from 'dayjs';
 import { Eye } from 'lucide-react';
 import { FC } from 'react';
 
-interface Props {}
+interface Props {
+  data: OrderT[] | null | undefined;
+}
 
-const UserOrdersTable: FC<Props> = (props) => {
+const UserOrdersTable: FC<Props> = ({ data }) => {
   return (
     <Table className="mt-5">
       <TableHeader>
@@ -27,25 +31,27 @@ const UserOrdersTable: FC<Props> = (props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">INV001</TableCell>
-          <TableCell>
-            <div>
-              <p>May 24 2025 </p>
-              <p className="opacity-50">10:10 AM</p>
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="px-4 py-2 bg-green-500/20 w-min rounded-full ">
-              <p className="text-green-500">Completed</p>
-            </div>
-          </TableCell>
-          <TableCell className="font-bold">$2320</TableCell>
-          <TableCell className="">3</TableCell>
-          <TableCell className="text-right">
-            <Eye />
-          </TableCell>
-        </TableRow>
+        {data?.map((data) => (
+          <TableRow>
+            <TableCell className="font-medium">{data.id}</TableCell>
+            <TableCell>
+              <div>
+                <p>{dayjs(data.created_at).format('MMM DD YYYY')}</p>
+                <p className="opacity-50">{dayjs(data.created_at).format('hh:mm A')}</p>
+              </div>
+            </TableCell>
+            <TableCell>
+              <div className="px-4 py-2 bg-green-500/20 w-min rounded-full ">
+                <p className="text-green-500">{data.status}</p>
+              </div>
+            </TableCell>
+            <TableCell className="font-bold">${data.total}</TableCell>
+            <TableCell className="">{data.items_length}</TableCell>
+            <TableCell className="text-right">
+              <Eye />
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

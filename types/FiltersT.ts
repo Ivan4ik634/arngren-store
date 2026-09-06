@@ -6,3 +6,4 @@ export interface FiltersT {
 export interface FiltersProductT extends Omit<FiltersT, 'status'> {
   availability: string;
 }
+export interface FilterOrdersT extends Omit<FiltersT, 'category'> {}

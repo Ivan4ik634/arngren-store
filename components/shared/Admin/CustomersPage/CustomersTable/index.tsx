@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
@@ -10,12 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { UserT } from '@/types/UserT';
+import dayjs from 'dayjs';
 import { EllipsisVertical } from 'lucide-react';
 import { FC } from 'react';
 
-interface Props {}
+interface Props {
+  users: UserT[] | undefined | null;
+}
 
-const CustomersTable: FC<Props> = (props) => {
+const CustomersTable: FC<Props> = ({ users }) => {
   return (
     <Table className="mt-5">
       <TableHeader>
@@ -25,51 +29,44 @@ const CustomersTable: FC<Props> = (props) => {
           </TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Email</TableHead>
-          <TableHead>Orders</TableHead>
-          <TableHead>Total spent</TableHead>
-          <TableHead>Status</TableHead>
           <TableHead>Joined At</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="w-[50px] ">
-            <Checkbox />
-          </TableCell>
+        {users?.map((user) => (
+          <TableRow>
+            <TableCell className="w-[50px] ">
+              <Checkbox />
+            </TableCell>
 
-          <TableCell>
-            <div className="flex items-center">
-              <Avatar size="lg">
-                <AvatarFallback>JS</AvatarFallback>
-              </Avatar>
-              <div className="ml-5">
-                <h1>
-                  <span className="font-bold">John Smith</span>
-                </h1>
+            <TableCell>
+              <div className="flex items-center">
+                <Avatar size="lg">
+                  <AvatarFallback>{user.name[0]}</AvatarFallback>
+                  <AvatarImage src={user.avatar} />
+                </Avatar>
+                <div className="ml-5">
+                  <h1>
+                    <span className="font-bold">{user.name}</span>
+                  </h1>
+                </div>
               </div>
-            </div>
-          </TableCell>
-          <TableCell>
-            <p className="opacity-50">jongsmith@me.com</p>
-          </TableCell>
-          <TableCell>12</TableCell>
-          <TableCell>$1200</TableCell>
-          <TableCell className="flex items-start">
-            <div className="px-5 py-2  bg-green-500/20 rounded-full">
-              <p className="text-green-500">Active</p>
-            </div>
-          </TableCell>
-          <TableCell>
-            <div>
-              <p>May 24 2025 </p>
-              <p className="opacity-50">10:10 AM</p>
-            </div>
-          </TableCell>
-          <TableCell>
-            <EllipsisVertical />
-          </TableCell>
-        </TableRow>
+            </TableCell>
+            <TableCell>
+              <p className="opacity-50">{user.email}</p>
+            </TableCell>
+            <TableCell>
+              <div>
+                <p>{dayjs(user.created_at).format('MMM DD YYYY')} </p>
+                <p className="opacity-50">{dayjs(user.created_at).format('hh:mm A')}</p>
+              </div>
+            </TableCell>
+            <TableCell>
+              <EllipsisVertical />
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

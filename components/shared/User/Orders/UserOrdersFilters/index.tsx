@@ -1,31 +1,36 @@
 'use client';
 
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
-import { Search } from 'lucide-react';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
-interface Props {}
+import SearchInput from '@/components/ui/SearchInput';
+import SelectFilter, { SelectFilterOptionT } from '@/components/ui/SelectFilter';
+import { FilterOrdersT } from '@/types/FiltersT';
 
-const UserOrdersFilters: FC<Props> = (props) => {
+const statusOptinons: SelectFilterOptionT[] = [
+  { label: 'All', value: 'all' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Processing', value: 'processing' },
+  { label: 'Completed', value: 'completed' },
+  { label: 'Cancelled', value: 'cancelled' },
+];
+interface Props {
+  filters: FilterOrdersT;
+  setFilters: Dispatch<SetStateAction<FilterOrdersT>>;
+}
+
+const UserOrdersFilters: FC<Props> = ({ filters, setFilters }) => {
   return (
     <div className="flex mt-5 gap-x-5 items-center">
-      <div className="relative">
-        <Search className="absolute top-1/2 left-3 text-muted-foreground -translate-y-1/2" />
-        <Input placeholder="Search" className="w-full  pl-[50px]" />
-      </div>
-      <Select>
-        <SelectTrigger>
-          <span className="text-muted-foreground">Status:All</span>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="Status:All">All</SelectItem>
-          <SelectItem value="Status:Pending">Pending</SelectItem>
-          <SelectItem value="Status:Processing">Processing</SelectItem>
-          <SelectItem value="Status:Completed">Completed</SelectItem>
-          <SelectItem value="Status:Cancelled">Cancelled</SelectItem>
-        </SelectContent>
-      </Select>
+      <SearchInput
+        value={filters.search}
+        onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+      />
+      <SelectFilter
+        value={filters.status}
+        onChange={(value) => setFilters({ ...filters, status: value! })}
+        label="Status"
+        options={statusOptinons}
+      />
     </div>
   );
 };

@@ -10,6 +10,13 @@ export const userService = {
     const res = await supabase.from('profiles').select('*').eq('id', id).single();
     return res;
   },
+  async getUsers(filters: { search: string }) {
+    let query = supabase.from('profiles').select('*');
+    if (filters.search) {
+      query = query.ilike('name', `%${filters.search}%`);
+    }
+    return await query;
+  },
   async updateUser(id: string, data: UserUpdatePersonalInformationT) {
     const res = await supabase
       .from('profiles')

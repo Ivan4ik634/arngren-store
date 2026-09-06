@@ -17,7 +17,7 @@ import ProductCard from '../ProductCard';
 import { categoryFilters } from './data';
 
 interface Props {
-  products: ProductT[];
+  products: ProductT[] | undefined;
 }
 
 const MenuProducts: FC<Props> = ({ products }) => {
@@ -70,7 +70,7 @@ const MenuProducts: FC<Props> = ({ products }) => {
       </div>
 
       <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {products.map((product) => {
+        {products?.map((product) => {
           const productInCart = productCards.find((card) => card.product?.id === product.id);
 
           return (

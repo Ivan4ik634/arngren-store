@@ -1,12 +1,15 @@
 import { useMemo, useState } from 'react';
 
-export function useSearch<T>(items: T[], searchFn: (item: T, query: string) => boolean) {
+export function useSearch<T>(
+  items: T[] | undefined,
+  searchFn: (item: T, query: string) => boolean,
+) {
   const [query, setQuery] = useState('');
 
   const filteredItems = useMemo(() => {
     if (!query.trim()) return items;
 
-    return items.filter((item) => searchFn(item, query.toLowerCase()));
+    return items?.filter((item) => searchFn(item, query.toLowerCase()));
   }, [items, query, searchFn]);
 
   return {

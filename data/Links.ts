@@ -48,7 +48,7 @@ export const UserLinks: LinkT[] = [
   {
     icon: Heart,
     name: 'Wishlist',
-    href: PAGES.PRODUCTS,
+    href: PAGES.WISHLIST,
   },
   {
     icon: Users,

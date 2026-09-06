@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/toast';
 import { PAGES } from '@/configs/PAGES';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { UserLoginT } from '@/types/UserT';
 import Link from 'next/link';
 import { FC } from 'react';

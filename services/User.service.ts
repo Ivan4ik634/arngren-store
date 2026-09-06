@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { UserRegisterT, UserUpdatePersonalInformationT } from '@/types/UserT';
 
 export const userService = {

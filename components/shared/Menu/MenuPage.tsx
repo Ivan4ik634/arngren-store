@@ -3,40 +3,49 @@ import { ChevronRight, Search } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import { useSearch } from '@/hooks/useSearch';
+import { productService } from '@/services/Product.service';
 import { useFilters } from '@/store/useFilters';
 import { ProductT } from '@/types/ProductT';
+import { useQuery } from '@tanstack/react-query';
 import { Filters } from './Filters';
 import MenuProducts from './MenuProducts';
-import { products } from './data';
 
 export function MenuPage() {
   const { filters } = useFilters();
-
+  const { data: products } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => productService.getProducts(),
+    select: (data) => data.data,
+  });
   const { query, setQuery, filteredItems } = useSearch<ProductT>(products, (item, query) =>
     item.name.toLowerCase().includes(query),
   );
+  console.log(filteredItems);
 
   const filteredProducts = filteredItems
-    .filter((product) => {
-      return (
-        filters.categories.includes('All Categories') ||
-        filters.categories.includes(product.category)
-      );
-    })
-    .filter((product) => {
-      return filters.brand.length === 0 || filters.brand.includes(product.brand);
-    })
-    .filter((product) => {
-      return (
-        filters.priceRange[0] * 500 <= product.price && filters.priceRange[1] * 500 >= product.price
-      );
-    })
-    .sort((a, b) => {
-      if (filters.sortBy === 'Price: Low to High') return a.price - b.price;
-      if (filters.sortBy === 'Price: High to Low') return b.price - a.price;
-      if (filters.sortBy === 'Rating') return Number(b.rating) - Number(a.rating);
-      return 0;
-    });
+    ? filteredItems
+        .filter((product) => {
+          return (
+            filters.categories.includes('All Categories') ||
+            filters.categories.includes(product.category)
+          );
+        })
+        .filter((product) => {
+          return filters.brand.length === 0 || filters.brand.includes(product.brand);
+        })
+        .filter((product) => {
+          return (
+            filters.priceRange[0] * 500 <= product.price &&
+            filters.priceRange[1] * 500 >= product.price
+          );
+        })
+        .sort((a, b) => {
+          if (filters.sortBy === 'Price: Low to High') return a.price - b.price;
+          if (filters.sortBy === 'Price: High to Low') return b.price - a.price;
+          if (filters.sortBy === 'Rating') return Number(b.rating) - Number(a.rating);
+          return 0;
+        })
+    : [];
 
   return (
     <main className="bg-white">

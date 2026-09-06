@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
 import { useProfileStore } from '@/store/useProfileStore';
 import { UserT } from '@/types/UserT';

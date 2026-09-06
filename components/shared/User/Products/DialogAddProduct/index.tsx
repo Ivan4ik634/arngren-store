@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { toast } from '@/components/ui/toast';
 import { useUploadImage } from '@/hooks/useUploadImage';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { applicationService } from '@/services/Application.service';
 import { productService } from '@/services/Product.service';
 import { ProductFormCreateT } from '@/types/ProductT';

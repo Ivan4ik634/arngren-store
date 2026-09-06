@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/toast';
 import { useUploadImage } from '@/hooks/useUploadImage';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
 import { useProfileStore } from '@/store/useProfileStore';
 import { UserT, UserUpdateT } from '@/types/UserT';

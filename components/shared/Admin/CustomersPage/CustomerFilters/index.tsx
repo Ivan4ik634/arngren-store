@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
-import SearchInput from '../../ui/SearchInput';
-import SelectFilter, { SelectFilterOptionT } from '../../ui/SelectFilter';
+import SearchInput from '../../../../ui/SearchInput';
+import SelectFilter, { SelectFilterOptionT } from '../../../../ui/SelectFilter';
 
 const statusOptions: SelectFilterOptionT[] = [
   { label: 'All', value: 'all' },

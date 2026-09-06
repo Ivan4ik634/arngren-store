@@ -1,6 +1,7 @@
 import { Header } from '@/components/shared/Header';
 import { Toaster } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
+import QueryProvider from '@/providers/QueryClient';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       className={cn(
-        'h-full dark',
+        'h-full',
         'antialiased',
         geistSans.variable,
         geistMono.variable,
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       )}>
       <body className="min-h-full flex flex-col">
         <Header />
-        {children}
+        <QueryProvider> {children}</QueryProvider>
         <Toaster />
       </body>
     </html>

@@ -1,5 +1,5 @@
 import { toast } from '@/components/ui/toast';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { useEffect, useRef, useState } from 'react';
 
 interface UseUploadImageProps {
@@ -11,8 +11,8 @@ export const useUploadImage = ({ init, action }: UseUploadImageProps) => {
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    console.log(image)
-  },[])
+    console.log(image);
+  }, []);
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

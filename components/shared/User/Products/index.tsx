@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from '@/components/ui/toast';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { productService } from '@/services/Product.service';
 import { ProductT } from '@/types/ProductT';
 import { FC, useEffect, useState } from 'react';

@@ -14,5 +14,6 @@ class Pages {
   REGISTER = '/register';
   WISHLIST = '/wishlist';
   PROFILE = '/profile';
+  CART = '/cart';
 }
 export const PAGES = new Pages();

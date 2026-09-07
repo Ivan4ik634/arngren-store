@@ -11,7 +11,7 @@ interface Props {}
 
 const UserOrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
-
+  //Надо будет сделать чтобы фильтрация поиска работала через рсп
   const { data } = useQuery({
     queryKey: ['orders', filters],
     queryFn: () => orderService.getOrdersUser(filters),

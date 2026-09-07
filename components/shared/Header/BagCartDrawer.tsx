@@ -4,19 +4,31 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { PAGES } from '@/configs/PAGES';
 import { useProductCart } from '@/store/useProductCart';
 import { Minus, Plus, ShoppingBag } from 'lucide-react';
-import { FC } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { FC, useEffect, useState } from 'react';
 import ProductCard from '../ProductCard';
 
 interface Props {}
 
 const BagCartDrawer: FC<Props> = (props) => {
+  const [open, setOpen] = useState(false);
   const { productCards } = useProductCart();
   const { deleteProductCard, incrementProductCount, decrementProductCount } = useProductCart();
+  const pathname = usePathname();
+  //сделать вишлист и сделать продукт страницу, и лендинг страницу на последок
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   return (
-    <Drawer>
-      <DrawerTrigger className="relative text-black transition-colors hover:text-[#0969ff]">
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger
+        onClick={() => setOpen(true)}
+        className="relative text-black transition-colors hover:text-[#0969ff]">
         <ShoppingBag className="size-5" />
         <Badge>{productCards.length}</Badge>
       </DrawerTrigger>
@@ -52,9 +64,11 @@ const BagCartDrawer: FC<Props> = (props) => {
           <p className="text-lg font-bold">
             Total: $ {productCards.reduce((acc, card) => acc + card.count * card.product.price, 0)}
           </p>
-          <Button size="lg" className="mt-5 w-full">
-            Order now
-          </Button>
+          <Link href={PAGES.CART}>
+            <Button size="lg" className="mt-5 w-full">
+              Order now
+            </Button>
+          </Link>
         </div>
       </DrawerContent>
     </Drawer>

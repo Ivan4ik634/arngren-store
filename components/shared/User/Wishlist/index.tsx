@@ -22,7 +22,7 @@ const WishlistPage: FC<Props> = (props) => {
   return (
     <div>
       <h1 className="font-bold text-2xl">Wishlist</h1>
-      <WishlistFilters filtres={filters} setFilters={setFilters} />
+      <WishlistFilters filters={filters} setFilters={setFilters} />
       <div>
         {}
         <ProductCard></ProductCard>

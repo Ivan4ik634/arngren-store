@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import { FiltersProductT } from '@/types/FiltersT';
-import { ProductCreateT, ProductUpdateT } from '@/types/ProductT';
+import { ProductCreateT, ProductT, ProductUpdateT } from '@/types/ProductT';
 
 export const productService = {
   async addProduct(data: ProductCreateT) {
@@ -26,7 +26,7 @@ export const productService = {
       category,
       brand,
       price,
-      image,
+      images,
       count,
       seller(id, name, avatar, email),
       created_at
@@ -51,6 +51,28 @@ export const productService = {
     }
 
     return await query;
+  },
+  async getProduct(id: string): Promise<ProductT> {
+    let query = await supabase
+      .from('products')
+      .select(
+        `
+      id,
+      name,
+      category,
+      brand,
+      price,
+      images,
+      count,
+      seller(id, name, avatar, email),
+      created_at
+    `,
+      )
+      .eq('application', true)
+      .eq('id', id)
+      .single();
+
+    return query as any as ProductT;
   },
   async editProduct(data: ProductUpdateT) {
     const res = await supabase

@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useProfile } from '@/hooks/useProfile';
 import { useFilters } from '@/store/useFilters';
 import { useProductCart } from '@/store/useProductCart';
 import { ProductT } from '@/types/ProductT';
@@ -23,6 +24,7 @@ interface Props {
 const MenuProducts: FC<Props> = ({ products }) => {
   const { filters, setFilters } = useFilters();
   const { addProductCard, incrementProductCount, productCards } = useProductCart();
+  const { profile } = useProfile();
 
   return (
     <div className="flex min-w-0 w-full flex-col gap-5">
@@ -76,6 +78,7 @@ const MenuProducts: FC<Props> = ({ products }) => {
           return (
             <ProductCard
               product={product}
+              profile={profile}
               className="mt-4 grid grid-cols-[1fr_48px] gap-3"
               key={product.id}>
               <Button

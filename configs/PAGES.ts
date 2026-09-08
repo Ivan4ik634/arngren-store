@@ -13,6 +13,9 @@ class Pages {
   LOGIN = '/login';
   REGISTER = '/register';
   WISHLIST = '/wishlist';
+  PRODUCT(id: string) {
+    return `/product/${id}`;
+  }
   PROFILE = '/profile';
   CART = '/cart';
 }

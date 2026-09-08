@@ -1,5 +1,6 @@
 'use client';
 
+import { useProfile } from '@/hooks/useProfile';
 import { wishlistService } from '@/services/Wishlist.service';
 import { FiltersProductT } from '@/types/FiltersT';
 import { useQuery } from '@tanstack/react-query';
@@ -15,17 +16,21 @@ const WishlistPage: FC<Props> = (props) => {
     availability: 'all',
     category: 'all',
   });
-  const {} = useQuery({
-    queryKey: ['wishlist'],
-    queryFn: () => wishlistService.getWishlist(filters),
+  const { profile } = useProfile();
+  const { data } = useQuery({
+    queryKey: ['wishlist', filters],
+    queryFn: () => wishlistService.getWishlists(profile?.id || '', filters),
+    enabled: !!profile,
   });
   return (
     <div>
       <h1 className="font-bold text-2xl">Wishlist</h1>
       <WishlistFilters filters={filters} setFilters={setFilters} />
-      <div>
-        {}
-        <ProductCard></ProductCard>
+      <div className="grid grid-cols-4 gap-5">
+        {data &&
+          data.data.map((product) => (
+            <ProductCard key={product.id} profile={profile} product={product.product_id} />
+          ))}
       </div>
     </div>
   );

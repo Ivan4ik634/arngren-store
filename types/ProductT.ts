@@ -14,11 +14,11 @@ export type ProductT = {
   application: boolean;
   seller: UserT;
   created_at: string;
-  image: string;
+  images: string[];
 };
 export interface ProductCreateT extends ProductFormCreateT {
   seller: string;
-  image: string;
+  images: string[];
 }
 export interface ProductFormCreateT {
   name: string;

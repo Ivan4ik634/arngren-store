@@ -1,9 +1,10 @@
 import { supabase } from '@/lib/supabase/client';
 import { FiltersProductT } from '@/types/FiltersT';
+import { WishlistWithProductT } from '@/types/WishlistT';
 
 export const wishlistService = {
-  async getWishlist(filters: FiltersProductT) {
-    let query = supabase.from('wishlist').select('*, product_id(*)');
+  async getWishlists(userId: string, filters: FiltersProductT) {
+    let query = supabase.from('wishlist').select('*, product_id(*)').eq('user_id', userId);
     if (filters.search) {
       query = query.ilike('product_id.name', `%${filters.search}%`);
     }
@@ -17,14 +18,33 @@ export const wishlistService = {
       query = query.eq('product_id.count', 0);
     }
     const res = await query;
+    return { ...res, data: res.data as any as WishlistWithProductT[] };
+  },
+  async getWishlist(user_id: string, id: string) {
+    let query = supabase
+      .from('wishlist')
+      .select('id,product_id')
+      .eq('product_id', id)
+      .eq('user_id', user_id)
+      .single();
+
+    const res = await query;
+    return { ...res, data: res.data as any as { id: string; product_id: string } };
+  },
+  async addWishlist(user_id: string, product_id: string) {
+    const res = await supabase
+      .from('wishlist')
+      .insert({ product_id: product_id, user_id })
+      .select();
     return res;
   },
-  async addProduct(id: string) {
-    const res = await supabase.from('wishlist').insert({ product_id: id }).select();
-    return res;
-  },
-  async deleteProduct(id: string) {
-    const res = await supabase.from('wishlist').delete().eq('product_id', id).select();
+  async deleteWishlist(user_id: string, product_id: string) {
+    const res = await supabase
+      .from('wishlist')
+      .delete()
+      .eq('product_id', product_id)
+      .eq('user_id', user_id)
+      .select();
     return res;
   },
 };

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/toast';
-import { useUploadImage } from '@/hooks/useUploadImage';
+import { useUploadImage } from '@/hooks/useUploadImages';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
 import { useProfileStore } from '@/store/useProfileStore';

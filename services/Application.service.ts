@@ -18,7 +18,7 @@ export const applicationService = {
         brand,
         price,
         seller(name,email,avatar),
-        image
+        images
       ),
       created_at,
       status

@@ -20,8 +20,6 @@ export function MenuPage() {
   const { query, setQuery, filteredItems } = useSearch<ProductT>(products, (item, query) =>
     item.name.toLowerCase().includes(query),
   );
-  console.log(filteredItems);
-
   const filteredProducts = filteredItems
     ? filteredItems
         .filter((product) => {

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PAGES } from '@/configs/PAGES';
+import { useProfile } from '@/hooks/useProfile';
 import { useProductCart } from '@/store/useProductCart';
 import { Minus, Plus, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
@@ -17,9 +18,13 @@ interface Props {}
 const BagCartDrawer: FC<Props> = (props) => {
   const [open, setOpen] = useState(false);
   const { productCards } = useProductCart();
+  const { profile } = useProfile();
   const { deleteProductCard, incrementProductCount, decrementProductCount } = useProductCart();
   const pathname = usePathname();
+
   //сделать вишлист и сделать продукт страницу, и лендинг страницу на последок
+  // сделать слайдер фото  на главной менюшка
+
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -38,7 +43,11 @@ const BagCartDrawer: FC<Props> = (props) => {
         <ScrollArea className="h-[87%]">
           <div className="flex flex-col mt-10 gap-y-5">
             {productCards.map(({ product, count }) => (
-              <ProductCard className="mt-8 pt-5 border-t" product={product} key={product.id}>
+              <ProductCard
+                profile={profile}
+                className="mt-8 pt-5 border-t"
+                product={product}
+                key={product.id}>
                 <div className=" flex items-center justify-between">
                   <p className="text-lg font-extrabold text-black">Total</p>
                   <p className="text-lg font-extrabold text-black">${product.price * count}</p>

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/toast';
 import { useUploadImages } from '@/hooks/useUploadImages';
 import { supabase } from '@/lib/supabase/client';
@@ -24,10 +25,11 @@ interface Props {}
 const DialogAddProduct: FC<Props> = (props) => {
   const [form, setForm] = useState<ProductFormCreateT>({
     name: '',
-    price: 0,
-    count: 0,
+    price: undefined,
+    count: undefined,
     category: null,
     brand: null,
+    description: '',
   });
 
   const { images, ref, handleImagesDelete, handleImagesUpload } = useUploadImages({});
@@ -49,9 +51,10 @@ const DialogAddProduct: FC<Props> = (props) => {
       category: form.category,
       price: form.price,
       brand: form.brand,
+      description: form.description,
       seller: user.id,
       count: form.count,
-      images: images,
+      images,
     });
 
     const { error: errorAddApplication } = await applicationService.addApplication({
@@ -122,11 +125,15 @@ const DialogAddProduct: FC<Props> = (props) => {
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             placeholder="Product name..."
           />
+          <Textarea
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            placeholder="Product description..."
+          />
           <Input
             value={form.price}
             onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
             placeholder="Price..."
-            type="number"
           />
           <div className="flex gap-x-5">
             <Select
@@ -155,11 +162,11 @@ const DialogAddProduct: FC<Props> = (props) => {
             <Input
               value={form.count}
               onChange={(e) => setForm({ ...form, count: Number(e.target.value) })}
-              placeholder="Product count..."
+              placeholder="Count..."
             />
           </div>
           <div className="flex  justify-end">
-            <Button onClick={() => onSubmit()}>Add products</Button>
+            <Button onClick={() => onSubmit()}>Add product</Button>
           </div>
         </div>
       </DialogContent>

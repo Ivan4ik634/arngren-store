@@ -1,8 +1,12 @@
 import CartPage from '@/components/shared/Cart';
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 
 const Cart: FC = () => {
-  return <CartPage />;
+  return (
+    <Suspense>
+      <CartPage />
+    </Suspense>
+  );
 };
 
 export default Cart;

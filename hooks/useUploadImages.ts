@@ -14,7 +14,7 @@ export const useUploadImages = ({ init, action }: UseUploadImageProps) => {
     const files = event.target.files;
 
     if (!files) return toast.close('No file selected');
-
+    if (files.length === 5) return toast.close('You can only upload 5 images');
     for (const file of files) {
       const uuid = crypto.randomUUID();
       const { error } = await supabase.storage.from('images').upload(uuid, file);

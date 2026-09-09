@@ -8,8 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 export async function POST(req: Request) {
   try {
     const { items, order } = await req.json();
-    console.log(items);
-    console.log(items.map((item: { product: ProductT; count: number }) => item.count));
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
 

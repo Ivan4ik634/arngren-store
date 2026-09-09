@@ -9,7 +9,7 @@ interface ProductCard {
   incrementProductCount: (value: string) => void;
   decrementProductCount: (value: string) => void;
   deleteProductCard: (value: string) => void;
-  clearProductsCard: (value: string) => void;
+  clearProductsCard: () => void;
 }
 export const useProductCart = create<ProductCard>()(
   persist(

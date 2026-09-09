@@ -5,14 +5,21 @@ import { toast } from '@/components/ui/toast';
 import { supabase } from '@/lib/supabase/client';
 import { cartItemService } from '@/services/CartItem.service';
 import { orderService } from '@/services/Order.service';
+import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { Lock, Truck, Undo2 } from 'lucide-react';
 import { FC } from 'react';
 
-interface Props {}
+interface Props {
+  buyNow?: boolean;
+}
 
-const OrderSummary: FC<Props> = (props) => {
+const OrderSummary: FC<Props> = ({ buyNow = false }) => {
   const { productCards } = useProductCart();
+  const { product } = useProductBuyNow();
+  const itemsPrices = buyNow
+    ? (product?.product.price || 0) * (product?.count || 1) + 5
+    : productCards.reduce((acc, item) => acc + item.product.price * item.count, 0);
   const handleCheckout = async () => {
     const {
       data: { user },
@@ -22,19 +29,20 @@ const OrderSummary: FC<Props> = (props) => {
       return toast.close('User not found');
     }
 
-    const total = productCards.reduce((acc, item) => acc + item.product.price * item.count, 0);
-
     const { data: order, error: orderError } = await orderService.createOrder({
       user_id: user.id,
       items_length: productCards.length,
-      total,
+      total: itemsPrices,
     });
 
     if (orderError || !order) {
       return toast.close(orderError?.message || 'Failed to create order');
     }
 
-    const { error: itemsError } = await cartItemService.createItems(productCards, order.id);
+    const { error: itemsError } = await cartItemService.createItems(
+      buyNow ? [product!] : productCards,
+      order.id,
+    );
 
     if (itemsError) {
       return toast.close(itemsError.message);
@@ -45,7 +53,7 @@ const OrderSummary: FC<Props> = (props) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: productCards,
+        items: buyNow ? [product] : productCards,
         order,
       }),
     });
@@ -63,22 +71,18 @@ const OrderSummary: FC<Props> = (props) => {
         <h1 className="font-bold text-3xl">Order Summary</h1>
         <div className="py-5 space-y-3">
           <div className="flex  justify-between">
-            <p>Items ({productCards.length})</p>
-            <p className="font-semibold">
-              ${productCards.reduce((acc, item) => acc + item.product.price * item.count, 0)}
-            </p>
+            <p>Items ({buyNow ? 1 : productCards.length})</p>
+            <p className="font-semibold">${itemsPrices - 5}</p>
           </div>
           <div className="flex  justify-between">
             <p>Shipping </p>
-            <p className="font-semibold">$0</p>
+            <p className="font-semibold">${itemsPrices > 500 ? 0 : 5}</p>
           </div>
         </div>
         <div className="">
           <div className="flex border-t pt-5 justify-between">
             <p className="font-semibold">Total</p>
-            <p className="font-semibold">
-              ${productCards.reduce((acc, item) => acc + item.product.price * item.count, 0) + 0}
-            </p>
+            <p className="font-semibold">${itemsPrices}</p>
           </div>
           <Button onClick={handleCheckout} size="lg" className="w-full mt-5 text-xl py-7">
             Checkout

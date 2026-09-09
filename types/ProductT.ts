@@ -5,6 +5,7 @@ import { UserT } from './UserT';
 export type ProductT = {
   id: string;
   name: string;
+  description: string;
   category: CategoryT[number];
   price: number;
   rating: string;
@@ -23,10 +24,11 @@ export interface ProductCreateT extends ProductFormCreateT {
 export interface ProductFormCreateT {
   name: string;
   category: CategoryT[number] | null;
+  description: string;
 
   brand: BrandT[number] | null;
-  price: number;
-  count: number;
+  price?: number;
+  count?: number;
 }
 export interface ProductUpdateT extends Partial<Omit<ProductCreateT, 'seller'>> {
   id: string;

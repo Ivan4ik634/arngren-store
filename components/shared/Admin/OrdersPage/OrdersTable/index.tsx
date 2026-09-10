@@ -17,15 +17,19 @@ import { FC } from 'react';
 
 interface Props {
   data: OrderWithUserT[] | null | undefined;
+  idsChecked: string[];
+  allChecked: boolean;
+  handleCheckAll: () => void;
+  handleCheck: (id: string) => void;
 }
 
-const OrdersTable: FC<Props> = ({ data }) => {
+const OrdersTable: FC<Props> = ({ data, idsChecked, allChecked, handleCheckAll, handleCheck }) => {
   return (
     <Table className="mt-5">
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px] ">
-            <Checkbox />
+            <Checkbox checked={allChecked} onCheckedChange={handleCheckAll} />
           </TableHead>
           <TableHead>Order ID</TableHead>
           <TableHead>Customer</TableHead>
@@ -40,7 +44,10 @@ const OrdersTable: FC<Props> = ({ data }) => {
         {data?.map((data) => (
           <TableRow key={data.id}>
             <TableHead className="w-[50px] ">
-              <Checkbox />
+              <Checkbox
+                checked={idsChecked.includes(data.id)}
+                onCheckedChange={() => handleCheck(data.id)}
+              />
             </TableHead>
             <TableCell className="font-medium">{data.order_id}</TableCell>
             <TableCell>

@@ -6,11 +6,11 @@ import { FC } from 'react';
 import CardStats from '../../ui/CardStats';
 
 interface Props {
-  applications: ApplicationWithProductT[];
+  applications: ApplicationWithProductT[] | undefined;
 }
 
 const ApplicationsStats: FC<Props> = (props) => {
-  return <CardStats data={getApplicationsStats(props.applications)} />;
+  return <CardStats data={getApplicationsStats(props.applications ?? [])} />;
 };
 
 export default ApplicationsStats;

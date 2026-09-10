@@ -13,26 +13,23 @@ import {
 import { UserT } from '@/types/UserT';
 import dayjs from 'dayjs';
 import { EllipsisVertical } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 interface Props {
   users: UserT[] | undefined | null;
+  idsChecked: string[];
+  allChecked: boolean;
+  handleCheckAll: () => void;
+  handleCheck: (id: string) => void;
 }
 
-const CustomersTable: FC<Props> = ({ users }) => {
-  const [idsChecked, setIdsChecked] = useState<string[]>([]);
-
-  const allChecked = (users?.length || 0) > 0 && idsChecked.length === users?.length;
-
-  const handleCheckAll = () => {
-    setIdsChecked((prev) => (allChecked ? [] : users?.map((user) => user.id) || []));
-  };
-
-  const handleCheck = (id: string) => {
-    setIdsChecked((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
-  };
+const CustomersTable: FC<Props> = ({
+  users,
+  allChecked,
+  idsChecked,
+  handleCheckAll,
+  handleCheck,
+}) => {
   return (
     <Table className="mt-5">
       <TableHeader>

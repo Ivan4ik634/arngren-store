@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
-import { ApplicationCreateT } from '@/types/ApplicationT';
+import { ApplicationCreateT, ApplicationWithProductT } from '@/types/ApplicationT';
 import { FiltersT } from '@/types/FiltersT';
 
 export const applicationService = {
@@ -7,7 +7,7 @@ export const applicationService = {
     const res = await supabase.from('applications').insert({ ...data });
     return res;
   },
-  async getApplications(filters?: FiltersT) {
+  async getApplications(filters?: FiltersT): Promise<ApplicationWithProductT[]> {
     let query = supabase.from('applications').select(
       `
       id,
@@ -37,7 +37,7 @@ export const applicationService = {
       query = query.ilike('product_id.name', `%${filters.search}%`);
     }
 
-    return await query;
+    return (await query).data as any as ApplicationWithProductT[];
   },
   async editApplication(id: string, status: 'approved' | 'rejected') {
     await supabase.from('products').update({ application: true }).eq('id', id);

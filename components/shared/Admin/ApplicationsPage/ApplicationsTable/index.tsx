@@ -17,23 +17,36 @@ import { Check, Eye, X } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
-  applications: ApplicationWithProductT[];
-  setApplications: Dispatch<SetStateAction<ApplicationWithProductT[]>>;
+  applications: ApplicationWithProductT[] | undefined;
+  setApplications: Dispatch<SetStateAction<ApplicationWithProductT[] | undefined>>;
+  idsChecked: string[];
+  allChecked: boolean;
+  handleCheckAll: () => void;
+  handleCheck: (id: string) => void;
 }
 
-const ApplicationsTable: FC<Props> = ({ applications, setApplications }) => {
+const ApplicationsTable: FC<Props> = ({
+  applications,
+  setApplications,
+  idsChecked,
+  allChecked,
+  handleCheckAll,
+  handleCheck,
+}) => {
   const handleReject = async (application: ApplicationWithProductT) => {
     await applicationService.editApplication(application.product_id.id, 'rejected');
+    setApplications((prev) => [...prev!, { ...application, status: 'rejected' }]);
   };
   const handleApprove = async (application: ApplicationWithProductT) => {
     await applicationService.editApplication(application.product_id.id, 'approved');
+    setApplications((prev) => [...prev!, { ...application, status: 'approved' }]);
   };
   return (
     <Table className="mt-5">
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px] ">
-            <Checkbox />
+            <Checkbox checked={allChecked} onCheckedChange={handleCheckAll} />
           </TableHead>
           <TableHead>Product</TableHead>
           <TableHead>Seller</TableHead>
@@ -44,10 +57,13 @@ const ApplicationsTable: FC<Props> = ({ applications, setApplications }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {applications.map((application) => (
+        {applications?.map((application) => (
           <TableRow key={application.id}>
             <TableHead className="w-[50px] ">
-              <Checkbox />
+              <Checkbox
+                checked={idsChecked.includes(application.id)}
+                onCheckedChange={() => handleCheck(application.id)}
+              />
             </TableHead>
             <TableCell className="font-medium flex">
               <img

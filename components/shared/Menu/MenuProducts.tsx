@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { categoryFilters } from '@/data/Catogeries';
 import { useProfile } from '@/hooks/useProfile';
 import { useFilters } from '@/store/useFilters';
 import { useProductCart } from '@/store/useProductCart';
@@ -15,7 +16,6 @@ import { ProductT } from '@/types/ProductT';
 import { ShoppingCart } from 'lucide-react';
 import { FC } from 'react';
 import ProductCard from '../ProductCard';
-import { categoryFilters } from './data';
 
 interface Props {
   products: ProductT[] | undefined;
@@ -38,12 +38,12 @@ const MenuProducts: FC<Props> = ({ products }) => {
                 onClick={() =>
                   setFilters({
                     ...filters,
-                    categories: [category],
+                    categories: [category.value],
                   })
                 }
-                key={category}
-                variant={filters.categories.includes(category) ? 'default' : 'outline'}>
-                {category}
+                key={category.value}
+                variant={filters.categories.includes(category.value) ? 'default' : 'outline'}>
+                {category.label}
               </Button>
             ))}
 

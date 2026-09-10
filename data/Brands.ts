@@ -1,0 +1,138 @@
+export const brandFilters = [
+  // Electronics
+  { value: 'apple', label: 'Apple' },
+  { value: 'samsung', label: 'Samsung' },
+  { value: 'sony', label: 'Sony' },
+  { value: 'lg', label: 'LG' },
+  { value: 'xiaomi', label: 'Xiaomi' },
+  { value: 'huawei', label: 'Huawei' },
+  { value: 'google', label: 'Google' },
+  { value: 'oneplus', label: 'OnePlus' },
+  { value: 'motorola', label: 'Motorola' },
+  { value: 'nokia', label: 'Nokia' },
+  { value: 'asus', label: 'ASUS' },
+  { value: 'acer', label: 'Acer' },
+  { value: 'lenovo', label: 'Lenovo' },
+  { value: 'dell', label: 'Dell' },
+  { value: 'hp', label: 'HP' },
+  { value: 'msi', label: 'MSI' },
+  { value: 'microsoft', label: 'Microsoft' },
+
+  // PC & Gaming
+  { value: 'nvidia', label: 'NVIDIA' },
+  { value: 'amd', label: 'AMD' },
+  { value: 'intel', label: 'Intel' },
+  { value: 'razer', label: 'Razer' },
+  { value: 'logitech', label: 'Logitech' },
+  { value: 'corsair', label: 'Corsair' },
+  { value: 'steelseries', label: 'SteelSeries' },
+  { value: 'hyperx', label: 'HyperX' },
+  { value: 'thrustmaster', label: 'Thrustmaster' },
+  { value: 'elgato', label: 'Elgato' },
+
+  // Audio
+  { value: 'jbl', label: 'JBL' },
+  { value: 'bose', label: 'Bose' },
+  { value: 'sennheiser', label: 'Sennheiser' },
+  { value: 'audio-technica', label: 'Audio-Technica' },
+  { value: 'marshall', label: 'Marshall' },
+  { value: 'beats', label: 'Beats' },
+  { value: 'soundcore', label: 'Soundcore' },
+
+  // Cameras
+  { value: 'canon', label: 'Canon' },
+  { value: 'nikon', label: 'Nikon' },
+  { value: 'fujifilm', label: 'Fujifilm' },
+  { value: 'gopro', label: 'GoPro' },
+  { value: 'dji', label: 'DJI' },
+  { value: 'insta360', label: 'Insta360' },
+
+  // Home appliances
+  { value: 'philips', label: 'Philips' },
+  { value: 'dyson', label: 'Dyson' },
+  { value: 'bosch', label: 'Bosch' },
+  { value: 'electrolux', label: 'Electrolux' },
+  { value: 'whirlpool', label: 'Whirlpool' },
+  { value: 'beko', label: 'Beko' },
+  { value: 'panasonic', label: 'Panasonic' },
+  { value: 'miele', label: 'Miele' },
+  { value: 'braun', label: 'Braun' },
+  { value: 'tefal', label: 'Tefal' },
+  { value: 'kenwood', label: 'Kenwood' },
+  { value: 'delonghi', label: 'DeLonghi' },
+  { value: 'karcher', label: 'Kärcher' },
+
+  // Tools
+  { value: 'makita', label: 'Makita' },
+  { value: 'dewalt', label: 'DeWalt' },
+  { value: 'milwaukee', label: 'Milwaukee' },
+  { value: 'stanley', label: 'Stanley' },
+  { value: 'black-decker', label: 'Black+Decker' },
+  { value: 'metabo', label: 'Metabo' },
+  { value: 'festool', label: 'Festool' },
+  { value: 'hilti', label: 'Hilti' },
+  { value: 'einhell', label: 'Einhell' },
+  { value: 'ryobi', label: 'Ryobi' },
+
+  // Sports
+  { value: 'nike', label: 'Nike' },
+  { value: 'adidas', label: 'Adidas' },
+  { value: 'puma', label: 'Puma' },
+  { value: 'reebok', label: 'Reebok' },
+  { value: 'new-balance', label: 'New Balance' },
+  { value: 'under-armour', label: 'Under Armour' },
+  { value: 'asics', label: 'ASICS' },
+  { value: 'wilson', label: 'Wilson' },
+  { value: 'spalding', label: 'Spalding' },
+  { value: 'yonex', label: 'Yonex' },
+  { value: 'salomon', label: 'Salomon' },
+  { value: 'garmin', label: 'Garmin' },
+
+  // Toys
+  { value: 'lego', label: 'LEGO' },
+  { value: 'mattel', label: 'Mattel' },
+  { value: 'hasbro', label: 'Hasbro' },
+  { value: 'nerf', label: 'Nerf' },
+  { value: 'hot-wheels', label: 'Hot Wheels' },
+  { value: 'fisher-price', label: 'Fisher-Price' },
+  { value: 'playmobil', label: 'Playmobil' },
+
+  // Automotive
+  { value: 'bosch-automotive', label: 'Bosch Automotive' },
+  { value: 'michelin', label: 'Michelin' },
+  { value: 'continental', label: 'Continental' },
+  { value: 'bridgestone', label: 'Bridgestone' },
+  { value: 'castrol', label: 'Castrol' },
+  { value: 'shell', label: 'Shell' },
+  { value: 'mobil-1', label: 'Mobil 1' },
+  { value: 'mann-filter', label: 'MANN-FILTER' },
+  { value: 'ngk', label: 'NGK' },
+  { value: 'philips-automotive', label: 'Philips Automotive' },
+
+  // Furniture & Home
+  { value: 'ikea', label: 'IKEA' },
+  { value: 'jysk', label: 'JYSK' },
+  { value: 'tupperware', label: 'Tupperware' },
+  { value: 'curver', label: 'Curver' },
+
+  // Watches
+  { value: 'casio', label: 'Casio' },
+  { value: 'seiko', label: 'Seiko' },
+  { value: 'citizen', label: 'Citizen' },
+  { value: 'tissot', label: 'Tissot' },
+  { value: 'orient', label: 'Orient' },
+
+  // Other popular marketplace brands
+  { value: 'anker', label: 'Anker' },
+  { value: 'belkin', label: 'Belkin' },
+  { value: 'ugreen', label: 'UGREEN' },
+  { value: 'baseus', label: 'Baseus' },
+  { value: 'tp-link', label: 'TP-Link' },
+  { value: 'd-link', label: 'D-Link' },
+  { value: 'western-digital', label: 'Western Digital' },
+  { value: 'seagate', label: 'Seagate' },
+  { value: 'sandisk', label: 'SanDisk' },
+  { value: 'kingston', label: 'Kingston' },
+
+  { value: 'other', label: 'Other' },
+];

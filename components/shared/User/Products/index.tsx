@@ -1,10 +1,10 @@
 'use client';
 
-import { toast } from '@/components/ui/toast';
-import { supabase } from '@/lib/supabase/client';
+import { useProfile } from '@/hooks/useProfile';
 import { productService } from '@/services/Product.service';
-import { ProductT } from '@/types/ProductT';
-import { FC, useEffect, useState } from 'react';
+import { FiltersProductT } from '@/types/FiltersT';
+import { useQuery } from '@tanstack/react-query';
+import { FC, useState } from 'react';
 import ProductCard from '../../ProductCard';
 import DialogAddProduct from './DialogAddProduct';
 import UserProductsFilters from './UserProductsFilters';
@@ -12,24 +12,17 @@ import UserProductsFilters from './UserProductsFilters';
 interface Props {}
 
 const UserProductsPage: FC<Props> = (props) => {
-  const [products, setProducts] = useState<ProductT[]>([]);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-
-      if (!user) return toast.close(error?.message);
-
-      const res = await productService.getUserProducts(user.id);
-
-      setProducts(res.data as ProductT[]);
-    };
-
-    getProducts();
-  }, []);
+  const [filters, setFilters] = useState<FiltersProductT>({
+    search: '',
+    category: 'all',
+    availability: 'all',
+  });
+  const { profile } = useProfile();
+  const { data } = useQuery({
+    queryKey: ['products', filters],
+    queryFn: () => productService.getUserProducts(profile?.id || '', filters),
+    enabled: !!profile,
+  });
 
   return (
     <div>
@@ -40,10 +33,10 @@ const UserProductsPage: FC<Props> = (props) => {
         </div>
         <DialogAddProduct />
       </div>
-      <UserProductsFilters />
+      <UserProductsFilters filters={filters} setFilters={setFilters} />
       <div className="mt-5 grid grid-cols-4 gap-5">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {data?.map((product) => (
+          <ProductCard profile={profile} key={product.id} product={product} />
         ))}
       </div>
     </div>

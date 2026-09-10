@@ -18,7 +18,7 @@ export const wishlistService = {
       query = query.eq('product_id.count', 0);
     }
     const res = await query;
-    return { ...res, data: res.data as any as WishlistWithProductT[] };
+    return res.data?.filter((item) => item.product_id) as any as WishlistWithProductT[];
   },
   async getWishlist(user_id: string, id: string) {
     let query = supabase

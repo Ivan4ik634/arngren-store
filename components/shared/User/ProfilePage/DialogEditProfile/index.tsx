@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/toast';
-import { useUploadImage } from '@/hooks/useUploadImages';
+import { useUploadImages } from '@/hooks/useUploadImages';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
 import { useProfileStore } from '@/store/useProfileStore';
@@ -25,10 +25,10 @@ interface Props {
 }
 
 const DialogEditProfile: FC<Props> = ({ profile }) => {
-  const { ref, handleImageUpload } = useUploadImage({
-    init: profile?.avatar,
+  const { ref, handleImagesUpload } = useUploadImages({
+    init: [profile?.avatar || ''],
     action: (url) => {
-      setValue('avatar', url);
+      setValue('avatar', url[0]);
     },
   });
   const { setProfileStore } = useProfileStore();
@@ -92,7 +92,13 @@ const DialogEditProfile: FC<Props> = ({ profile }) => {
               <AvatarFallback>{name?.[0]?.toUpperCase()}</AvatarFallback>
               <AvatarImage src={avatar} />
             </Avatar>
-            <input type="file" ref={ref} className="hidden" onChange={handleImageUpload} />
+            <input
+              type="file"
+              ref={ref}
+              className="hidden"
+              onChange={handleImagesUpload}
+              accept="image/*"
+            />
             <div className="ml-3 w-full gap-y-3 flex flex-col">
               <p>Name</p>
               <Input

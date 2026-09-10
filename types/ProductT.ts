@@ -1,16 +1,14 @@
-import { BrandT } from './BrandT';
-import { CategoryT } from './CategoryT';
 import { UserT } from './UserT';
 
 export type ProductT = {
   id: string;
   name: string;
   description: string;
-  category: CategoryT[number];
+  category: string;
   price: number;
   rating: string;
   count: number;
-  brand: BrandT[number];
+  brand: string;
   reviews: string;
   application: boolean;
   seller: UserT;
@@ -23,10 +21,10 @@ export interface ProductCreateT extends ProductFormCreateT {
 }
 export interface ProductFormCreateT {
   name: string;
-  category: CategoryT[number] | null;
+  category: string | null;
   description: string;
 
-  brand: BrandT[number] | null;
+  brand: string | null;
   price?: number;
   count?: number;
 }

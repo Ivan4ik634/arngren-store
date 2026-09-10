@@ -1,19 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import SearchInput from '@/components/ui/SearchInput';
+import SelectFilter from '@/components/ui/SelectFilter';
+import { statusFilters } from '@/data/Status';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { Download } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
-import SearchInput from '../../../../ui/SearchInput';
-import SelectFilter, { SelectFilterOptionT } from '../../../../ui/SelectFilter';
-
-const statusOptions: SelectFilterOptionT[] = [
-  { label: 'All', value: 'all' },
-  { label: 'Pending', value: 'pending' },
-  { label: 'Processing', value: 'processing' },
-  { label: 'Completed', value: 'completed' },
-  { label: 'Cancelled', value: 'cancelled' },
-];
 
 interface Props {
   filters: FilterOrdersT;
@@ -33,7 +26,7 @@ const OrdersFilters: FC<Props> = ({ filters, setFilters }) => {
           value={filters.status}
           onChange={(value) => setFilters({ ...filters, status: value! })}
           label="Status"
-          options={statusOptions}
+          options={statusFilters}
         />
       </div>
       <Button variant="outline">

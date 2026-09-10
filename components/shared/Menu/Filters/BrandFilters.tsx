@@ -2,21 +2,26 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { brandFilters } from '@/data/Brands';
 import { useSearch } from '@/hooks/useSearch';
 import { useFilters } from '@/store/useFilters';
 import { useOpenFilters } from '@/store/useOpenFilters';
-import { ChevronDownIcon } from 'lucide-react';
-import { FC } from 'react';
-import { brands } from '../data';
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { FC, useState } from 'react';
 
 interface Props {}
 
 const BrandFilters: FC<Props> = (props) => {
   const { filters, setFilters } = useFilters();
+  const [showMore, setShowMore] = useState(false);
   const { openFilters, setOpenFilters } = useOpenFilters();
-  const { query, setQuery, filteredItems } = useSearch<string>(brands, (item, query) =>
-    item.toLowerCase().includes(query),
+  const { query, setQuery, filteredItems } = useSearch<{ label: string; value: string }>(
+    brandFilters,
+    (item, query) => item.label.toLowerCase().includes(query),
   );
+
+  const items = showMore ? filteredItems : filteredItems?.slice(0, 8);
+
   return (
     <div className="flex flex-col w-full mt-8 ">
       <div className="flex w-full  items-center justify-between">
@@ -42,28 +47,43 @@ const BrandFilters: FC<Props> = (props) => {
             placeholder="Search brand..."
             className="h-8 border-zinc-300 pl-3 pr-3 text-sm shadow-sm"
           />
-          {filteredItems.map((brand) => (
-            <div key={brand} className="flex items-center gap-2">
+          {items?.map((brand) => (
+            <div key={brand.value} className="flex items-center gap-2">
               <Checkbox
-                id={brand}
-                checked={filters.brand.includes(brand)}
+                id={brand.value}
+                checked={filters.brand.includes(brand.value)}
                 onCheckedChange={(checked) => {
                   setFilters({
                     ...filters,
                     brand: checked
-                      ? [...filters.brand, brand]
-                      : filters.brand.filter((b) => b !== brand),
+                      ? [...filters.brand, brand.value]
+                      : filters.brand.filter((b) => b !== brand.value),
                   });
                 }}
               />
-              <label htmlFor={brand} className="text-sm text-zinc-600">
-                {brand}
+              <label htmlFor={brand.value} className="text-sm text-zinc-600">
+                {brand.label}
               </label>
             </div>
           ))}
-          <div className="flex  items-center cursor-pointer gap-2 text-sm text-primary">
-            <p className=" ">Show more</p>
-            <ChevronDownIcon className="size-4 " />
+          <div
+            onClick={() => setShowMore((prev) => !prev)}
+            className="flex  items-center cursor-pointer gap-2 text-sm text-primary">
+            {(filteredItems?.length || 0) > 8 ? (
+              !showMore ? (
+                <>
+                  <p className=" ">Show more</p>
+                  <ChevronDownIcon className="size-4 " />
+                </>
+              ) : (
+                <>
+                  <p className=" ">Show less</p>
+                  <ChevronUpIcon className="size-4" />
+                </>
+              )
+            ) : (
+              ''
+            )}
           </div>
         </div>
       )}

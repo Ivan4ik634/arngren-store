@@ -9,9 +9,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
+import SelectFilter from '@/components/ui/SelectFilter';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/toast';
+import { brandFilters } from '@/data/Brands';
+import { categoryFilters } from '@/data/Catogeries';
 import { useUploadImages } from '@/hooks/useUploadImages';
 import { supabase } from '@/lib/supabase/client';
 import { applicationService } from '@/services/Application.service';
@@ -126,6 +128,7 @@ const DialogAddProduct: FC<Props> = (props) => {
             placeholder="Product name..."
           />
           <Textarea
+            className="resize-none h-[100px]"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             placeholder="Product description..."
@@ -136,29 +139,17 @@ const DialogAddProduct: FC<Props> = (props) => {
             placeholder="Price..."
           />
           <div className="flex gap-x-5">
-            <Select
-              value={form.category}
-              onValueChange={(value) => setForm({ ...form, category: value })}>
-              <SelectTrigger>
-                <span className="text-muted-foreground">Category</span>
-              </SelectTrigger>
+            <SelectFilter
+              options={categoryFilters}
+              label="Category"
+              onChange={(e) => setForm({ ...form, category: e })}
+            />
+            <SelectFilter
+              options={brandFilters}
+              onChange={(e) => setForm({ ...form, brand: e })}
+              label="Brands"
+            />
 
-              <SelectContent>
-                <SelectItem value="Sport">Sport</SelectItem>
-                <SelectItem value="Technology">Technology</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select
-              value={form.brand}
-              onValueChange={(value) => setForm({ ...form, brand: value })}>
-              <SelectTrigger>
-                <span className="text-muted-foreground">Brand</span>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Other">Other</SelectItem>
-                <SelectItem value="Samsung">Samsung</SelectItem>
-              </SelectContent>
-            </Select>
             <Input
               value={form.count}
               onChange={(e) => setForm({ ...form, count: Number(e.target.value) })}

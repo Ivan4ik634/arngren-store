@@ -1,11 +1,11 @@
 'use client';
 
 import { Checkbox } from '@/components/ui/checkbox';
+import { categoryFilters } from '@/data/Catogeries';
 import { useFilters } from '@/store/useFilters';
 import { useOpenFilters } from '@/store/useOpenFilters';
 import { ChevronDownIcon } from 'lucide-react';
 import { FC } from 'react';
-import { categoryFilters } from '../data';
 
 interface Props {}
 
@@ -42,16 +42,16 @@ const CategoryFilters: FC<Props> = (props) => {
       {!openFilters.category && (
         <div className="flex flex-col gap-3 my-3 ">
           {categoryFilters.map((category) => (
-            <div key={category} className="flex items-center gap-2">
+            <div key={category.value} className="flex items-center gap-2">
               <Checkbox
-                id={category}
-                checked={filters.categories.includes(category)}
+                id={category.value}
+                checked={filters.categories.includes(category.value)}
                 onCheckedChange={(checked) => {
-                  handleCategoryChange(category, checked);
+                  handleCategoryChange(category.value, checked);
                 }}
               />
-              <label htmlFor={category} className="text-sm text-zinc-600">
-                {category}
+              <label htmlFor={category.value} className="text-sm text-zinc-600">
+                {category.label}
               </label>
             </div>
           ))}

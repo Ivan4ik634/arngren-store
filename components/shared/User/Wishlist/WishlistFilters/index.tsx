@@ -2,6 +2,8 @@
 
 import SearchInput from '@/components/ui/SearchInput';
 import SelectFilter from '@/components/ui/SelectFilter';
+import { availabilityFilters } from '@/data/Availability';
+import { categoryFilters } from '@/data/Catogeries';
 import { FiltersProductT } from '@/types/FiltersT';
 import { FC } from 'react';
 
@@ -10,23 +12,25 @@ interface Props {
   setFilters: React.Dispatch<React.SetStateAction<FiltersProductT>>;
 }
 
-const categoryOptions = [
-  { label: 'All', value: 'all' },
-  { label: 'Sport', value: 'sport' },
-  { label: 'Technology', value: 'technology' },
-];
-
-const availabilityOptions = [
-  { label: 'All', value: 'all' },
-  { label: 'Out of stock', value: 'out-of-stock' },
-  { label: 'In stock', value: 'in-stock' },
-];
-const WishlistFilters: FC<Props> = (props) => {
+const WishlistFilters: FC<Props> = ({ filters, setFilters }) => {
   return (
     <div className="flex gap-x-5 mt-5 items-center">
-      <SearchInput />
-      <SelectFilter options={categoryOptions} label="Category" />
-      <SelectFilter options={availabilityOptions} label="Availability" />
+      <SearchInput
+        value={filters.search}
+        onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+      />
+      <SelectFilter
+        value={filters.category}
+        onChange={(value) => setFilters({ ...filters, category: value! })}
+        options={categoryFilters}
+        label="Category"
+      />
+      <SelectFilter
+        value={filters.availability}
+        onChange={(value) => setFilters({ ...filters, availability: value! })}
+        options={availabilityFilters}
+        label="Availability"
+      />
     </div>
   );
 };

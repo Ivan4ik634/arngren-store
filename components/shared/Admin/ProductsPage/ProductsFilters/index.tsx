@@ -1,22 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import SearchInput from '@/components/ui/SearchInput';
+import SelectFilter from '@/components/ui/SelectFilter';
+import { availabilityFilters } from '@/data/Availability';
+import { categoryFilters } from '@/data/Catogeries';
 import { FiltersProductT } from '@/types/FiltersT';
 import { Download } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
-import SearchInput from '../../../../ui/SearchInput';
-import SelectFilter, { SelectFilterOptionT } from '../../../../ui/SelectFilter';
-
-const availabilityOptions: SelectFilterOptionT[] = [
-  { label: 'All', value: 'all' },
-  { label: 'In stock', value: 'in-stock' },
-  { label: 'Out of stock', value: 'out-of-stock' },
-];
-const categoreyOptions: SelectFilterOptionT[] = [
-  { label: 'All', value: 'all' },
-  { label: 'Sport', value: 'sport' },
-  { label: 'Technology', value: 'technology' },
-];
 
 interface Props {
   setFilters: Dispatch<SetStateAction<FiltersProductT>>;
@@ -35,13 +26,13 @@ const ProductsFilters: FC<Props> = ({ filters, setFilters }) => {
           value={filters.availability}
           onChange={(value) => setFilters({ ...filters, availability: value! })}
           label="Availability"
-          options={availabilityOptions}
+          options={availabilityFilters}
         />
         <SelectFilter
           value={filters.category}
           onChange={(value) => setFilters({ ...filters, category: value! })}
           label="Category"
-          options={categoreyOptions}
+          options={categoryFilters}
         />
       </div>
       <Button variant="outline">

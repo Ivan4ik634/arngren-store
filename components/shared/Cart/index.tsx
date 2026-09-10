@@ -18,11 +18,13 @@ const CartPage: FC<Props> = (props) => {
 
   const { clearProductsCard, productCards } = useProductCart();
   const { product, setProduct } = useProductBuyNow();
+
   useEffect(() => {
     if (search.get('buyNow') === 'true') {
       setBuyNow(true);
     }
   }, [search]);
+
   return (
     <main className="bg-white">
       <div className="mb-6 flex items-center gap-2 text-sm font-medium text-zinc-500">

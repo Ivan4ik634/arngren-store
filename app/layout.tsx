@@ -35,9 +35,11 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         'font-sans',
         inter.variable,
       )}>
-      <body className="min-h-full flex flex-col">
-        <Header />
-        <QueryProvider> {children}</QueryProvider>
+      <body className="min-h-full  flex flex-col">
+        <QueryProvider>
+          <Header />
+          {children}
+        </QueryProvider>
         <Toaster />
       </body>
     </html>

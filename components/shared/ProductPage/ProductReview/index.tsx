@@ -2,11 +2,12 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { reviewService } from '@/services/Review.service';
+import { useReviews } from '@/store/useReviews';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import DialogAddReview from './DialogAddReview';
 
 interface Props {}
@@ -18,6 +19,10 @@ const ProductReview: FC<Props> = (props) => {
     queryFn: () => reviewService.getAll(id),
     enabled: !!id,
   });
+  const { setReviews, reviews } = useReviews();
+  useEffect(() => {
+    if (data) setReviews(data);
+  }, [data]);
   return (
     <div>
       <div className="flex justify-between">
@@ -32,24 +37,26 @@ const ProductReview: FC<Props> = (props) => {
         <DialogAddReview />
       </div>
       <div className="flex flex-col mt-10 gap-y-5">
-        {data?.map((review) => (
+        {reviews?.map((review) => (
           <div className="flex gap-x-5">
             <Avatar size="lg">
               <AvatarFallback>{review.user_id.name[0]}</AvatarFallback>
               <AvatarImage src={review.user_id.avatar} />
             </Avatar>
-            <div>
+            <div className="space-y-2">
               <div className="flex gap-x-5">
-                <p>{review.user_id.name}</p>
-                <div className="flex items-center">
-                  {Array(review.rating)
-                    .fill(0)
-                    .map((_, index) => (
-                      <Star key={index} className="size-4 fill-[#0969ff] text-[#0969ff]" />
-                    ))}
-                </div>
+                <p className="font-bold">{review.user_id.name}</p>
+
                 <p>{dayjs(review.created_at).format('MMM DD YYYY')}</p>
               </div>
+              <div className="flex items-center">
+                {Array(review.rating)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Star key={index} className="size-4 fill-[#0969ff] text-[#0969ff]" />
+                  ))}
+              </div>
+
               <p>Review</p>
             </div>
           </div>

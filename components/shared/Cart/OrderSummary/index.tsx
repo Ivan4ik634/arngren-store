@@ -31,7 +31,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
 
     const { data: order, error: orderError } = await orderService.createOrder({
       user_id: user.id,
-      items_length: productCards.length,
+      items_length: buyNow ? 1 : productCards.length,
       total: itemsPrices,
     });
 

@@ -12,9 +12,26 @@ export const productService = {
     return res;
   },
 
-  async getUserProducts(id: string) {
-    const res = await supabase.from('products').select('*').eq('seller', id);
-    return res;
+  async getUserProducts(id: string, filters?: FiltersProductT): Promise<ProductT[] | null> {
+    let query = supabase.from('products').select('*').eq('seller', id);
+    if (filters?.search) {
+      query = query.ilike('name', `%${filters?.search}%`);
+    }
+
+    if (filters?.category && filters?.category !== 'all') {
+      query = query.eq('category', filters?.category);
+    }
+
+    if (filters?.availability === 'in-stock') {
+      query = query.gt('count', 0);
+    }
+
+    if (filters?.availability === 'out-of-stock') {
+      query = query.eq('count', 0);
+    }
+
+    const res = await query;
+    return res.data;
   },
   async getProducts(filters?: FiltersProductT): Promise<any> {
     let query = supabase

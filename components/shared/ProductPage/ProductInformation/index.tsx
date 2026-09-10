@@ -1,11 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { PAGES } from '@/configs/PAGES';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { ProductT } from '@/types/ProductT';
 import { Minus, Plus, Star } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
 interface Props {
@@ -16,17 +17,23 @@ const ProductInformation: FC<Props> = ({ product }) => {
   const [count, setCount] = useState(1);
   const { addProductCard } = useProductCart();
   const { setProduct } = useProductBuyNow();
+  const router = useRouter();
+
+  const handleBuynow = () => {
+    setProduct({ product, count });
+    router.push(PAGES.CART + '?buyNow=true');
+  };
   return (
     <div className="flex gap-y-[50px] gap-x-[25px]">
-      <div className="w-[600px] h-full">
+      <div className="aspect-square h-[600px]">
         <img className="w-full aspect-square rounded-[5px]" src={product.images[0]} />
-        <div className="gap-5 grid grid-cols-4">
+        <div className="gap-5 grid mt-5 grid-cols-4">
           {product.images.slice(1).map((image, index) => (
             <img key={index} className="w-full aspect-square rounded-[5px]" src={image} />
           ))}
         </div>
       </div>
-      <div className="w-full h-[600px] flex flex-col space-y-4">
+      <div className="w-full h-[750px] flex flex-col space-y-4">
         <div className="space-y-5">
           <h3 className="text-2xl font-bold">{product.name}</h3>
           <p className=" ">{product.description}</p>
@@ -62,14 +69,9 @@ const ProductInformation: FC<Props> = ({ product }) => {
               Add to Cart
             </Button>
 
-            <Link href="/cart?buynow=true">
-              <Button
-                onClick={() => setProduct({ product, count })}
-                variant="outline"
-                className="text-[16px] w-full py-8">
-                Buy Now
-              </Button>
-            </Link>
+            <Button variant="outline" onClick={handleBuynow} className="text-[16px] w-full py-8">
+              Buy Now
+            </Button>
           </div>
         </div>
       </div>

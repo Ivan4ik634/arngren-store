@@ -46,7 +46,7 @@ export function MenuPage() {
     : [];
 
   return (
-    <main className="bg-white">
+    <main className="">
       <div className="mb-6 flex items-center gap-2 text-sm font-medium text-zinc-500">
         <span>Home</span>
         <ChevronRight className="size-4" />

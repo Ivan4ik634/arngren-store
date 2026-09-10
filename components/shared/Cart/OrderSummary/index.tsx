@@ -28,11 +28,12 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
     if (!user?.id) {
       return toast.close('User not found');
     }
-
+    const orderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
     const { data: order, error: orderError } = await orderService.createOrder({
       user_id: user.id,
       items_length: buyNow ? 1 : productCards.length,
       total: itemsPrices,
+      order_id: orderNumber,
     });
 
     if (orderError || !order) {

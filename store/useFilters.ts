@@ -1,29 +1,22 @@
+import { FiltersMenuT } from '@/types/FiltersT';
 import { create } from 'zustand';
 
 type Filters = {
-  filters: {
-    categories: string[];
-    priceRange: [number, number];
-    availability: [boolean, boolean];
-    brand: string[];
-    sortBy: 'Price: Low to High' | 'Price: High to Low' | 'Rating';
-  };
-  setFilters: (value: {
-    categories: string[];
-    priceRange: [number, number];
-    availability: [boolean, boolean];
-    brand: string[];
-    sortBy: 'Price: Low to High' | 'Price: High to Low' | 'Rating';
-  }) => void;
+  filters: FiltersMenuT;
+  setFilters: (value: FiltersMenuT | ((prev: FiltersMenuT) => FiltersMenuT)) => void;
 };
 
 export const useFilters = create<Filters>((set) => ({
   filters: {
-    categories: ['All Categories'],
-    priceRange: [0, 1000],
+    search: '',
+    categories: ['all'],
+    priceRange: [0, 100],
     availability: [true, true],
     brand: [],
     sortBy: 'Price: Low to High',
   },
-  setFilters: (value) => set({ filters: value }),
+  setFilters: (value) =>
+    set((state) => ({
+      filters: typeof value === 'function' ? value(state.filters) : value,
+    })),
 }));

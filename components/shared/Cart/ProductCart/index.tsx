@@ -16,7 +16,7 @@ const ProductCart: FC<Props> = ({ product, count }) => {
   return (
     <div className="grid border-b py-8 items-center  gap-x-10 grid-cols-[minmax(400px,1fr)_100px_120px_100px_20px]">
       <div className="flex items-center">
-        <img src={product.images[0]} className="w-[100px] aspect-video" />
+        <img src={product.images[0]} className="w-[100px] aspect-square object-cover" />
         <div className="ml-5 space-y-2">
           <h3 className="text-base font-bold text-black">{product.name}</h3>
           <p className="mt-1 text-sm text-zinc-500">{product.category}</p>

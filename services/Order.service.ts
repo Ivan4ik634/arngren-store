@@ -21,11 +21,13 @@ export const orderService = {
     let query = supabase.from('orders').select('*').eq('user_id', user.id);
 
     if (filters.search) {
-      query = query.ilike('id', `%${filters.search}%`);
+      query = query.ilike('order_id', `%${filters.search}%`);
     }
+
     if (filters.status && filters.status !== 'all') {
       query = query.eq('status', filters.status);
     }
+
     return query;
   },
   async getOrders(filters: FilterOrdersT) {
@@ -35,7 +37,7 @@ export const orderService = {
   `);
 
     if (filters.search) {
-      query = query.ilike('id', `%${filters.search}%`);
+      query = query.ilike('order_id', `%${filters.search}%`);
     }
     if (filters.status && filters.status !== 'all') {
       query = query.eq('status', filters.status);

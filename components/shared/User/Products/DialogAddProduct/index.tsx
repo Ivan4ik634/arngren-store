@@ -39,9 +39,18 @@ const DialogAddProduct: FC<Props> = (props) => {
   const onSubmit = async () => {
     if (!images) return toast.close('Please upload an image');
 
-    if (!form.name || !form.price || !form.category || !form.brand)
+    if (
+      !form.name ||
+      !form.count ||
+      !form.description ||
+      !form.count ||
+      !form.price ||
+      !form.category ||
+      !form.brand
+    )
       return toast.close('Please fill all fields');
 
+    if (form.price <= 50000) return toast.close('Price must be greater than $50,000');
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -71,14 +80,14 @@ const DialogAddProduct: FC<Props> = (props) => {
       <DialogTrigger>
         <Button variant="outline">Add product</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-[600px]">
         <DialogHeader>
           <DialogTitle>Add product</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col w-full gap-y-3">
           {images[0] && (
-            <div>
-              <div className="relative w-full h-40 object-cover">
+            <div className="w-full flex">
+              <div className="relative w-full aspect-square">
                 <button
                   onClick={() => handleImagesDelete(images[0])}
                   className="absolute right-2 top-2 z-10 text-zinc-400 hover:text-red-500">
@@ -87,10 +96,10 @@ const DialogAddProduct: FC<Props> = (props) => {
                 <img
                   src={images[0]}
                   alt="Product image"
-                  className="w-full rounded-[8px] h-40 object-cover"
+                  className="w-full rounded-[8px] aspect-square object-cover"
                 />
               </div>
-              <div className="w-full mt-3 gap-3 grid grid-cols-4">
+              <div className="w-full ml-5 gap-5 grid grid-cols-2">
                 {images.slice(1).map((image, index) => (
                   <div className="relative w-full aspect-square">
                     <button
@@ -102,7 +111,7 @@ const DialogAddProduct: FC<Props> = (props) => {
                       key={index}
                       src={image}
                       alt="Product image"
-                      className="w-full rounded-[5px] aspect-square object-cover"
+                      className="w-full rounded-[5px] aspect-square object-fill"
                     />
                   </div>
                 ))}
@@ -135,18 +144,22 @@ const DialogAddProduct: FC<Props> = (props) => {
           />
           <Input
             value={form.price}
+            max={50000}
             onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
             placeholder="Price..."
+            type="number"
           />
           <div className="flex gap-x-5">
             <SelectFilter
               options={categoryFilters}
               label="Category"
               onChange={(e) => setForm({ ...form, category: e })}
+              value={form.category!}
             />
             <SelectFilter
               options={brandFilters}
               onChange={(e) => setForm({ ...form, brand: e })}
+              value={form.brand!}
               label="Brands"
             />
 
@@ -154,6 +167,7 @@ const DialogAddProduct: FC<Props> = (props) => {
               value={form.count}
               onChange={(e) => setForm({ ...form, count: Number(e.target.value) })}
               placeholder="Count..."
+              type="number"
             />
           </div>
           <div className="flex  justify-end">

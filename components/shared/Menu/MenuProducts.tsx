@@ -8,12 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { PAGES } from '@/configs/PAGES';
 import { categoryFilters } from '@/data/Catogeries';
 import { useProfile } from '@/hooks/useProfile';
 import { useFilters } from '@/store/useFilters';
+import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { ProductT } from '@/types/ProductT';
 import { ShoppingCart } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import ProductCard from '../ProductCard';
 
@@ -25,12 +28,14 @@ const MenuProducts: FC<Props> = ({ products }) => {
   const { filters, setFilters } = useFilters();
   const { addProductCard, incrementProductCount, productCards } = useProductCart();
   const { profile } = useProfile();
+  const { setProduct } = useProductBuyNow();
+  const router = useRouter();
 
   return (
     <div className="flex min-w-0 w-full flex-col gap-5">
       <div className="mt-6 mb-4 flex w-full items-center justify-between">
         <div className="min-w-0">
-          <h1 className="font-bold">1,248 items found</h1>
+          <h1 className="font-bold">{products?.length} items found</h1>
 
           <div className="mt-3 flex flex-wrap gap-2">
             {categoryFilters.map((category) => (
@@ -91,6 +96,10 @@ const MenuProducts: FC<Props> = ({ products }) => {
                 + Add to cart
               </Button>
               <Button
+                onClick={() => {
+                  setProduct({ product, count: 1 });
+                  router.push(PAGES.CART + '?buyNow=true');
+                }}
                 variant="outline"
                 size="icon-lg"
                 className="h-9 w-12 rounded-md border-zinc-200 bg-zinc-50">

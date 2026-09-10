@@ -5,7 +5,7 @@ class Pages {
   PRODUCTS = '/products';
   ADMIN_PRODUCTS = '/admin/products';
   ADMIN_SETTINGS = '/admin/settings';
-  CUSTOMERS = '/customers';
+  CUSTOMERS = '/admin/customers';
   BRANDS = '/brands';
   MENU = '/menu';
   APPLICATION = '/admin/applications';

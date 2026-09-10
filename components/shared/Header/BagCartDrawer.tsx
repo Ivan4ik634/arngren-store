@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -35,7 +34,6 @@ const BagCartDrawer: FC<Props> = (props) => {
         onClick={() => setOpen(true)}
         className="relative text-black transition-colors hover:text-[#0969ff]">
         <ShoppingBag className="size-5" />
-        <Badge>{productCards.length}</Badge>
       </DrawerTrigger>
       <DrawerContent className="w-120 pt-5 px-5">
         <DrawerTitle className="font-bold text-2xl">Bag</DrawerTitle>

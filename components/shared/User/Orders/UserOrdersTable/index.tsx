@@ -32,8 +32,8 @@ const UserOrdersTable: FC<Props> = ({ data }) => {
       </TableHeader>
       <TableBody>
         {data?.map((data) => (
-          <TableRow>
-            <TableCell className="font-medium">{data.id}</TableCell>
+          <TableRow key={data.id}>
+            <TableCell className="font-medium">{data.order_id}</TableCell>
             <TableCell>
               <div>
                 <p>{dayjs(data.created_at).format('MMM DD YYYY')}</p>

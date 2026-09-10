@@ -2,48 +2,19 @@
 import { ChevronRight, Search } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
-import { useSearch } from '@/hooks/useSearch';
 import { productService } from '@/services/Product.service';
 import { useFilters } from '@/store/useFilters';
-import { ProductT } from '@/types/ProductT';
 import { useQuery } from '@tanstack/react-query';
 import { Filters } from './Filters';
 import MenuProducts from './MenuProducts';
 
 export function MenuPage() {
-  const { filters } = useFilters();
+  const { filters, setFilters } = useFilters();
   const { data: products } = useQuery({
     queryKey: ['products'],
-    queryFn: () => productService.getProducts(),
+    queryFn: () => productService.getProductsMenu(filters),
     select: (data) => data.data,
   });
-  const { query, setQuery, filteredItems } = useSearch<ProductT>(products, (item, query) =>
-    item.name.toLowerCase().includes(query),
-  );
-  const filteredProducts = filteredItems
-    ? filteredItems
-        .filter((product) => {
-          return (
-            filters.categories.includes('All Categories') ||
-            filters.categories.includes(product.category)
-          );
-        })
-        .filter((product) => {
-          return filters.brand.length === 0 || filters.brand.includes(product.brand);
-        })
-        .filter((product) => {
-          return (
-            filters.priceRange[0] * 500 <= product.price &&
-            filters.priceRange[1] * 500 >= product.price
-          );
-        })
-        .sort((a, b) => {
-          if (filters.sortBy === 'Price: Low to High') return a.price - b.price;
-          if (filters.sortBy === 'Price: High to Low') return b.price - a.price;
-          if (filters.sortBy === 'Rating') return Number(b.rating) - Number(a.rating);
-          return 0;
-        })
-    : [];
 
   return (
     <main className="">
@@ -67,8 +38,8 @@ export function MenuPage() {
           <Input
             placeholder="Search for products..."
             className="h-12 rounded-full border-zinc-300 pl-14 pr-28 text-base shadow-sm"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            value={filters.search}
+            onChange={(e) => setFilters((prev) => ({ ...filters, search: e.target.value }))}
           />
         </div>
       </div>
@@ -76,7 +47,7 @@ export function MenuPage() {
       <div className="mt-4 grid w-full gap-8 lg:grid-cols-[250px_minmax(0,1fr)]">
         <Filters />
         <div className="min-w-0">
-          <MenuProducts products={filteredProducts} />
+          <MenuProducts products={products} />
         </div>
       </div>
     </main>

@@ -24,11 +24,9 @@ interface Props {
 const ApplicationsTable: FC<Props> = ({ applications, setApplications }) => {
   const handleReject = async (application: ApplicationWithProductT) => {
     await applicationService.editApplication(application.product_id.id, 'rejected');
-    setApplications((prev) => prev.filter((app) => app.id !== application.id));
   };
   const handleApprove = async (application: ApplicationWithProductT) => {
     await applicationService.editApplication(application.product_id.id, 'approved');
-    setApplications((prev) => prev.filter((app) => app.id !== application.id));
   };
   return (
     <Table className="mt-5">
@@ -53,7 +51,7 @@ const ApplicationsTable: FC<Props> = ({ applications, setApplications }) => {
             </TableHead>
             <TableCell className="font-medium flex">
               <img
-                src={application.product_id.image}
+                src={application.product_id.images[0]}
                 className="w-[50px] aspect-square rouded-[5px]"
               />
               <div className="ml-5">

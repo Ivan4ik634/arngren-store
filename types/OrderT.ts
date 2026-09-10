@@ -7,6 +7,7 @@ export interface OrderT {
   total: number;
   items_length: number;
   created_at: string;
+  order_id: string;
 }
 export interface OrderWithUserT extends Omit<OrderT, 'user_id'> {
   user_id: UserT;

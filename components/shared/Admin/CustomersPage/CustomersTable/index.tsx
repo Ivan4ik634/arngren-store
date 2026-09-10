@@ -13,19 +13,32 @@ import {
 import { UserT } from '@/types/UserT';
 import dayjs from 'dayjs';
 import { EllipsisVertical } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 interface Props {
   users: UserT[] | undefined | null;
 }
 
 const CustomersTable: FC<Props> = ({ users }) => {
+  const [idsChecked, setIdsChecked] = useState<string[]>([]);
+
+  const allChecked = (users?.length || 0) > 0 && idsChecked.length === users?.length;
+
+  const handleCheckAll = () => {
+    setIdsChecked((prev) => (allChecked ? [] : users?.map((user) => user.id) || []));
+  };
+
+  const handleCheck = (id: string) => {
+    setIdsChecked((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
+  };
   return (
     <Table className="mt-5">
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px] ">
-            <Checkbox />
+            <Checkbox checked={allChecked} onCheckedChange={handleCheckAll} />
           </TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Email</TableHead>
@@ -37,7 +50,10 @@ const CustomersTable: FC<Props> = ({ users }) => {
         {users?.map((user) => (
           <TableRow>
             <TableCell className="w-[50px] ">
-              <Checkbox />
+              <Checkbox
+                checked={idsChecked.includes(user.id)}
+                onCheckedChange={() => handleCheck(user.id)}
+              />
             </TableCell>
 
             <TableCell>

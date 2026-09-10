@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { OrderWithUserT } from '@/types/OrderT';
 import dayjs from 'dayjs';
-import { EllipsisVerticalIcon } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { FC } from 'react';
 
 interface Props {
@@ -38,11 +38,11 @@ const OrdersTable: FC<Props> = ({ data }) => {
       </TableHeader>
       <TableBody>
         {data?.map((data) => (
-          <TableRow>
+          <TableRow key={data.id}>
             <TableHead className="w-[50px] ">
               <Checkbox />
             </TableHead>
-            <TableCell className="font-medium">{data.id}</TableCell>
+            <TableCell className="font-medium">{data.order_id}</TableCell>
             <TableCell>
               <div className="flex items-center">
                 <Avatar size="lg">
@@ -71,7 +71,7 @@ const OrdersTable: FC<Props> = ({ data }) => {
             <TableCell className="font-bold">${data.total}</TableCell>
             <TableCell className="">{data.items_length}</TableCell>
             <TableCell className="text-right">
-              <EllipsisVerticalIcon />
+              <Eye />
             </TableCell>
           </TableRow>
         ))}

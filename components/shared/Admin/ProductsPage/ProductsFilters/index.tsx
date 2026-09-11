@@ -14,13 +14,21 @@ import { Dispatch, FC, SetStateAction } from 'react';
 interface Props {
   setFilters: Dispatch<SetStateAction<FiltersProductT>>;
   setProducts: Dispatch<SetStateAction<ProductT[] | undefined | null>>;
+  setIdsChecked: Dispatch<SetStateAction<string[]>>;
   filters: FiltersProductT;
   idsChecked: string[];
 }
-const ProductsFilters: FC<Props> = ({ setProducts, idsChecked, filters, setFilters }) => {
+const ProductsFilters: FC<Props> = ({
+  setProducts,
+  setIdsChecked,
+  idsChecked,
+  filters,
+  setFilters,
+}) => {
   const handleDelete = async () => {
     await productService.deleteProducts(idsChecked);
     setProducts((prev) => prev?.filter((product) => !idsChecked.includes(product.id)));
+    setIdsChecked([]);
   };
   return (
     <div className="flex mt-5 justify-between">

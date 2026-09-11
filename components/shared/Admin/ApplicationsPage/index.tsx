@@ -33,8 +33,8 @@ const ApplicationsPage: FC<Props> = (props) => {
       <h1 className="font-bold text-2xl">Applications</h1>
       <ApplicationsStats applications={applications} />
       <ApplicationsFilters
+        {...checkboxes}
         setApplications={setApplications}
-        idsChecked={checkboxes.idsChecked}
         filters={filters}
         setFilters={setFilters}
       />

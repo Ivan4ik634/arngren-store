@@ -16,6 +16,9 @@ class Pages {
   PRODUCT(id: string) {
     return `/product/${id}`;
   }
+  PROFILE_ID(id: string) {
+    return `/profile/${id}`;
+  }
   PROFILE = '/profile';
   CART = '/cart';
 }

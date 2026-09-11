@@ -18,6 +18,7 @@ export const useCheckboxes = <T>(items: T[], getId: (item: T) => string) => {
   return {
     idsChecked,
     allChecked,
+    setIdsChecked,
     handleCheckAll,
     handleCheck,
   };

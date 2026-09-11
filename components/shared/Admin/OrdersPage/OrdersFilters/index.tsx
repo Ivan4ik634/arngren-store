@@ -14,16 +14,24 @@ interface Props {
   filters: FilterOrdersT;
   setFilters: Dispatch<SetStateAction<FilterOrdersT>>;
   idsChecked: string[];
+  setIdsChecked: Dispatch<SetStateAction<string[]>>;
   setOrders: Dispatch<SetStateAction<OrderWithUserT[] | null | undefined>>;
 }
 
 //Дальше сделать надо все Actions Потом сделать гугл авторизацию
 //Ипроверить весь функционал опять чтобы удостовериться что правильно все работает или нет
 
-const OrdersFilters: FC<Props> = ({ filters, setOrders, idsChecked, setFilters }) => {
+const OrdersFilters: FC<Props> = ({
+  filters,
+  setIdsChecked,
+  setOrders,
+  idsChecked,
+  setFilters,
+}) => {
   const handleDeleteRows = async () => {
     await orderService.deleteOrders(idsChecked);
     setOrders((prev) => prev?.filter((order) => !idsChecked.includes(order.id)));
+    setIdsChecked([]);
   };
 
   return (

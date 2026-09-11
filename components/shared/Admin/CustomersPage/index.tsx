@@ -28,8 +28,8 @@ const CustomersPage: FC<Props> = (props) => {
     <div>
       <h1 className="font-bold text-2xl">Customers</h1>
       <CustomerFilters
+        {...checkboxes}
         setUsers={setUsers}
-        idsChecked={checkboxes.idsChecked}
         filters={filters}
         setFilters={setFilters}
       />

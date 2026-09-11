@@ -35,8 +35,8 @@ const ProductsPage: FC<Props> = (props) => {
       <h1 className="font-bold text-2xl">Products</h1>
       <ProductsStats products={products} />
       <ProductsFilters
+        {...checkboxes}
         setProducts={setProducts}
-        idsChecked={checkboxes.idsChecked}
         filters={filters}
         setFilters={setFilters}
       />

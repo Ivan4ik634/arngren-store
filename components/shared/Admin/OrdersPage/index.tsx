@@ -34,7 +34,7 @@ const OrdersPage: FC<Props> = (props) => {
       <OrdersStats orders={data} />
       <OrdersFilters
         setOrders={setOrders}
-        idsChecked={checkboxes.idsChecked}
+        {...checkboxes}
         filters={filters}
         setFilters={setFilters}
       />

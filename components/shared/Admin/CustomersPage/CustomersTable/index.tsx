@@ -13,8 +13,9 @@ import {
 import { userService } from '@/services/User.service';
 import { UserT } from '@/types/UserT';
 import dayjs from 'dayjs';
-import { Eye, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
+import DrawerDetailsCustomer from './DrawerDetailsCustomer';
 
 interface Props {
   users: UserT[] | undefined | null;
@@ -46,6 +47,8 @@ const CustomersTable: FC<Props> = ({
           </TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Email</TableHead>
+          <TableHead>Gender</TableHead>
+          <TableHead>Language</TableHead>
           <TableHead>Joined At</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
@@ -76,15 +79,19 @@ const CustomersTable: FC<Props> = ({
             <TableCell>
               <p className="opacity-50">{user.email}</p>
             </TableCell>
+            <TableCell>{user.gender}</TableCell>
+            <TableCell>{user.language}</TableCell>
             <TableCell>
               <div>
                 <p>{dayjs(user.created_at).format('MMM DD YYYY')} </p>
                 <p className="opacity-50">{dayjs(user.created_at).format('hh:mm A')}</p>
               </div>
             </TableCell>
-            <TableCell>
-              <Trash2 onClick={() => handleDelete(user.id)} className="mr-2 text-red-500" />
-              <Eye />
+            <TableCell className="">
+              <div className="flex items-start justify-start w-full space-x-3">
+                <Trash2 onClick={() => handleDelete(user.id)} className="mr-2 text-red-500" />
+                <DrawerDetailsCustomer user={user} handleDeleteUser={handleDelete} />
+              </div>
             </TableCell>
           </TableRow>
         ))}

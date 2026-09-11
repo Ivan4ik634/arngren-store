@@ -15,9 +15,16 @@ interface Props {
   filters: FiltersT;
   idsChecked: string[];
   setFilters: Dispatch<SetStateAction<FiltersT>>;
+  setIdsChecked: Dispatch<SetStateAction<string[]>>;
   setApplications: Dispatch<SetStateAction<ApplicationWithProductT[] | undefined>>;
 }
-const ApplicationsFilters: FC<Props> = ({ setApplications, filters, idsChecked, setFilters }) => {
+const ApplicationsFilters: FC<Props> = ({
+  setApplications,
+  setIdsChecked,
+  filters,
+  idsChecked,
+  setFilters,
+}) => {
   const handleReject = async () => {
     await applicationService.editApplications(idsChecked, 'rejected');
     setApplications((prev) =>
@@ -25,6 +32,7 @@ const ApplicationsFilters: FC<Props> = ({ setApplications, filters, idsChecked, 
         idsChecked.includes(application.id) ? { ...application, status: 'rejected' } : application,
       ),
     );
+    setIdsChecked([]);
   };
   const handleApprove = async () => {
     await applicationService.editApplications(idsChecked, 'approved');
@@ -33,6 +41,7 @@ const ApplicationsFilters: FC<Props> = ({ setApplications, filters, idsChecked, 
         idsChecked.includes(application.id) ? { ...application, status: 'approved' } : application,
       ),
     );
+    setIdsChecked([]);
   };
 
   return (

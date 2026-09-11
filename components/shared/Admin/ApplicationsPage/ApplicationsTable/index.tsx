@@ -15,6 +15,7 @@ import { ApplicationWithProductT } from '@/types/ApplicationT';
 import dayjs from 'dayjs';
 import { Check, X } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
+import DrawerDetailsApplication from './DrawerDetailsApplication';
 
 interface Props {
   applications: ApplicationWithProductT[] | undefined;
@@ -35,11 +36,19 @@ const ApplicationsTable: FC<Props> = ({
 }) => {
   const handleReject = async (application: ApplicationWithProductT) => {
     await applicationService.editApplication(application.product_id.id, 'rejected');
-    setApplications((prev) => [...prev!, { ...application, status: 'rejected' }]);
+    setApplications((prev) =>
+      prev?.map((application) =>
+        application.id === application.id ? { ...application, status: 'rejected' } : application,
+      ),
+    );
   };
   const handleApprove = async (application: ApplicationWithProductT) => {
     await applicationService.editApplication(application.product_id.id, 'approved');
-    setApplications((prev) => [...prev!, { ...application, status: 'approved' }]);
+    setApplications((prev) =>
+      prev?.map((application) =>
+        application.id === application.id ? { ...application, status: 'approved' } : application,
+      ),
+    );
   };
   return (
     <Table className="mt-5">
@@ -119,6 +128,11 @@ const ApplicationsTable: FC<Props> = ({
               <div className="flex items-start justify-start  space-x-5">
                 <Check onClick={() => handleApprove(application)} className="text-green-500" />
                 <X onClick={() => handleReject(application)} className="text-red-500" />
+                <DrawerDetailsApplication
+                  handleApprove={handleApprove}
+                  handleReject={handleReject}
+                  application={application}
+                />
               </div>
             </TableCell>
           </TableRow>

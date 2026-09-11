@@ -13,8 +13,9 @@ import {
 import { productService } from '@/services/Product.service';
 import { ProductT } from '@/types/ProductT';
 import dayjs from 'dayjs';
-import { Eye, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
+import DrawerDetailsProduct from './DrawerDetailsProduct';
 
 interface Props {
   products: ProductT[] | undefined | null;
@@ -87,9 +88,11 @@ const ProductsTable: FC<Props> = ({
               </div>
             </TableCell>
             <TableCell className="">{product.count}</TableCell>
-            <TableCell className="text-right">
-              <Trash2 onClick={() => handleDelete(product.id)} className="mr-2 text-red-500" />
-              <Eye />
+            <TableCell>
+              <div className="flex items-start justify-start ">
+                <Trash2 onClick={() => handleDelete(product.id)} className="mr-5 text-red-500" />
+                <DrawerDetailsProduct handleDeleteProduct={handleDelete} product={product} />
+              </div>
             </TableCell>
           </TableRow>
         ))}

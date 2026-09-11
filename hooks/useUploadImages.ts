@@ -13,8 +13,11 @@ export const useUploadImages = ({ init, action }: UseUploadImageProps) => {
   const handleImagesUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
+    console.log(files?.length, images.length);
+
     if (!files) return toast.close('No file selected');
-    if (files.length === 5) return toast.close('You can only upload 5 images');
+    if (images.length + files.length > 5) return toast.close('You can only upload 5 images');
+
     for (const file of files) {
       const uuid = crypto.randomUUID();
       const { error } = await supabase.storage.from('images').upload(uuid, file);

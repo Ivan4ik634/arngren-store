@@ -16,11 +16,19 @@ interface Props {
   >;
   setUsers: Dispatch<SetStateAction<UserT[] | undefined | null>>;
   idsChecked: string[];
+  setIdsChecked: Dispatch<SetStateAction<string[]>>;
 }
-const CustomerFilters: FC<Props> = ({ filters, setUsers, idsChecked, setFilters }) => {
+const CustomerFilters: FC<Props> = ({
+  filters,
+  setIdsChecked,
+  setUsers,
+  idsChecked,
+  setFilters,
+}) => {
   const handleDelete = async () => {
     await userService.deleteUsers(idsChecked);
     setUsers((prev) => prev?.filter((user) => !idsChecked.includes(user.id)));
+    setIdsChecked([]);
   };
   return (
     <div className="flex mt-5 justify-between">

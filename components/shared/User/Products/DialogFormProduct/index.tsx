@@ -15,27 +15,34 @@ import { toast } from '@/components/ui/toast';
 import { brandFilters } from '@/data/Brands';
 import { categoryFilters } from '@/data/Catogeries';
 import { useUploadImages } from '@/hooks/useUploadImages';
-import { supabase } from '@/lib/supabase/client';
-import { applicationService } from '@/services/Application.service';
-import { productService } from '@/services/Product.service';
-import { ProductFormCreateT } from '@/types/ProductT';
+import { ProductFormCreateT, ProductT } from '@/types/ProductT';
 import { X } from 'lucide-react';
 import { FC, useState } from 'react';
 
-interface Props {}
+interface Props {
+  children: React.ReactNode;
+  init?: ProductT;
+  className?: string;
+  action: (form: ProductFormCreateT, images: string[]) => void;
+}
 
-const DialogAddProduct: FC<Props> = (props) => {
-  const [form, setForm] = useState<ProductFormCreateT>({
-    name: '',
-    price: undefined,
-    count: undefined,
-    category: null,
-    brand: null,
-    description: '',
+const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => {
+  const [form, setForm] = useState<ProductFormCreateT>(
+    init
+      ? init
+      : {
+          name: '',
+          price: undefined,
+          count: undefined,
+          category: null,
+          brand: null,
+          description: '',
+        },
+  );
+
+  const { images, ref, handleImagesDelete, handleImagesUpload } = useUploadImages({
+    init: init?.images || [],
   });
-
-  const { images, ref, handleImagesDelete, handleImagesUpload } = useUploadImages({});
-
   const onSubmit = async () => {
     if (!images) return toast.close('Please upload an image');
 
@@ -51,35 +58,12 @@ const DialogAddProduct: FC<Props> = (props) => {
       return toast.close('Please fill all fields');
 
     if (form.price <= 50000) return toast.close('Price must be greater than $50,000');
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
 
-    if (!user) return toast.close('User not found');
-
-    const { data, error } = await productService.addProduct({
-      name: form.name,
-      category: form.category,
-      price: form.price,
-      brand: form.brand,
-      description: form.description,
-      seller: user.id,
-      count: form.count,
-      images,
-    });
-
-    const { error: errorAddApplication } = await applicationService.addApplication({
-      product_id: data?.id as string,
-    });
-
-    if (error || errorAddApplication) return toast.close('Error adding product');
-    toast.close('Product added successfully');
+    action(form, images);
   };
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button variant="outline">Add product</Button>
-      </DialogTrigger>
+      <DialogTrigger className={className}>{children}</DialogTrigger>
       <DialogContent className="w-[600px]">
         <DialogHeader>
           <DialogTitle>Add product</DialogTitle>
@@ -118,7 +102,8 @@ const DialogAddProduct: FC<Props> = (props) => {
               </div>
             </div>
           )}
-          <div className="w-full flex justify-between">
+          <div className="">
+            <p className="opacity-50 mb-2">Max 5 images</p>
             <Button onClick={() => ref.current?.click()} type="button">
               Add images
             </Button>
@@ -171,7 +156,7 @@ const DialogAddProduct: FC<Props> = (props) => {
             />
           </div>
           <div className="flex  justify-end">
-            <Button onClick={() => onSubmit()}>Add product</Button>
+            <Button onClick={() => onSubmit()}>{init ? 'Edit product' : 'Add product'}</Button>
           </div>
         </div>
       </DialogContent>
@@ -179,4 +164,4 @@ const DialogAddProduct: FC<Props> = (props) => {
   );
 };
 
-export default DialogAddProduct;
+export default DialogFormProduct;

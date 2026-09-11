@@ -5,11 +5,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/toast';
 import { PAGES } from '@/configs/PAGES';
+import { signInWithGoogle } from '@/funcs/SignInWithGoogle';
 import { supabase } from '@/lib/supabase/client';
 import { UserLoginT } from '@/types/UserT';
 import Link from 'next/link';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { FaGoogle } from 'react-icons/fa';
 
 interface Props {}
 
@@ -27,6 +30,7 @@ const LoginPage: FC<Props> = (props) => {
 
     return toast.close('Register successfully');
   };
+
   return (
     <Card>
       <CardContent>
@@ -57,6 +61,10 @@ const LoginPage: FC<Props> = (props) => {
           </div>
           <Button type="submit" className="w-full mt-5">
             Login
+          </Button>
+          <Button onClick={signInWithGoogle} className="w-full mt-2" variant="outline">
+            <FaGoogle className="mr-2" />
+            Login with Google
           </Button>
           <div className="mt-5 flex w-full justify-center">
             <p>

@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
-export const supabase = createClient(
-  'https://ehnnsoippyesarddzyjq.supabase.co',
-  'sb_publishable_RPNX3YxXLZAep7mY-L0Y4A_QdylclWJ',
+export const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
 );

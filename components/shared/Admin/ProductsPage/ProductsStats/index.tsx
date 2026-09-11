@@ -6,10 +6,10 @@ import { FC } from 'react';
 import CardStats from '../../ui/CardStats';
 
 interface Props {
-  products: ProductT[];
+  products: ProductT[] | undefined | null;
 }
 const ProductsStats: FC<Props> = (props) => {
-  return <CardStats data={getProductsStats(props.products)} />;
+  return <CardStats data={getProductsStats(props.products ?? [])} />;
 };
 
 export default ProductsStats;

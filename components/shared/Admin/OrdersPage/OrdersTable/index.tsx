@@ -10,10 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { orderService } from '@/services/Order.service';
 import { OrderWithUserT } from '@/types/OrderT';
 import dayjs from 'dayjs';
-import { Eye } from 'lucide-react';
-import { FC } from 'react';
+import { Eye, Trash2 } from 'lucide-react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
   data: OrderWithUserT[] | null | undefined;
@@ -21,9 +22,21 @@ interface Props {
   allChecked: boolean;
   handleCheckAll: () => void;
   handleCheck: (id: string) => void;
+  setOrders: Dispatch<SetStateAction<OrderWithUserT[] | null | undefined>>;
 }
 
-const OrdersTable: FC<Props> = ({ data, idsChecked, allChecked, handleCheckAll, handleCheck }) => {
+const OrdersTable: FC<Props> = ({
+  data,
+  setOrders,
+  idsChecked,
+  allChecked,
+  handleCheckAll,
+  handleCheck,
+}) => {
+  const handleDelete = async (id: string) => {
+    await orderService.deleteOrder(id);
+    setOrders((prev) => prev?.filter((user) => user.id !== id));
+  };
   return (
     <Table className="mt-5">
       <TableHeader>
@@ -78,6 +91,7 @@ const OrdersTable: FC<Props> = ({ data, idsChecked, allChecked, handleCheckAll, 
             <TableCell className="font-bold">${data.total}</TableCell>
             <TableCell className="">{data.items_length}</TableCell>
             <TableCell className="text-right">
+              <Trash2 onClick={() => handleDelete(data.id)} className="mr-2 text-red-500" />
               <Eye />
             </TableCell>
           </TableRow>

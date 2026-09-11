@@ -13,7 +13,7 @@ import {
 import { applicationService } from '@/services/Application.service';
 import { ApplicationWithProductT } from '@/types/ApplicationT';
 import dayjs from 'dayjs';
-import { Check, Eye, X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
@@ -101,13 +101,22 @@ const ApplicationsTable: FC<Props> = ({
               </div>
             </TableCell>
             <TableCell>
-              <div className="px-4 py-2 bg-green-500/20 w-min rounded-full ">
-                <p className="text-green-500">{application.status}</p>
+              <div
+                className={`px-4 py-2  w-min rounded-full ${application.status === 'approved' ? 'bg-green-500/20' : application.status === 'rejected' ? 'bg-red-500/20' : 'bg-yellow-500/20'}`}>
+                <p
+                  className={
+                    application.status === 'approved'
+                      ? 'text-green-500'
+                      : application.status === 'rejected'
+                        ? 'text-red-500'
+                        : 'text-yellow-500'
+                  }>
+                  {application.status}
+                </p>
               </div>
             </TableCell>
             <TableCell>
               <div className="flex items-start justify-start  space-x-5">
-                <Eye />
                 <Check onClick={() => handleApprove(application)} className="text-green-500" />
                 <X onClick={() => handleReject(application)} className="text-red-500" />
               </div>

@@ -6,6 +6,7 @@ import SelectFilter from '@/components/ui/SelectFilter';
 import { statusFilters } from '@/data/Status';
 import { orderService } from '@/services/Order.service';
 import { FilterOrdersT } from '@/types/FiltersT';
+import { OrderWithUserT } from '@/types/OrderT';
 import { Download, Trash2 } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
 
@@ -13,17 +14,16 @@ interface Props {
   filters: FilterOrdersT;
   setFilters: Dispatch<SetStateAction<FilterOrdersT>>;
   idsChecked: string[];
-  refetch: () => void;
+  setOrders: Dispatch<SetStateAction<OrderWithUserT[] | null | undefined>>;
 }
 
-//Сделать через рефетч квери!!!!!!
 //Дальше сделать надо все Actions Потом сделать гугл авторизацию
 //Ипроверить весь функционал опять чтобы удостовериться что правильно все работает или нет
 
-const OrdersFilters: FC<Props> = ({ filters, refetch, idsChecked, setFilters }) => {
+const OrdersFilters: FC<Props> = ({ filters, setOrders, idsChecked, setFilters }) => {
   const handleDeleteRows = async () => {
     await orderService.deleteOrders(idsChecked);
-    refetch();
+    setOrders((prev) => prev?.filter((order) => !idsChecked.includes(order.id)));
   };
 
   return (

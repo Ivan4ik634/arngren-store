@@ -64,7 +64,7 @@ export const productService = {
       query = query.eq('count', 0);
     }
 
-    return await query;
+    return (await query).data as unknown as ProductT[];
   },
   async getProductsMenu(filters: FiltersMenuT): Promise<any> {
     let query = supabase
@@ -158,6 +158,15 @@ export const productService = {
       .from('products')
       .update({ ...data })
       .eq('id', data.id);
+    return res;
+  },
+
+  async deleteProducts(ids: string[]) {
+    const res = await supabase.from('products').delete().in('id', ids);
+    return res;
+  },
+  async deleteProduct(id: string) {
+    const res = await supabase.from('products').delete().eq('id', id);
     return res;
   },
 };

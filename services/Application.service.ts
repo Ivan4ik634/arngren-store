@@ -40,8 +40,20 @@ export const applicationService = {
     return (await query).data as any as ApplicationWithProductT[];
   },
   async editApplication(id: string, status: 'approved' | 'rejected') {
-    await supabase.from('products').update({ application: true }).eq('id', id);
+    await supabase
+      .from('products')
+      .update({ application: status === 'approved' ? true : false })
+      .eq('id', id);
     const res = await supabase.from('applications').update({ status }).eq('product_id', id);
+
+    return res;
+  },
+  async editApplications(ids: string[], status: 'approved' | 'rejected') {
+    await supabase
+      .from('products')
+      .update({ application: status === 'approved' ? true : false })
+      .in('id', ids);
+    const res = await supabase.from('applications').update({ status }).in('product_id', ids);
 
     return res;
   },

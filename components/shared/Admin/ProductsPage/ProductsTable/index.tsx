@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -9,21 +10,41 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { productService } from '@/services/Product.service';
 import { ProductT } from '@/types/ProductT';
 import dayjs from 'dayjs';
-import { EllipsisVerticalIcon } from 'lucide-react';
-import { FC } from 'react';
+import { Eye, Trash2 } from 'lucide-react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
-  products: ProductT[];
+  products: ProductT[] | undefined | null;
+  idsChecked: string[];
+  allChecked: boolean;
+  setProducts: Dispatch<SetStateAction<ProductT[] | undefined | null>>;
+  handleCheckAll: () => void;
+  handleCheck: (id: string) => void;
 }
 
-const ProductsTable: FC<Props> = ({ products }) => {
+const ProductsTable: FC<Props> = ({
+  idsChecked,
+  allChecked,
+  handleCheckAll,
+  handleCheck,
+  products,
+  setProducts,
+}) => {
+  const handleDelete = async (id: string) => {
+    await productService.deleteProduct(id);
+    setProducts((prev) => prev?.filter((product) => product.id !== id));
+  };
   return (
     <Table className="mt-5">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[150px] ">Product</TableHead>
+          <TableHead className="w-[75px] ">
+            <Checkbox checked={allChecked} onCheckedChange={handleCheckAll} />
+          </TableHead>
+          <TableHead>Product</TableHead>
           <TableHead>Seller</TableHead>
           <TableHead>Price</TableHead>
           <TableHead>Created At</TableHead>
@@ -33,9 +54,15 @@ const ProductsTable: FC<Props> = ({ products }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map((product) => (
+        {products?.map((product) => (
           <TableRow>
-            <TableCell className="w-[150px]">
+            <TableCell className="w-[75px] ">
+              <Checkbox
+                checked={idsChecked.includes(product.id)}
+                onCheckedChange={() => handleCheck(product.id)}
+              />
+            </TableCell>
+            <TableCell>
               <p>{product.name}</p>
             </TableCell>
             <TableCell className="flex items-center font-medium">
@@ -61,7 +88,8 @@ const ProductsTable: FC<Props> = ({ products }) => {
             </TableCell>
             <TableCell className="">{product.count}</TableCell>
             <TableCell className="text-right">
-              <EllipsisVerticalIcon />
+              <Trash2 onClick={() => handleDelete(product.id)} className="mr-2 text-red-500" />
+              <Eye />
             </TableCell>
           </TableRow>
         ))}

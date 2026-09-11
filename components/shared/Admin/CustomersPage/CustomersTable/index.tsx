@@ -10,16 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { userService } from '@/services/User.service';
 import { UserT } from '@/types/UserT';
 import dayjs from 'dayjs';
-import { EllipsisVertical } from 'lucide-react';
-import { FC } from 'react';
+import { Eye, Trash2 } from 'lucide-react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
   users: UserT[] | undefined | null;
   idsChecked: string[];
   allChecked: boolean;
   handleCheckAll: () => void;
+  setUsers: Dispatch<SetStateAction<UserT[] | undefined | null>>;
   handleCheck: (id: string) => void;
 }
 
@@ -27,9 +29,14 @@ const CustomersTable: FC<Props> = ({
   users,
   allChecked,
   idsChecked,
+  setUsers,
   handleCheckAll,
   handleCheck,
 }) => {
+  const handleDelete = async (id: string) => {
+    await userService.deleteUser(id);
+    setUsers((prev) => prev?.filter((user) => user.id !== id));
+  };
   return (
     <Table className="mt-5">
       <TableHeader>
@@ -76,7 +83,8 @@ const CustomersTable: FC<Props> = ({
               </div>
             </TableCell>
             <TableCell>
-              <EllipsisVertical />
+              <Trash2 onClick={() => handleDelete(user.id)} className="mr-2 text-red-500" />
+              <Eye />
             </TableCell>
           </TableRow>
         ))}

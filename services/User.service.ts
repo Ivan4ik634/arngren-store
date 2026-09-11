@@ -24,4 +24,12 @@ export const userService = {
       .eq('id', id);
     return res;
   },
+  async deleteUsers(ids: string[]) {
+    const res = await supabase.from('profiles').delete().in('id', ids);
+    return res;
+  },
+  async deleteUser(id: string) {
+    const res = await supabase.from('profiles').delete().eq('id', id);
+    return res;
+  },
 };

@@ -2,6 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import SearchInput from '@/components/ui/SearchInput';
+import { userService } from '@/services/User.service';
+import { UserT } from '@/types/UserT';
 import { Download, Trash2 } from 'lucide-react';
 import { Dispatch, FC, SetStateAction } from 'react';
 
@@ -12,9 +14,14 @@ interface Props {
       search: string;
     }>
   >;
+  setUsers: Dispatch<SetStateAction<UserT[] | undefined | null>>;
   idsChecked: string[];
 }
-const CustomerFilters: FC<Props> = ({ filters, idsChecked, setFilters }) => {
+const CustomerFilters: FC<Props> = ({ filters, setUsers, idsChecked, setFilters }) => {
+  const handleDelete = async () => {
+    await userService.deleteUsers(idsChecked);
+    setUsers((prev) => prev?.filter((user) => !idsChecked.includes(user.id)));
+  };
   return (
     <div className="flex mt-5 justify-between">
       <div className="flex gap-x-5 items-center">
@@ -25,7 +32,7 @@ const CustomerFilters: FC<Props> = ({ filters, idsChecked, setFilters }) => {
       </div>
       <div className="flex gax-5">
         {idsChecked.length > 0 && (
-          <Button variant="destructive">
+          <Button onClick={handleDelete} variant="destructive">
             <Trash2 className="mr-2 h-4 w-4" /> Delete {idsChecked.length} rows
           </Button>
         )}

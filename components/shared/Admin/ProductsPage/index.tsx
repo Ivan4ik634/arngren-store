@@ -1,8 +1,10 @@
 'use client';
 
+import { useCheckboxes } from '@/hooks/useCheckboxes';
 import { productService } from '@/services/Product.service';
 import { FiltersProductT } from '@/types/FiltersT';
 import { ProductT } from '@/types/ProductT';
+import { useQuery } from '@tanstack/react-query';
 import { FC, useEffect, useState } from 'react';
 import ProductsFilters from './ProductsFilters';
 import ProductsStats from './ProductsStats';
@@ -16,21 +18,29 @@ const ProductsPage: FC<Props> = (props) => {
     category: 'all',
     availability: 'all',
   });
-  const [products, setProducts] = useState<ProductT[]>([]);
+  const { data } = useQuery({
+    queryKey: ['products', filters],
+    queryFn: () => productService.getProducts(filters),
+  });
+  const [products, setProducts] = useState<ProductT[] | undefined | null>(data || []);
 
   useEffect(() => {
-    const getProducts = async () => {
-      const res = await productService.getProducts(filters);
-      setProducts(res.data as any as ProductT[]);
-    };
-    getProducts();
-  }, [filters]);
+    setProducts(data);
+  }, [data]);
+
+  const checkboxes = useCheckboxes(products || [], (product) => product.id);
+
   return (
     <div className="mt-8 w-full">
       <h1 className="font-bold text-2xl">Products</h1>
       <ProductsStats products={products} />
-      <ProductsFilters filters={filters} setFilters={setFilters} />
-      <ProductsTable products={products} />
+      <ProductsFilters
+        setProducts={setProducts}
+        idsChecked={checkboxes.idsChecked}
+        filters={filters}
+        setFilters={setFilters}
+      />
+      <ProductsTable setProducts={setProducts} {...checkboxes} products={products} />
     </div>
   );
 };

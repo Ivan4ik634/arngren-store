@@ -1,6 +1,6 @@
 import { PAGES } from '@/configs/PAGES';
 import { LinkT } from '@/types/LinkT';
-import { AppWindowMac, Heart, ListOrdered, Package, Settings, User, Users } from 'lucide-react';
+import { AppWindowMac, Heart, ListOrdered, Package, User, Users } from 'lucide-react';
 
 export const AdminLinks: LinkT[] = [
   {
@@ -46,8 +46,8 @@ export const UserLinks: LinkT[] = [
     href: PAGES.PRODUCTS,
   },
   {
-    icon: Settings,
-    name: 'Settings',
-    href: PAGES.SETTINGS,
+    icon: ListOrdered,
+    name: 'Seller Orders',
+    href: PAGES.ORDERS_SELLER,
   },
 ];

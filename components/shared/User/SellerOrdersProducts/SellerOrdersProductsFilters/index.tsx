@@ -12,7 +12,7 @@ interface Props {
   setFilters: Dispatch<SetStateAction<FilterOrdersT>>;
 }
 
-const UserOrdersFilters: FC<Props> = ({ filters, setFilters }) => {
+const SellerOrdersProductsFilters: FC<Props> = ({ filters, setFilters }) => {
   return (
     <div className="flex mt-5 gap-x-5 items-center">
       <SearchInput
@@ -29,4 +29,4 @@ const UserOrdersFilters: FC<Props> = ({ filters, setFilters }) => {
   );
 };
 
-export default UserOrdersFilters;
+export default SellerOrdersProductsFilters;

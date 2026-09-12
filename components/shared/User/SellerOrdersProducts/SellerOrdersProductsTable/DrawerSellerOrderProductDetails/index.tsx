@@ -22,12 +22,6 @@ import {
 } from 'lucide-react';
 import { FC } from 'react';
 
-interface Props {
-  order: OrderWithUserT;
-}
-
-// TODO: remove mock data when zip code / country / region / address fields
-// are added to OrderT. Using test data for now to preview the layout.
 const MOCK_SHIPPING = {
   country: 'Ukraine',
   region: 'Kyiv Oblast',
@@ -103,8 +97,11 @@ const MOCK_ITEMS: CartItemT[] = [
     created_at: '2024-01-01',
   },
 ];
+interface Props {
+  order: OrderWithUserT;
+}
 
-const DrawerDetailsOrder: FC<Props> = (props) => {
+const DrawerSellerOrderProductDetails: FC<Props> = (props) => {
   const { order } = props;
   const user = order.user_id;
   const status = statusConfig[order.status];
@@ -252,4 +249,4 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
   );
 };
 
-export default DrawerDetailsOrder;
+export default DrawerSellerOrderProductDetails;

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
+import { CartItemWithOrderT } from '@/types/CartItemT';
 import { ProductT } from '@/types/ProductT';
 
 export const cartItemService = {
@@ -16,5 +17,12 @@ export const cartItemService = {
       .select();
 
     return res;
+  },
+  async getItems(product_ids: string[]): Promise<CartItemWithOrderT[] | null> {
+    const res = await supabase
+      .from('cart_items')
+      .select('*,product_id(*),order_id(*,user_id(*))')
+      .in('product_id', product_ids);
+    return res.data;
   },
 };

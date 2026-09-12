@@ -1,3 +1,4 @@
+import { OrderWithUserT } from './OrderT';
 import { ProductT } from './ProductT';
 
 export interface CartItemT {
@@ -7,4 +8,7 @@ export interface CartItemT {
   price: number;
   order_id: string;
   created_at: string;
+}
+export interface CartItemWithOrderT extends Omit<CartItemT, 'order_id'> {
+  order_id: OrderWithUserT;
 }

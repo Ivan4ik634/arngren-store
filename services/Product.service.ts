@@ -11,6 +11,10 @@ export const productService = {
       .single();
     return res;
   },
+  async getProductUserIds(id: string): Promise<{ id: string }[] | null> {
+    const res = await supabase.from('products').select('id').eq('seller', id);
+    return res.data;
+  },
 
   async getUserProducts(id: string, filters?: FiltersProductT): Promise<ProductT[] | null> {
     let query = supabase.from('products').select('*').eq('seller', id);

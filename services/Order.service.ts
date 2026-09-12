@@ -44,6 +44,7 @@ export const orderService = {
     }
     return query;
   },
+
   async deleteOrders(ids: string[]) {
     const res = await supabase.from('orders').delete().in('id', ids);
 

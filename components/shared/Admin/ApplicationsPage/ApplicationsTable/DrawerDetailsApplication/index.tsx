@@ -5,19 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
+import { statusConfig } from '@/configs/STATUS';
 import { ApplicationWithProductT } from '@/types/ApplicationT';
-import {
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Eye,
-  Hash,
-  Mail,
-  Star,
-  Tag,
-  User,
-  XCircle,
-} from 'lucide-react';
+import { Calendar, CheckCircle2, Eye, Hash, Mail, Star, Tag, User, XCircle } from 'lucide-react';
 import { FC } from 'react';
 
 interface Props {
@@ -25,24 +15,6 @@ interface Props {
   handleApprove: (application: ApplicationWithProductT) => void;
   handleReject: (application: ApplicationWithProductT) => void;
 }
-
-const statusConfig = {
-  pending: {
-    label: 'Pending',
-    className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100',
-    icon: Clock,
-  },
-  approved: {
-    label: 'Approved',
-    className: 'bg-green-100 text-green-700 hover:bg-green-100',
-    icon: CheckCircle2,
-  },
-  rejected: {
-    label: 'Rejected',
-    className: 'bg-red-100 text-red-700 hover:bg-red-100',
-    icon: XCircle,
-  },
-};
 
 const DrawerDetailsApplication: FC<Props> = (props) => {
   const { application, handleApprove, handleReject } = props;

@@ -1,6 +1,7 @@
 class Pages {
   HOME = '/';
   ORDERS = '/orders';
+  ORDERS_SELLER = '/orders-seller';
   ADMIN_ORDERS = '/admin/orders';
   PRODUCTS = '/products';
   ADMIN_PRODUCTS = '/admin/products';

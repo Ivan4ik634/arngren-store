@@ -5,4 +5,6 @@ export const statusFilters: SelectFilterOptionT[] = [
   { label: 'Pending', value: 'pending' },
   { label: 'Approved', value: 'approved' },
   { label: 'Rejected', value: 'rejected' },
+  { label: 'In Shipping', value: 'in_shipping' },
+  { label: 'Cancelled', value: 'cancelled' },
 ];

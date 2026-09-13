@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import { FilterOrdersT } from '@/types/FiltersT';
-import { OrderCreateT } from '@/types/OrderT';
+import { OrderCreateT, OrderUpdateT } from '@/types/OrderT';
 
 export const orderService = {
   async createOrder(order: OrderCreateT) {
@@ -52,6 +52,11 @@ export const orderService = {
   },
   async deleteOrder(id: string) {
     const res = await supabase.from('orders').delete().eq('id', id);
+
+    return res;
+  },
+  async updateOrder(id: string, data: OrderUpdateT) {
+    const res = await supabase.from('orders').update(data).eq('id', id);
 
     return res;
   },

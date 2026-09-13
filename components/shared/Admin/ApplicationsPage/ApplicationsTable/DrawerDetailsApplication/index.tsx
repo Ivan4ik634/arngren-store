@@ -29,7 +29,6 @@ const DrawerDetailsApplication: FC<Props> = (props) => {
       </DrawerTrigger>
       <DrawerContent className="w-[700px]">
         <div className="mx-auto w-full max-w-3xl px-4 pb-10 pt-4">
-          {/* Application ID + status */}
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Hash className="h-3 w-3" />

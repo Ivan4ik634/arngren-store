@@ -49,7 +49,7 @@ const SellerOrdersProductsTable: FC<Props> = ({ data }) => {
               </TableCell>
               <TableCell className="font-bold">${data.order_id.total}</TableCell>
               <TableCell className="text-right">
-                <DrawerSellerOrderProductDetails order={data.order_id} />
+                <DrawerSellerOrderProductDetails cartItem={data} order={data.order_id} />
               </TableCell>
             </TableRow>
           );

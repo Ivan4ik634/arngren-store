@@ -33,6 +33,9 @@ export async function POST(req: Request) {
           order_id: order.id,
         },
       },
+      shipping_address_collection: {
+        allowed_countries: ['UA', 'PL', 'DE'],
+      },
     });
 
     return Response.json({

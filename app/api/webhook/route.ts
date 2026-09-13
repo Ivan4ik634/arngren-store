@@ -32,7 +32,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Order ID missing' }, { status: 400 });
     }
 
-    await supabase.from('orders').update({ status: 'approved' }).eq('id', orderId);
+    const address = session.customer_details?.address;
+
+    await supabase
+      .from('orders')
+      .update({
+        status: 'processing',
+        address: address?.line1 ?? address?.line2,
+        city: address?.city ?? null,
+        state: address?.state ?? null,
+        postal_code: address?.postal_code ?? null,
+        country: address?.country ?? null,
+      })
+      .eq('id', orderId);
 
     console.log('Оплата успешна:', session.id);
   }
@@ -45,7 +57,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Order ID missing' }, { status: 400 });
     }
 
-    await supabase.from('orders').update({ status: 'rejected' }).eq('id', orderId);
+    await supabase
+      .from('orders')
+      .update({
+        status: 'rejected',
+      })
+      .eq('id', orderId);
 
     console.log('Оплата не прошла:', intent.id);
   }

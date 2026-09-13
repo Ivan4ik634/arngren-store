@@ -94,7 +94,7 @@ const OrdersTable: FC<Props> = ({
             <TableCell className="text-right">
               <div className="flex justify-start items-start">
                 <Trash2 onClick={() => handleDelete(order.id)} className="mr-2 text-red-500" />
-                <DrawerDetailsOrder order={order} />
+                <DrawerDetailsOrder handleDelete={handleDelete} order={order} />
               </div>
             </TableCell>
           </TableRow>

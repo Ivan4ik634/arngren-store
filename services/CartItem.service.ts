@@ -25,4 +25,11 @@ export const cartItemService = {
       .in('product_id', product_ids);
     return res.data;
   },
+  async getItemsByOrderId(order_id: string): Promise<CartItemWithOrderT[] | null> {
+    const res = await supabase
+      .from('cart_items')
+      .select('*,product_id(*)')
+      .eq('order_id', order_id);
+    return res.data;
+  },
 };

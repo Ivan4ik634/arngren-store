@@ -17,7 +17,7 @@ import {
   Trash2,
   VenusAndMars,
 } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 interface Props {
   user: UserT;
@@ -26,9 +26,10 @@ interface Props {
 
 const DrawerDetailsCustomer: FC<Props> = (props) => {
   const { user, handleDeleteUser } = props;
+  const [open, setOpen] = useState(false);
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger className="transition-colors hover:text-primary">
         <Eye />
       </DrawerTrigger>
@@ -104,7 +105,10 @@ const DrawerDetailsCustomer: FC<Props> = (props) => {
 
           {/* Админское действие */}
           <Button
-            onClick={() => handleDeleteUser(user.id)}
+            onClick={() => {
+              handleDeleteUser(user.id);
+              setOpen(false);
+            }}
             variant="destructive"
             className="w-full">
             <Trash2 className="mr-2 h-4 w-4" />

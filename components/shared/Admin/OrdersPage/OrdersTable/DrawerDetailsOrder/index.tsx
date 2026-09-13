@@ -10,7 +10,7 @@ import { cartItemService } from '@/services/CartItem.service';
 import { OrderWithUserT } from '@/types/OrderT';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar, Eye, Globe, Hash, Mail, MapPin, Package, User } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 interface Props {
   order: OrderWithUserT;
@@ -19,6 +19,7 @@ interface Props {
 
 const DrawerDetailsOrder: FC<Props> = (props) => {
   const { order, handleDelete } = props;
+  const [open, setOpen] = useState(false);
   const { data: products } = useQuery({
     queryKey: ['cartItem', order.id],
     queryFn: () => cartItemService.getItemsByOrderId(order?.id || ''),
@@ -29,7 +30,7 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
   const StatusIcon = status.icon;
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
         <Eye />
       </DrawerTrigger>
@@ -148,7 +149,12 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
             <span>Placed on {new Date(order.created_at).toLocaleDateString()}</span>
           </div>
           <div className="mt-3">
-            <Button className="w-full" onClick={() => handleDelete(order.id)}>
+            <Button
+              className="w-full"
+              onClick={() => {
+                handleDelete(order.id);
+                setOpen(false);
+              }}>
               Delete
             </Button>
           </div>

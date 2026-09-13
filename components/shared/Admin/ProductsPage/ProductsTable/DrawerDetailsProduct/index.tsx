@@ -9,7 +9,7 @@ import { PAGES } from '@/configs/PAGES';
 import { ProductT } from '@/types/ProductT';
 import { Calendar, Eye, Hash, Package, Star, Tag, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 interface Props {
   product: ProductT;
@@ -18,9 +18,10 @@ interface Props {
 
 const DrawerDetailsProduct: FC<Props> = (props) => {
   const { product, handleDeleteProduct } = props;
+  const [open, setOpen] = useState(false);
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
         <Eye />
       </DrawerTrigger>
@@ -118,7 +119,10 @@ const DrawerDetailsProduct: FC<Props> = (props) => {
 
           <div className="flex gap-3">
             <Button
-              onClick={() => handleDeleteProduct(product.id)}
+              onClick={() => {
+                handleDeleteProduct(product.id);
+                setOpen(false);
+              }}
               variant="destructive"
               className="flex-1">
               <Trash2 className="mr-2 h-4 w-4" />

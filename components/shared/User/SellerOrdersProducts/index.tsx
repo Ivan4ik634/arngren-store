@@ -3,9 +3,10 @@
 import { useProfile } from '@/hooks/useProfile';
 import { cartItemService } from '@/services/CartItem.service';
 import { productService } from '@/services/Product.service';
+import { CartItemWithOrderT } from '@/types/CartItemT';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import SellerOrdersProductsFilters from './SellerOrdersProductsFilters';
 import SellerOrdersProductsTable from './SellerOrdersProductsTable';
 //поиск всех продуктов продавца потом поиск всех карт итемсов, через них видим ордерс и все !!!
@@ -20,16 +21,20 @@ const SellerOrdersProductsPage: FC<Props> = (props) => {
     enabled: !!profile,
   });
   const { data } = useQuery({
-    queryKey: ['cart_Items', productIds],
+    queryKey: ['cart_items', productIds],
     queryFn: () => cartItemService.getItems(productIds?.flatMap((p) => p.id) || []),
     enabled: !!productIds,
   });
+  const [cartItems, setCartItems] = useState<CartItemWithOrderT[] | undefined | null>(data);
 
+  useEffect(() => {
+    setCartItems(data);
+  }, [data]);
   return (
     <div>
       <h1 className="font-bold text-2xl">Orders</h1>
       <SellerOrdersProductsFilters filters={filters} setFilters={setFilters} />
-      <SellerOrdersProductsTable data={data || []} />
+      <SellerOrdersProductsTable data={cartItems || []} setCartItems={setCartItems} />
     </div>
   );
 };

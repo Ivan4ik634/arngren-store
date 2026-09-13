@@ -11,14 +11,15 @@ import {
 import { statusConfig } from '@/configs/STATUS';
 import { CartItemWithOrderT } from '@/types/CartItemT';
 import dayjs from 'dayjs';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import DrawerSellerOrderProductDetails from './DrawerSellerOrderProductDetails';
 
 interface Props {
   data: CartItemWithOrderT[] | null | undefined;
+  setCartItems: Dispatch<SetStateAction<CartItemWithOrderT[] | null | undefined>>;
 }
 
-const SellerOrdersProductsTable: FC<Props> = ({ data }) => {
+const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   return (
     <Table className="mt-5">
       <TableHeader>
@@ -49,7 +50,11 @@ const SellerOrdersProductsTable: FC<Props> = ({ data }) => {
               </TableCell>
               <TableCell className="font-bold">${data.order_id.total}</TableCell>
               <TableCell className="text-right">
-                <DrawerSellerOrderProductDetails cartItem={data} order={data.order_id} />
+                <DrawerSellerOrderProductDetails
+                  setCartItems={setCartItems}
+                  cartItem={data}
+                  order={data.order_id}
+                />
               </TableCell>
             </TableRow>
           );

@@ -21,29 +21,39 @@ import {
   User,
   XCircle,
 } from 'lucide-react';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 interface Props {
   order: OrderWithUserT;
   cartItem: CartItemWithOrderT;
+  setCartItems: Dispatch<SetStateAction<CartItemWithOrderT[] | null | undefined>>;
 }
 
 const DrawerSellerOrderProductDetails: FC<Props> = (props) => {
-  const { order, cartItem } = props;
+  const { order, cartItem, setCartItems } = props;
   const user = order.user_id;
   const status = statusConfig[order.status];
   const StatusIcon = status.icon;
+  const [open, setOpen] = useState(false);
 
   const handleAccept = async () => {
     await orderService.updateOrder(order.id, { status: 'in_shipping' });
+    setCartItems((prev) =>
+      prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'in_shipping' } : ci)),
+    );
+    setOpen(false);
   };
 
   const handleReject = async () => {
     await orderService.updateOrder(order.id, { status: 'cancelled' });
+    setCartItems((prev) =>
+      prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'cancelled' } : ci)),
+    );
+    setOpen(false);
   };
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
         <Eye />
       </DrawerTrigger>

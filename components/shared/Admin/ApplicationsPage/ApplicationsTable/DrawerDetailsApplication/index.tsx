@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { statusConfig } from '@/configs/STATUS';
 import { ApplicationWithProductT } from '@/types/ApplicationT';
 import { Calendar, CheckCircle2, Eye, Hash, Mail, Star, Tag, User, XCircle } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 interface Props {
   application: ApplicationWithProductT;
@@ -18,12 +18,13 @@ interface Props {
 
 const DrawerDetailsApplication: FC<Props> = (props) => {
   const { application, handleApprove, handleReject } = props;
+  const [open, setOpen] = useState(false);
   const { product_id: product } = application;
   const status = statusConfig[application.status];
   const StatusIcon = status.icon;
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger className="transition-colors hover:text-primary">
         <Eye className="h-5 w-5" />
       </DrawerTrigger>
@@ -107,14 +108,20 @@ const DrawerDetailsApplication: FC<Props> = (props) => {
           {/* Admin actions */}
           <div className="flex gap-3">
             <Button
-              onClick={() => handleApprove(application)}
+              onClick={() => {
+                handleApprove(application);
+                setOpen(false);
+              }}
               variant="default"
               className="flex-1 bg-green-600 hover:bg-green-700">
               <CheckCircle2 className="mr-2 h-4 w-4" />
               Approve
             </Button>
             <Button
-              onClick={() => handleReject(application)}
+              onClick={() => {
+                handleReject(application);
+                setOpen(false);
+              }}
               variant="destructive"
               className="flex-1">
               <XCircle className="mr-2 h-4 w-4" />

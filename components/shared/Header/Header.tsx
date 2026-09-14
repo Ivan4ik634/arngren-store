@@ -45,6 +45,13 @@ export function Header() {
               <Heart className="size-5" />
             </button>
           </Link>
+          <Link href={PAGES.BALANCE}>
+            <button
+              className="relative text-black transition-colors hover:text-[#0969ff]"
+              aria-label="Wishlist">
+              <Heart className="size-5" />
+            </button>
+          </Link>
           <BagCartDrawer />
           <Link href={PAGES.CART}>
             <Button className="hidden h-9 rounded-md bg-[#0969ff] px-7 shadow-[0_8px_18px_rgba(9,105,255,0.22)] hover:bg-[#0057df] md:inline-flex">

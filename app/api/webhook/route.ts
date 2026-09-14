@@ -25,44 +25,39 @@ export async function POST(req: NextRequest) {
   const supabase = createClient(cookieStore);
 
   if (event.type === 'checkout.session.completed') {
+    const randomDeposit = `DEPOSIT-${Math.floor(100000 + Math.random() * 900000)}`;
     const session = event.data.object as Stripe.Checkout.Session;
-    const orderId = session.metadata?.order_id;
 
-    if (!orderId) {
+    if (!session.metadata?.user_id) {
       return NextResponse.json({ error: 'Order ID missing' }, { status: 400 });
     }
 
-    const address = session.customer_details?.address;
-
-    await supabase
-      .from('orders')
-      .update({
-        status: 'processing',
-        address: address?.line1 ?? address?.line2,
-        city: address?.city ?? null,
-        state: address?.state ?? null,
-        postal_code: address?.postal_code ?? null,
-        country: address?.country ?? null,
-      })
-      .eq('id', orderId);
+    await supabase.from('transaction').insert({
+      user_id: session.metadata?.user_id,
+      amount: session.amount_total as number,
+      status: 'completed',
+      type: 'deposit',
+      transaction: randomDeposit,
+    });
 
     console.log('Оплата успешна:', session.id);
   }
 
   if (event.type === 'payment_intent.payment_failed') {
+    const randomDeposit = `DEPOSIT-${Math.floor(100000 + Math.random() * 900000)}`;
     const intent = event.data.object as Stripe.PaymentIntent;
-    const orderId = intent.metadata?.order_id;
 
-    if (!orderId) {
+    if (!intent.metadata?.user_id) {
       return NextResponse.json({ error: 'Order ID missing' }, { status: 400 });
     }
 
-    await supabase
-      .from('orders')
-      .update({
-        status: 'rejected',
-      })
-      .eq('id', orderId);
+    await supabase.from('transaction').insert({
+      user_id: intent.metadata?.user_id,
+      amount: intent.amount as number,
+      status: 'failed',
+      type: 'deposit',
+      transaction: randomDeposit,
+    });
 
     console.log('Оплата не прошла:', intent.id);
   }

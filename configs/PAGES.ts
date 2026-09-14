@@ -14,6 +14,7 @@ class Pages {
   LOGIN = '/login';
   REGISTER = '/register';
   WISHLIST = '/wishlist';
+  BALANCE = '/balance';
   PRODUCT(id: string) {
     return `/product/${id}`;
   }

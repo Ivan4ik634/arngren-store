@@ -1,40 +1,40 @@
 // app/api/checkout/route.ts
 
-import { ProductT } from '@/types/ProductT';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   try {
-    const { items, order } = await req.json();
+    const body = await req.json();
+
+    const { amount, user_id } = body;
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-
-      line_items: items.map((item: { product: ProductT; count: number }) => ({
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.product.name,
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Balance deposit',
+            },
+            unit_amount: Math.round(amount * 100), // amount в долларах -> центы
           },
-          unit_amount: Math.round(item.product.price * 100),
+          quantity: 1,
         },
-        quantity: item.count,
-      })),
-
+      ],
       success_url: `http://localhost:3000/checkout/success`,
       cancel_url: `http://localhost:3000/checkout`,
-
       metadata: {
-        order_id: order.id,
+        type: 'deposit',
+        user_id,
       },
       payment_intent_data: {
         metadata: {
-          order_id: order.id,
+          type: 'deposit',
+          user_id,
         },
-      },
-      shipping_address_collection: {
-        allowed_countries: ['UA', 'PL', 'DE'],
       },
     });
 

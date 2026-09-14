@@ -10,6 +10,7 @@ export interface UserT {
   email: string;
   role: string;
   created_at: string;
+  balance: number;
 }
 
 export interface UserLoginT {

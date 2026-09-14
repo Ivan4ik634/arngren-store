@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
 import { statusConfig } from '@/configs/STATUS';
+import { useProfile } from '@/hooks/useProfile';
 import { orderService } from '@/services/Order.service';
+import { transactionService } from '@/services/Transaction.service';
 import { CartItemWithOrderT } from '@/types/CartItemT';
 import { OrderWithUserT } from '@/types/OrderT';
 import {
@@ -35,12 +37,33 @@ const DrawerSellerOrderProductDetails: FC<Props> = (props) => {
   const status = statusConfig[order.status];
   const StatusIcon = status.icon;
   const [open, setOpen] = useState(false);
+  const { profile } = useProfile();
 
   const handleAccept = async () => {
+    if (order.status === 'cancelled') return;
+
     await orderService.updateOrder(order.id, { status: 'in_shipping' });
     setCartItems((prev) =>
       prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'in_shipping' } : ci)),
     );
+
+    await transactionService.create({
+      user_id: order.user_id.id,
+      amount: order.total,
+      status: 'completed',
+      type: 'purchase',
+      transaction: order.order_id,
+    });
+    if (profile?.id) {
+      await transactionService.create({
+        user_id: profile.id,
+        amount: order.total,
+        status: 'completed',
+        type: 'income',
+        transaction: order.order_id,
+      });
+    }
+
     setOpen(false);
   };
 
@@ -49,6 +72,26 @@ const DrawerSellerOrderProductDetails: FC<Props> = (props) => {
     setCartItems((prev) =>
       prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'cancelled' } : ci)),
     );
+
+    const existingTransaction = await transactionService.getByOrderIdAndUserId(
+      order.user_id.id,
+      order.order_id,
+    );
+
+    if (existingTransaction) {
+      await transactionService.update(existingTransaction[0].id, {
+        status: existingTransaction[0].status === 'completed' ? 'completed' : 'cancelled',
+      });
+    } else {
+      await transactionService.create({
+        user_id: order.user_id.id,
+        amount: order.total,
+        status: 'cancelled',
+        type: 'purchase',
+        transaction: order.order_id,
+      });
+    }
+
     setOpen(false);
   };
 
@@ -164,6 +207,7 @@ const DrawerSellerOrderProductDetails: FC<Props> = (props) => {
           <div className="flex gap-3">
             <Button
               onClick={handleAccept}
+              disabled={order.status !== 'cancelled'}
               variant="default"
               className="flex-1 bg-green-600 hover:bg-green-700">
               <CheckCircle2 className="mr-2 h-4 w-4" />

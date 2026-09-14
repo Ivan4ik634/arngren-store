@@ -30,6 +30,7 @@ const SellerOrdersProductsPage: FC<Props> = (props) => {
   useEffect(() => {
     setCartItems(data);
   }, [data]);
+
   return (
     <div>
       <h1 className="font-bold text-2xl">Orders</h1>

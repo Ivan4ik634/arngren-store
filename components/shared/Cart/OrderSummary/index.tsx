@@ -1,14 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/toast';
-import { supabase } from '@/lib/supabase/client';
+import { useProfile } from '@/hooks/useProfile';
 import { cartItemService } from '@/services/CartItem.service';
 import { orderService } from '@/services/Order.service';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
+import { AddressT } from '@/types/OrderT';
 import { Lock, Truck, Undo2 } from 'lucide-react';
 import { FC } from 'react';
+import CheckoutDrawer from './CheckoutDrawer';
 
 interface Props {
   buyNow?: boolean;
@@ -20,20 +21,22 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
   const itemsPrices = buyNow
     ? (product?.product.price || 0) * (product?.count || 1) + 5
     : productCards.reduce((acc, item) => acc + item.product.price * item.count, 0);
-  const handleCheckout = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
 
-    if (!user?.id) {
+  const { profile } = useProfile();
+  const handleCheckout = async (address: AddressT) => {
+    if (!profile?.id) {
       return toast.close('User not found');
+    }
+    if (profile.balance < itemsPrices) {
+      return toast.close('Insufficient balance');
     }
     const orderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
     const { data: order, error: orderError } = await orderService.createOrder({
-      user_id: user.id,
+      user_id: profile.id,
       items_length: buyNow ? 1 : productCards.length,
       total: itemsPrices,
       order_id: orderNumber,
+      ...address,
     });
 
     if (orderError || !order) {
@@ -48,22 +51,9 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
     if (itemsError) {
       return toast.close(itemsError.message);
     }
-    const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        items: buyNow ? [product] : productCards,
-        order,
-      }),
-    });
+    //Потому что потом я сделаю чтобы селлер ордерс  менял статус на потвержденно, потому что списания на данный момент его нет хотя оно есть
 
-    const { url } = await res.json();
-
-    if (url) {
-      window.location.href = url;
-    }
+    toast.close('Order created successfully');
   };
 
   return (
@@ -85,9 +75,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
             <p className="font-semibold">Total</p>
             <p className="font-semibold">${itemsPrices}</p>
           </div>
-          <Button onClick={handleCheckout} size="lg" className="w-full mt-5 text-xl py-7">
-            Checkout
-          </Button>
+          <CheckoutDrawer onCheckout={handleCheckout} />
         </div>
       </div>
       <div className="border space-y-8 w-full  p-7  rounded-[10px]">

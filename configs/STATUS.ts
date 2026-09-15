@@ -6,6 +6,11 @@ export const statusConfig = {
     className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100',
     icon: Clock,
   },
+  completed: {
+    label: 'Completed',
+    className: 'bg-blue-100 text-blue-700 hover:bg-blue-100',
+    icon: CheckCircle2,
+  },
 
   approved: {
     label: 'Approved',
@@ -32,6 +37,11 @@ export const statusConfig = {
   },
   cancelled: {
     label: 'Cancelled',
+    className: 'bg-red-100 text-red-700 hover:bg-red-100',
+    icon: XCircle,
+  },
+  failed: {
+    label: 'Failed',
     className: 'bg-red-100 text-red-700 hover:bg-red-100',
     icon: XCircle,
   },

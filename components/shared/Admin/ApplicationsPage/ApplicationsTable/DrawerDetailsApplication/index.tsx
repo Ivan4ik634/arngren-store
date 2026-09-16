@@ -29,7 +29,9 @@ const DrawerDetailsApplication: FC<Props> = (props) => {
         <Eye className="h-5 w-5" />
       </DrawerTrigger>
       <DrawerContent className="w-[700px]">
-        <div className="mx-auto w-full max-w-3xl px-4 pb-10 pt-4">
+        <div
+          className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-4 pt-4"
+          style={{ minHeight: '100vh' }}>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Hash className="h-3 w-3" />
@@ -106,7 +108,7 @@ const DrawerDetailsApplication: FC<Props> = (props) => {
           <Separator className="my-4" />
 
           {/* Admin actions */}
-          <div className="flex gap-3">
+          <div className="mt-auto flex gap-3 pt-6">
             <Button
               onClick={() => {
                 handleApprove(application);

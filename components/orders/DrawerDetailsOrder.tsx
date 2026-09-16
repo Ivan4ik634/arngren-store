@@ -14,7 +14,8 @@ import { FC, useState } from 'react';
 
 interface Props {
   order: OrderWithUserT;
-  handleDelete: (id: string) => void;
+  handleDelete?: (id: string) => void;
+  type: 'admin' | 'user';
 }
 
 const DrawerDetailsOrder: FC<Props> = (props) => {
@@ -35,7 +36,9 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
         <Eye />
       </DrawerTrigger>
       <DrawerContent className="w-[700px]">
-        <div className="mx-auto w-full max-w-3xl px-4 pb-10 pt-4">
+        <div
+          className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-4 pt-4"
+          style={{ minHeight: '100vh' }}>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Hash className="h-3 w-3" />
@@ -48,24 +51,26 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
           </div>
 
           {/* Customer */}
-          <div className="mb-6 flex items-center justify-between rounded-xl border p-4">
-            <div className="flex items-center gap-3">
-              <Avatar>
-                <AvatarImage src={user.avatar} />
-                <AvatarFallback>
-                  <User className="h-4 w-4" />
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-sm font-medium">{user.name}</p>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Mail className="h-3 w-3" />
-                  <span>{user.email}</span>
+          {props.type === 'admin' && (
+            <div className="mb-6 flex items-center justify-between rounded-xl border p-4">
+              <div className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarImage src={user.avatar} />
+                  <AvatarFallback>
+                    <User className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">{user.name}</p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Mail className="h-3 w-3" />
+                    <span>{user.email}</span>
+                  </div>
                 </div>
               </div>
+              <Badge variant="outline">{user.role}</Badge>
             </div>
-            <Badge variant="outline">{user.role}</Badge>
-          </div>
+          )}
 
           <Separator className="my-4" />
 
@@ -148,15 +153,17 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
             <Calendar className="h-3 w-3" />
             <span>Placed on {new Date(order.created_at).toLocaleDateString()}</span>
           </div>
-          <div className="mt-3">
-            <Button
-              className="w-full"
-              onClick={() => {
-                handleDelete(order.id);
-                setOpen(false);
-              }}>
-              Delete
-            </Button>
+          <div className="mt-auto pt-6">
+            {props.type === 'admin' && (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  handleDelete!(order.id);
+                  setOpen(false);
+                }}>
+                Delete
+              </Button>
+            )}
           </div>
         </div>
       </DrawerContent>

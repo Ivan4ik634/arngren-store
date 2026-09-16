@@ -34,7 +34,9 @@ const DrawerDetailsCustomer: FC<Props> = (props) => {
         <Eye />
       </DrawerTrigger>
       <DrawerContent className="w-[700px]">
-        <div className="mx-auto w-full max-w-3xl px-4 pb-10 pt-4">
+        <div
+          className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-4 pt-4"
+          style={{ minHeight: '100vh' }}>
           {/* ID пользователя */}
           <div className="mb-3 flex items-center gap-1 text-xs text-muted-foreground">
             <Hash className="h-3 w-3" />
@@ -104,16 +106,18 @@ const DrawerDetailsCustomer: FC<Props> = (props) => {
           <Separator className="my-4" />
 
           {/* Админское действие */}
-          <Button
-            onClick={() => {
-              handleDeleteUser(user.id);
-              setOpen(false);
-            }}
-            variant="destructive"
-            className="w-full">
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete profile
-          </Button>
+          <div className="mt-auto pt-6">
+            <Button
+              onClick={() => {
+                handleDeleteUser(user.id);
+                setOpen(false);
+              }}
+              variant="destructive"
+              className="w-full">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete profile
+            </Button>
+          </div>
         </div>
       </DrawerContent>
     </Drawer>

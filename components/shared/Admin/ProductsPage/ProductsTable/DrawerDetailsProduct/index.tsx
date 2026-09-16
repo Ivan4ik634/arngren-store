@@ -26,7 +26,9 @@ const DrawerDetailsProduct: FC<Props> = (props) => {
         <Eye />
       </DrawerTrigger>
       <DrawerContent className="w-[700px]">
-        <div className="mx-auto w-full max-w-3xl px-4 pb-10 pt-4">
+        <div
+          className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-4 pt-4"
+          style={{ minHeight: '100vh' }}>
           <div className="mb-3 flex items-center gap-1 text-xs text-muted-foreground">
             <Hash className="h-3 w-3" />
             <span>{product.id}</span>
@@ -117,7 +119,7 @@ const DrawerDetailsProduct: FC<Props> = (props) => {
             <span>Added {new Date(product.created_at).toLocaleDateString()}</span>
           </div>
 
-          <div className="flex gap-3">
+          <div className="mt-auto flex gap-3 pt-6">
             <Button
               onClick={() => {
                 handleDeleteProduct(product.id);

@@ -1,21 +1,12 @@
 'use client';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { statusConfig } from '@/configs/STATUS';
-import { OrderT } from '@/types/OrderT';
-import dayjs from 'dayjs';
-import { Eye } from 'lucide-react';
+import OrderItem from '@/components/orders/OrderItem';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { OrderWithUserT } from '@/types/OrderT';
 import { FC } from 'react';
 
 interface Props {
-  data: OrderT[] | null | undefined;
+  data: OrderWithUserT[] | null | undefined;
 }
 
 const UserOrdersTable: FC<Props> = ({ data }) => {
@@ -32,30 +23,9 @@ const UserOrdersTable: FC<Props> = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.map((data) => {
-          const statusConf = statusConfig[data.status];
-          return (
-            <TableRow key={data.id}>
-              <TableCell className="font-medium">{data.order_id}</TableCell>
-              <TableCell>
-                <div>
-                  <p>{dayjs(data.created_at).format('MMM DD YYYY')}</p>
-                  <p className="opacity-50">{dayjs(data.created_at).format('hh:mm A')}</p>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={`px-4 py-2 ${statusConf.className} w-min rounded-full`}>
-                  <p>{data.status}</p>
-                </div>
-              </TableCell>
-              <TableCell className="font-bold">${data.total}</TableCell>
-              <TableCell className="">{data.items_length}</TableCell>
-              <TableCell className="text-right">
-                <Eye />
-              </TableCell>
-            </TableRow>
-          );
-        })}
+        {data?.map((data) => (
+          <OrderItem key={data.id} order={data} />
+        ))}
       </TableBody>
     </Table>
   );

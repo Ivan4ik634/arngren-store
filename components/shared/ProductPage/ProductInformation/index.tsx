@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { PAGES } from '@/configs/PAGES';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
+import { useReviews } from '@/store/useReviews';
 import { ProductT } from '@/types/ProductT';
 import { Minus, Plus, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -18,6 +19,7 @@ const ProductInformation: FC<Props> = ({ product }) => {
   const { addProductCard } = useProductCart();
   const { setProduct } = useProductBuyNow();
   const router = useRouter();
+  const { reviews } = useReviews();
 
   const handleBuynow = () => {
     setProduct({ product, count });
@@ -44,8 +46,10 @@ const ProductInformation: FC<Props> = ({ product }) => {
             <p className=" text-4xl font-bold">${product.price}</p>
             <div className="flex items-center">
               <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
-              <span className="mx-1 font-semibold text-[#0969ff]">{product.rating}</span>
-              <span className="text-zinc-500"> ({product.reviews})</span>
+              <span className="mx-1 font-semibold text-[#0969ff]">
+                {reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length}
+              </span>
+              <span className="text-zinc-500"> ({reviews.length})</span>
             </div>
           </div>
           <div className="border-2 shadow border-zinc-500 w-min  rounded-[5px] p-3 flex items-center">

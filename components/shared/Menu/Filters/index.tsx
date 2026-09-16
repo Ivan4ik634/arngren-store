@@ -6,7 +6,7 @@ import CategoryFilters from './CategoryFilters';
 import PriceRangeFilters from './PriceRangeFilters';
 
 export function Filters() {
-  const { filters, setFilters } = useFilters();
+  const { setFilters } = useFilters();
   return (
     <div className="p-3">
       <div className="flex border-b border-zinc-200 pb-3 items-center justify-between">

@@ -3,13 +3,19 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/toast';
+import { withdravalService } from '@/services/Withdrawal.service';
+import { UserT } from '@/types/UserT';
 import { Banknote, CreditCard, Landmark, Plus } from 'lucide-react';
 import { FC, useState } from 'react';
 
-interface Props {}
+interface Props {
+  profile: UserT | null;
+}
 
-const BalanceTopUpWithdraw: FC<Props> = (props) => {
+const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
   const [value, setValue] = useState(0);
+  const [iban, setIban] = useState('');
   const handleTopUp = async () => {
     const res = await fetch('/api/checkout', {
       method: 'POST',
@@ -26,6 +32,15 @@ const BalanceTopUpWithdraw: FC<Props> = (props) => {
     if (url) {
       window.location.href = url;
     }
+  };
+  const handleWithdraw = async () => {
+    if (!profile) return;
+
+    const { error } = await withdravalService.add({ amount: value, iban, user_id: profile?.id });
+    if (error) return;
+
+    toast.close('Withdrawal successfully');
+    setIban('');
   };
   return (
     <div className="mt-5 grid gap-5 lg:grid-cols-2">
@@ -68,7 +83,7 @@ const BalanceTopUpWithdraw: FC<Props> = (props) => {
                 placeholder="Custom amount"
               />
             </div>
-            <Button>
+            <Button onClick={handleTopUp}>
               <CreditCard className="size-4" />
               Top up
             </Button>
@@ -100,9 +115,14 @@ const BalanceTopUpWithdraw: FC<Props> = (props) => {
             </div>
             <div>
               <label className="text-sm font-medium">Bank account</label>
-              <Input className="mt-1" placeholder="IBAN / card number" />
+              <Input
+                value={iban}
+                onChange={(e) => setIban(e.target.value)}
+                className="mt-1"
+                placeholder="IBAN / card number"
+              />
             </div>
-            <Button variant="secondary" className="w-full">
+            <Button onClick={handleWithdraw} variant="secondary" className="w-full">
               <Landmark className="size-4" />
               Request withdrawal
             </Button>

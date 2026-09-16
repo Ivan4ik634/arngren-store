@@ -22,7 +22,7 @@ const BalancePage: FC<Props> = (props) => {
       <h1 className="font-bold text-2xl">Balance</h1>
       <p className="opacity-50">Manage your wallet, top up and track your transactions</p>
       <BalanceOverwiew profile={profile} transactions={transactions} />
-      <BalanceTopUpWithdraw />
+      <BalanceTopUpWithdraw profile={profile} />
       <BalanceTransactionHistory transactions={transactions} />
     </div>
   );

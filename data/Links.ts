@@ -1,6 +1,6 @@
 import { PAGES } from '@/configs/PAGES';
 import { LinkT } from '@/types/LinkT';
-import { AppWindowMac, Heart, ListOrdered, Package, User, Users } from 'lucide-react';
+import { AppWindowMac, CreditCard, Heart, ListOrdered, Package, User, Users } from 'lucide-react';
 
 export const AdminLinks: LinkT[] = [
   {
@@ -12,6 +12,11 @@ export const AdminLinks: LinkT[] = [
     icon: Package,
     name: 'Products',
     href: PAGES.ADMIN_PRODUCTS,
+  },
+  {
+    icon: CreditCard,
+    name: 'Withdrawals',
+    href: PAGES.WITHDRAWAL,
   },
   {
     icon: AppWindowMac,

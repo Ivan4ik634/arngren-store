@@ -13,6 +13,7 @@ class Pages {
   SETTINGS = '/settings';
   LOGIN = '/login';
   REGISTER = '/register';
+  WITHDRAWAL = '/admin/withdrawal';
   WISHLIST = '/wishlist';
   BALANCE = '/balance';
   PRODUCT(id: string) {

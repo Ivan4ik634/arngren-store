@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { reviewService } from '@/services/Review.service';
 import { useReviews } from '@/store/useReviews';
+import { ProductT } from '@/types/ProductT';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
@@ -10,9 +11,11 @@ import { useParams } from 'next/navigation';
 import { FC, useEffect } from 'react';
 import DialogAddReview from './DialogAddReview';
 
-interface Props {}
+interface Props {
+  product: ProductT;
+}
 
-const ProductReview: FC<Props> = (props) => {
+const ProductReview: FC<Props> = ({ product }) => {
   const { id } = useParams<{ id: string }>();
   const { data } = useQuery({
     queryKey: ['reviews'],
@@ -34,7 +37,7 @@ const ProductReview: FC<Props> = (props) => {
             <span className="text-zinc-500"> ({10})</span>
           </div>
         </div>
-        <DialogAddReview />
+        <DialogAddReview product={product} />
       </div>
       <div className="flex flex-col mt-10 gap-y-5">
         {reviews?.map((review) => (
@@ -57,7 +60,7 @@ const ProductReview: FC<Props> = (props) => {
                   ))}
               </div>
 
-              <p>Review</p>
+              <p>{review.text}</p>
             </div>
           </div>
         ))}

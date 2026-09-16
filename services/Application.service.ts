@@ -15,7 +15,7 @@ export const applicationService = {
         id,
         name,
         category,
-        brand,
+        brand,description,
         price,
         seller(name,email,avatar),
         images

@@ -1,12 +1,47 @@
 import { supabase } from '@/lib/supabase/client';
-import { ReviewWithUserT } from '@/types/ReviewT';
-import { WithdrawalCreateT, WithdrawalUpdateT } from '@/types/WithdrawalT';
+import { FiltersT } from '@/types/FiltersT';
+import { WithdrawalCreateT, WithdrawalUpdateT, WithdrawalWithUserT } from '@/types/WithdrawalT';
 
 export const withdravalService = {
-  async getAll(): Promise<ReviewWithUserT[] | null> {
-    const res = await supabase.from('withdrawal').select('*,user_id(*)');
+  async getAll(filters?: FiltersT): Promise<WithdrawalWithUserT[]> {
+    let query = supabase.from('withdrawal').select(
+      `
+      id,
+      user_id(
+        id,
+        avatar,
+        name,
+        email,
+        role,
+        balance,
+        created_at
+      ),
+      amount,
+      status,
+      iban,
+      created_at
+    `,
+    );
 
-    return res.data;
+    if (filters?.status && filters.status !== 'all') {
+      query = query.eq('status', filters.status);
+    }
+
+    if (filters?.search) {
+      query = query.ilike('user_id.name', `%${filters.search}%`);
+    }
+
+    return (await query).data as any as WithdrawalWithUserT[];
+  },
+  async editWithdrawal(id: string, status: 'pending' | 'completed' | 'failed') {
+    const res = await supabase.from('withdrawal').update({ status }).eq('id', id);
+
+    return res;
+  },
+  async editWithdrawals(ids: string[], status: 'pending' | 'completed' | 'failed') {
+    const res = await supabase.from('withdrawal').update({ status }).in('id', ids);
+
+    return res;
   },
   async add(data: WithdrawalCreateT) {
     const res = await supabase.from('withdrawal').insert(data).select('*,user_id(*)').single();

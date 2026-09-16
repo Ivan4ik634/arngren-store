@@ -3,19 +3,23 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/toast';
 import { useProfile } from '@/hooks/useProfile';
+import { productService } from '@/services/Product.service';
 import { reviewService } from '@/services/Review.service';
 import { useReviews } from '@/store/useReviews';
+import { ProductT } from '@/types/ProductT';
 import { ReviewCreateT } from '@/types/ReviewT';
 import { Star } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
-interface Props {}
+interface Props {
+  product: ProductT;
+}
 
-const DialogAddReview: FC<Props> = (props) => {
+const DialogAddReview: FC<Props> = ({ product }) => {
   const [hoveredRating, setHoveredRating] = useState(0);
   const [open, setOpen] = useState(false);
   const { id } = useParams<{ id: string }>();
@@ -47,9 +51,16 @@ const DialogAddReview: FC<Props> = (props) => {
   const activeRating = hoveredRating || rating;
 
   const handleFormSubmit = async (data: ReviewCreateT) => {
-    if (data.rating < 1 && data.rating > 5) return toast.close('Rating must be between 1 and 5');
+    if (data.rating < 1 && data.rating > 5) return toast.error('Rating must be between 1 and 5');
 
     const res = await reviewService.addReview(data);
+
+    await productService.editProduct({
+      id,
+      rating: (product.rating * product.reviews + res.data.rating) / (product.reviews + 1),
+      reviews: product.reviews + 1,
+    });
+
     addReview(res.data);
     setOpen(false);
     reset();
@@ -60,7 +71,7 @@ const DialogAddReview: FC<Props> = (props) => {
       <DialogTrigger>
         <Button>Add review</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-[400px]">
         <DialogTitle>Add review</DialogTitle>
 
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-3">

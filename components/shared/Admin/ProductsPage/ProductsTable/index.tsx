@@ -56,7 +56,7 @@ const ProductsTable: FC<Props> = ({
       </TableHeader>
       <TableBody>
         {products?.map((product) => (
-          <TableRow>
+          <TableRow key={product.id}>
             <TableCell className="w-[75px] ">
               <Checkbox
                 checked={idsChecked.includes(product.id)}
@@ -83,8 +83,9 @@ const ProductsTable: FC<Props> = ({
               </div>
             </TableCell>
             <TableCell>
-              <div className="px-4 py-2 bg-green-500/20 w-min rounded-full ">
-                <p className="text-green-500">{product.count > 0 ? 'Available' : 'Unavailable'}</p>
+              <div
+                className={`px-4 py-2 ${product.count > 0 ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'} w-min rounded-full `}>
+                <p>{product.count > 0 ? 'Available' : 'Unavailable'}</p>
               </div>
             </TableCell>
             <TableCell className="">{product.count}</TableCell>

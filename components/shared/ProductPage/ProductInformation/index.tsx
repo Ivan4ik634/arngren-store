@@ -37,7 +37,9 @@ const ProductInformation: FC<Props> = ({ product }) => {
         <div className="space-y-5">
           <h3 className="text-2xl font-bold">{product.name}</h3>
           <p className=" ">{product.description}</p>
-          <p className="text-primary font-bold text-xl">{product.category}</p>
+          <p className="text-primary font-bold text-xl">
+            {product.category.slice(0, 1).toUpperCase() + product.category.slice(1)}
+          </p>
           <div className="flex items-center gap-x-5">
             <p className=" text-4xl font-bold">${product.price}</p>
             <div className="flex items-center">
@@ -69,7 +71,10 @@ const ProductInformation: FC<Props> = ({ product }) => {
               Add to Cart
             </Button>
 
-            <Button variant="outline" onClick={handleBuynow} className="text-[16px] w-full py-8">
+            <Button
+              variant="outline"
+              onClick={handleBuynow}
+              className="text-[16px] mt-3 w-full py-8">
               Buy Now
             </Button>
           </div>

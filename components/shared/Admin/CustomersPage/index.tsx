@@ -25,7 +25,7 @@ const CustomersPage: FC<Props> = (props) => {
 
   const checkboxes = useCheckboxes(users || [], (user) => user.id);
   return (
-    <div>
+    <div className="mt-8 w-full">
       <h1 className="font-bold text-2xl">Customers</h1>
       <CustomerFilters
         {...checkboxes}

@@ -15,7 +15,7 @@ export const AdminLinks: LinkT[] = [
   },
   {
     icon: CreditCard,
-    name: 'Withdrawals',
+    name: 'Withdrawal Requests',
     href: PAGES.WITHDRAWAL,
   },
   {

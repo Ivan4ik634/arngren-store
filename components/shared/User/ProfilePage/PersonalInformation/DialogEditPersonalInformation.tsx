@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { toast } from '@/components/ui/toast';
 import { languages } from '@/data/Languages';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
@@ -28,6 +27,7 @@ import dayjs from 'dayjs';
 import { ArrowDown, Pen } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 interface Props {
   profile: UserT | null;
@@ -69,10 +69,10 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
         ...data,
       },
     });
-    if (error) return toast.close('Error updating user');
+    if (error) return toast.error('Error updating user');
 
     const { error: userServiceError } = await userService.updateUser(profile.id, { ...data });
-    if (userServiceError) return toast.close('Error updating user');
+    if (userServiceError) return toast.error('Error updating user');
 
     setProfileStore({
       ...profile,
@@ -80,7 +80,7 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
       dateOfBirth: dayjs(data.dateOfBirth).format('DD MMM YYYY'),
     });
 
-    toast.close('User updated successfully');
+    toast.success('User updated successfully');
   };
 
   return (

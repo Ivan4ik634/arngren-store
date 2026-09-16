@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/toast';
 import { useUploadImages } from '@/hooks/useUploadImages';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
@@ -19,6 +18,7 @@ import { UserT, UserUpdateT } from '@/types/UserT';
 import { Pen } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 interface Props {
   profile: UserT | null;
@@ -64,14 +64,14 @@ const DialogEditProfile: FC<Props> = ({ profile }) => {
         ...data,
       },
     });
-    if (error) return toast.close('Error updating user');
+    if (error) return toast.error('Error updating user');
 
     const { error: userServiceError } = await userService.updateUser(profile.id, { ...data });
-    if (userServiceError) return toast.close('Error updating user');
+    if (userServiceError) return toast.error('Error updating user');
 
     setProfileStore({ ...profile, ...data });
 
-    toast.close('User updated successfully');
+    toast.success('User updated successfully');
   };
 
   return (

@@ -11,13 +11,13 @@ import {
 import { Input } from '@/components/ui/input';
 import SelectFilter from '@/components/ui/SelectFilter';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/components/ui/toast';
 import { brandFilters } from '@/data/Brands';
 import { categoryFilters } from '@/data/Catogeries';
 import { useUploadImages } from '@/hooks/useUploadImages';
 import { ProductFormCreateT, ProductT } from '@/types/ProductT';
 import { X } from 'lucide-react';
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface Props {
   children: React.ReactNode;
@@ -44,7 +44,7 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
     init: init?.images || [],
   });
   const onSubmit = async () => {
-    if (!images) return toast.close('Please upload an image');
+    if (!images) return toast.error('Please upload an image');
 
     if (
       !form.name ||
@@ -55,9 +55,9 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
       !form.category ||
       !form.brand
     )
-      return toast.close('Please fill all fields');
+      return toast.error('Please fill all fields');
 
-    if (form.price <= 50000) return toast.close('Price must be greater than $50,000');
+    if (form.price >= 50000) return toast.error(' Price must be less than 50,000');
 
     action(form, images);
   };

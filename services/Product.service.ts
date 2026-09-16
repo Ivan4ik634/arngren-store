@@ -45,6 +45,8 @@ export const productService = {
       category,
       brand,
       price,
+      rating,
+      description,
       images,
       count,
       seller(id, name, avatar, email),

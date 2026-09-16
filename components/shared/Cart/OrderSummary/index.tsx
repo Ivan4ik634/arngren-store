@@ -1,14 +1,15 @@
 'use client';
 
-import { toast } from '@/components/ui/toast';
 import { useProfile } from '@/hooks/useProfile';
 import { cartItemService } from '@/services/CartItem.service';
 import { orderService } from '@/services/Order.service';
+import { productService } from '@/services/Product.service';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { AddressT } from '@/types/OrderT';
 import { Lock, Truck, Undo2 } from 'lucide-react';
 import { FC } from 'react';
+import toast from 'react-hot-toast';
 import CheckoutDrawer from './CheckoutDrawer';
 
 interface Props {
@@ -25,10 +26,10 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
   const { profile } = useProfile();
   const handleCheckout = async (address: AddressT) => {
     if (!profile?.id) {
-      return toast.close('User not found');
+      return toast.error('User not found');
     }
     if (profile.balance < itemsPrices) {
-      return toast.close('Insufficient balance');
+      return toast.error('Insufficient balance');
     }
     const orderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
     const { data: order, error: orderError } = await orderService.createOrder({
@@ -40,7 +41,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
     });
 
     if (orderError || !order) {
-      return toast.close(orderError?.message || 'Failed to create order');
+      return toast.error(orderError?.message || 'Failed to create order');
     }
 
     const { error: itemsError } = await cartItemService.createItems(
@@ -49,11 +50,16 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
     );
 
     if (itemsError) {
-      return toast.close(itemsError.message);
+      return toast.error(itemsError.message);
     }
-    //Потому что потом я сделаю чтобы селлер ордерс  менял статус на потвержденно, потому что списания на данный момент его нет хотя оно есть
+    for (let i = 0; i < productCards.length; i++) {
+      await productService.editProduct({
+        id: productCards[i].product.id,
+        count: productCards[i].product.count - productCards[i].count,
+      });
+    }
 
-    toast.close('Order created successfully');
+    toast.success('Order created successfully');
   };
 
   return (
@@ -63,7 +69,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
         <div className="py-5 space-y-3">
           <div className="flex  justify-between">
             <p>Items ({buyNow ? 1 : productCards.length})</p>
-            <p className="font-semibold">${itemsPrices - 5}</p>
+            <p className="font-semibold">${itemsPrices > 500 ? itemsPrices : itemsPrices + 5}</p>
           </div>
           <div className="flex  justify-between">
             <p>Shipping </p>

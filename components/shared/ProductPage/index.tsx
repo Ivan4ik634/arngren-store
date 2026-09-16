@@ -13,7 +13,7 @@ const ProductPage: FC<Props> = ({ product }) => {
   return (
     <div className=" h-[calc(100vh-200px)]  space-y-12.5">
       <ProductInformation product={product} />
-      <ProductReview />
+      <ProductReview product={product} />
     </div>
   );
 };

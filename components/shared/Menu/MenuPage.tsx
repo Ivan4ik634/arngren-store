@@ -11,7 +11,7 @@ import MenuProducts from './MenuProducts';
 export function MenuPage() {
   const { filters, setFilters } = useFilters();
   const { data: products } = useQuery({
-    queryKey: ['products'],
+    queryKey: ['products', filters],
     queryFn: () => productService.getProductsMenu(filters),
     select: (data) => data.data,
   });

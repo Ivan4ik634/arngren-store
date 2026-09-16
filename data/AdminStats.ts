@@ -1,5 +1,6 @@
 import { ApplicationWithProductT, CardStatsT } from '@/types/ApplicationT';
 import { ProductT } from '@/types/ProductT';
+import { WithdrawalWithUserT } from '@/types/WithdrawalT';
 import {
   Check,
   Clock,
@@ -75,6 +76,40 @@ export const getApplicationsStats = (applications: ApplicationWithProductT[]): C
     icon: DollarSign,
     title: 'Products Added',
     info: formatNumber(new Set(applications.map((application) => application.product_id)).size),
+  },
+];
+
+export const getWithdrawalsStats = (withdrawals: WithdrawalWithUserT[]): CardStatsT[] => [
+  {
+    icon: DollarSign,
+    title: 'Total withdrawals',
+    info: formatNumber(withdrawals.length),
+  },
+  {
+    icon: Clock,
+    title: 'Pending',
+    info: formatNumber(withdrawals.filter((w) => w.status === 'pending').length),
+    iconWrapperClassName: 'bg-yellow-500/10',
+    iconClassName: 'text-yellow-500',
+  },
+  {
+    icon: Check,
+    title: 'Completed',
+    info: formatNumber(withdrawals.filter((w) => w.status === 'completed').length),
+    iconWrapperClassName: 'bg-green-500/10',
+    iconClassName: 'text-green-500',
+  },
+  {
+    icon: XCircleIcon,
+    title: 'Failed',
+    info: formatNumber(withdrawals.filter((w) => w.status === 'failed').length),
+    iconWrapperClassName: 'bg-red-500/10',
+    iconClassName: 'text-red-500',
+  },
+  {
+    icon: DollarSign,
+    title: 'Total amount',
+    info: formatMoney(withdrawals.reduce((total, w) => total + w.amount, 0)),
   },
 ];
 

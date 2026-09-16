@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/toast';
 import { PAGES } from '@/configs/PAGES';
 import { signInWithGoogle } from '@/funcs/SignInWithGoogle';
 import { supabase } from '@/lib/supabase/client';
@@ -11,6 +10,7 @@ import { UserLoginT } from '@/types/UserT';
 import Link from 'next/link';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { FaGoogle } from 'react-icons/fa';
 
@@ -26,9 +26,9 @@ const LoginPage: FC<Props> = (props) => {
     console.log('123');
     const { error } = await supabase.auth.signInWithPassword(data);
 
-    if (error?.message) return toast.close(error.message);
+    if (error?.message) return toast.error(error.message);
 
-    return toast.close('Register successfully');
+    return toast.success('Register successfully');
   };
 
   return (

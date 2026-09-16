@@ -3,27 +3,31 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/toast';
 import { withdravalService } from '@/services/Withdrawal.service';
 import { UserT } from '@/types/UserT';
 import { Banknote, CreditCard, Landmark, Plus } from 'lucide-react';
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface Props {
   profile: UserT | null;
 }
 
 const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
-  const [value, setValue] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [iban, setIban] = useState('');
   const handleTopUp = async () => {
+    if (!profile) return toast.error('User not found');
+    if (!amount) return toast.error('Please fill all the fields');
+
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        amount: value,
+        amount,
       }),
     });
 
@@ -34,12 +38,17 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
     }
   };
   const handleWithdraw = async () => {
-    if (!profile) return;
+    if (!profile) return toast.error('User not found');
+    if (!iban || !withdrawAmount) return toast.error('Please fill all the fields');
 
-    const { error } = await withdravalService.add({ amount: value, iban, user_id: profile?.id });
+    const { error } = await withdravalService.add({
+      amount: withdrawAmount,
+      iban,
+      user_id: profile?.id,
+    });
     if (error) return;
 
-    toast.close('Withdrawal successfully');
+    toast.success('Withdrawal successfully');
     setIban('');
   };
   return (
@@ -54,19 +63,19 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            <Button onClick={() => setValue(10)} variant="outline" size="sm">
+            <Button onClick={() => setAmount(10)} variant="outline" size="sm">
               $10
             </Button>
-            <Button onClick={() => setValue(25)} variant="outline" size="sm">
+            <Button onClick={() => setAmount(25)} variant="outline" size="sm">
               $25
             </Button>
-            <Button onClick={() => setValue(50)} variant="outline" size="sm">
+            <Button onClick={() => setAmount(50)} variant="outline" size="sm">
               $50
             </Button>
-            <Button onClick={() => setValue(100)} variant="outline" size="sm">
+            <Button onClick={() => setAmount(100)} variant="outline" size="sm">
               $100
             </Button>
-            <Button onClick={() => setValue(250)} variant="outline" size="sm">
+            <Button onClick={() => setAmount(250)} variant="outline" size="sm">
               $250
             </Button>
           </div>
@@ -77,8 +86,8 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
               </span>
               <Input
                 type="number"
-                onChange={(e) => setValue(Number(e.target.value))}
-                value={value}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                value={amount}
                 className="pl-7"
                 placeholder="Custom amount"
               />
@@ -110,7 +119,13 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   $
                 </span>
-                <Input className="pl-7" placeholder="0.00" />
+                <Input
+                  type="number"
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(Number(e.target.value))}
+                  className="pl-7"
+                  placeholder="0.00"
+                />
               </div>
             </div>
             <div>

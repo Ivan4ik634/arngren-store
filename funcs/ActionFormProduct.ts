@@ -1,14 +1,14 @@
-import { toast } from '@/components/ui/toast';
 import { supabase } from '@/lib/supabase/client';
 import { applicationService } from '@/services/Application.service';
 import { productService } from '@/services/Product.service';
 import { ProductFormCreateT } from '@/types/ProductT';
+import toast from 'react-hot-toast';
 
 export const handleActionAddProduct = async (form: ProductFormCreateT, images: string[]) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return toast.close('User not found');
+  if (!user) return toast.error('User not found');
 
   const { data, error } = await productService.addProduct({
     name: form.name,
@@ -25,8 +25,8 @@ export const handleActionAddProduct = async (form: ProductFormCreateT, images: s
     product_id: data?.id as string,
   });
 
-  if (error || errorAddApplication) return toast.close('Error adding product');
-  toast.close('Product added successfully');
+  if (error || errorAddApplication) return toast.error('Error adding product');
+  toast.success('Product added successfully');
 };
 export const handleActionEditProduct = async (
   form: ProductFormCreateT,
@@ -36,7 +36,7 @@ export const handleActionEditProduct = async (
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return toast.close('User not found');
+  if (!user) return toast.error('User not found');
 
   const { data, error } = await productService.editProduct({
     name: form.name,
@@ -53,6 +53,6 @@ export const handleActionEditProduct = async (
     product_id: id,
   });
 
-  if (error || errorAddApplication) return toast.close('Error adding product');
-  toast.close('Product added successfully');
+  if (error || errorAddApplication) return toast.error('Error adding product');
+  toast.success('Product added successfully');
 };

@@ -15,6 +15,8 @@ class Pages {
   REGISTER = '/register';
   WITHDRAWAL = '/admin/withdrawal';
   WISHLIST = '/wishlist';
+  CONTACT = '/#contact';
+  ABOUT = '/#about';
   BALANCE = '/balance';
   PRODUCT(id: string) {
     return `/product/${id}`;

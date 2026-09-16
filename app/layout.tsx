@@ -1,9 +1,9 @@
 import { Header } from '@/components/shared/Header';
-import { Toaster } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/providers/QueryClient';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });

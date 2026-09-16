@@ -82,7 +82,7 @@ const DrawerDetailsProduct: FC<Props> = (props) => {
 
           <div className="mb-6 flex items-center gap-2">
             <Package className="h-4 w-4 text-muted-foreground" />
-            {product.application ? (
+            {product.count > 0 ? (
               <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
                 Available for use
               </Badge>

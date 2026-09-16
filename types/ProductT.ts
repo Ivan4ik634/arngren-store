@@ -6,10 +6,10 @@ export type ProductT = {
   description: string;
   category: string;
   price: number;
-  rating: string;
+  rating: number;
   count: number;
   brand: string;
-  reviews: string;
+  reviews: number;
   application: boolean;
   seller: UserT;
   created_at: string;
@@ -30,4 +30,6 @@ export interface ProductFormCreateT {
 }
 export interface ProductUpdateT extends Partial<Omit<ProductCreateT, 'seller'>> {
   id: string;
+  rating?: number;
+  reviews?: number;
 }

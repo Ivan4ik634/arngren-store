@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/toast';
 import { PAGES } from '@/configs/PAGES';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
@@ -11,6 +10,7 @@ import { UserRegisterT } from '@/types/UserT';
 import Link from 'next/link';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 interface Props {}
 
@@ -26,11 +26,11 @@ const RegisterPage: FC<Props> = (props) => {
       data: { user },
       error,
     } = await supabase.auth.signUp({ ...data });
-    if (error?.message) return toast.close(error.message);
+    if (error?.message) return toast.error(error.message);
     if (user?.id) {
       const { error } = await userService.addUser(user.id, { name: data.name, email: data.email });
-      if (error) return toast.close(error.message);
-      return toast.close('Register successfully');
+      if (error) return toast.error(error.message);
+      return toast.success('Register successfully');
     }
   };
   return (

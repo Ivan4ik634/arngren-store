@@ -30,12 +30,12 @@ const CheckoutDrawer: FC<Props> = ({ onCheckout }) => {
 
   return (
     <Drawer swipeDirection="right" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger>
+      <DrawerTrigger className="w-full">
         <Button size="lg" className="w-full mt-5 text-xl py-7">
           Checkout
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="w-120 pt-5 px-5">
+      <DrawerContent className="w-120 py-5 px-5">
         <DrawerTitle className="font-bold text-2xl">Shipping Address</DrawerTitle>
         <div className="mt-8 space-y-5">
           <div className="space-y-2">
@@ -72,7 +72,7 @@ const CheckoutDrawer: FC<Props> = ({ onCheckout }) => {
           </div>
         </div>
         <div className="mt-auto pt-8">
-          <Button onClick={handleSubmit} size="lg" className="w-full text-xl py-7">
+          <Button onClick={handleSubmit} size="lg" className="w-full ">
             Confirm order
           </Button>
         </div>

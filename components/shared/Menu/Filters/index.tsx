@@ -14,7 +14,8 @@ export function Filters() {
         <button
           onClick={() =>
             setFilters({
-              categories: ['All Categories'],
+              search: '',
+              categories: ['all'],
               priceRange: [0, 1000],
               availability: [true, true],
               brand: [],

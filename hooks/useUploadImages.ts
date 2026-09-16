@@ -1,6 +1,6 @@
-import { toast } from '@/components/ui/toast';
 import { supabase } from '@/lib/supabase/client';
 import { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface UseUploadImageProps {
   init?: string[];
@@ -15,13 +15,13 @@ export const useUploadImages = ({ init, action }: UseUploadImageProps) => {
 
     console.log(files?.length, images.length);
 
-    if (!files) return toast.close('No file selected');
-    if (images.length + files.length > 5) return toast.close('You can only upload 5 images');
+    if (!files) return toast.error('No file selected');
+    if (images.length + files.length > 5) return toast.error('You can only upload 5 images');
 
     for (const file of files) {
       const uuid = crypto.randomUUID();
       const { error } = await supabase.storage.from('images').upload(uuid, file);
-      if (error) return toast.close('Error uploading image');
+      if (error) return toast.error('Error uploading image');
 
       const { data } = await supabase.storage.from('images').getPublicUrl(uuid);
       console.log(data);

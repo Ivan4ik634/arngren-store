@@ -9,13 +9,26 @@ import { statusConfig } from '@/configs/STATUS';
 import { cartItemService } from '@/services/CartItem.service';
 import { OrderWithUserT } from '@/types/OrderT';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, Eye, Globe, Hash, Mail, MapPin, Package, User } from 'lucide-react';
+import {
+  Calendar,
+  CheckCircle2,
+  Eye,
+  Globe,
+  Hash,
+  Mail,
+  MapPin,
+  Package,
+  User,
+  XCircle,
+} from 'lucide-react';
 import { FC, useState } from 'react';
 
 interface Props {
   order: OrderWithUserT;
   handleDelete?: (id: string) => void;
-  type: 'admin' | 'user';
+  type: 'admin' | 'user' | 'seller';
+  handleReject?: (order: OrderWithUserT) => void;
+  handleAccept?: (order: OrderWithUserT) => void;
 }
 
 const DrawerDetailsOrder: FC<Props> = (props) => {
@@ -154,6 +167,31 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
             <span>Placed on {new Date(order.created_at).toLocaleDateString()}</span>
           </div>
           <div className="mt-auto pt-6">
+            {props.type === 'seller' && (
+              <>
+                <Button
+                  onClick={() => {
+                    props.handleAccept!(order);
+                    setOpen(false);
+                  }}
+                  disabled={order.status !== 'cancelled'}
+                  variant="default"
+                  className="flex-1 bg-green-600 hover:bg-green-700">
+                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                  Accept Order
+                </Button>
+                <Button
+                  onClick={() => {
+                    props.handleReject!(order);
+                    setOpen(false);
+                  }}
+                  variant="destructive"
+                  className="flex-1">
+                  <XCircle className="mr-2 h-4 w-4" />
+                  Reject Order
+                </Button>
+              </>
+            )}
             {props.type === 'admin' && (
               <Button
                 className="w-full"

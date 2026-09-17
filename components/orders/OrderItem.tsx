@@ -12,13 +12,23 @@ import DrawerDetailsOrder from './DrawerDetailsOrder';
 
 interface Props {
   order: OrderWithUserT;
-  type: 'admin' | 'user';
+  type: 'admin' | 'user' | 'seller';
   handleCheck?: (id: string) => void;
   idsChecked?: string[];
   handleDelete?: (id: string) => void;
+  handleReject?: (order: OrderWithUserT) => void;
+  handleAccept?: (order: OrderWithUserT) => void;
 }
 
-const OrderItem: FC<Props> = ({ order, handleCheck, handleDelete, idsChecked, type }) => {
+const OrderItem: FC<Props> = ({
+  order,
+  handleCheck,
+  handleReject,
+  handleAccept,
+  handleDelete,
+  idsChecked,
+  type,
+}) => {
   const statusConf = statusConfig[order.status];
   return (
     <TableRow key={order.id}>
@@ -68,7 +78,13 @@ const OrderItem: FC<Props> = ({ order, handleCheck, handleDelete, idsChecked, ty
               className="mr-2 text-red-500"
             />
           )}
-          <DrawerDetailsOrder type={type} handleDelete={handleDelete} order={order} />
+          <DrawerDetailsOrder
+            handleAccept={handleAccept}
+            handleReject={handleReject}
+            type={type}
+            handleDelete={handleDelete}
+            order={order}
+          />
         </div>
       </TableCell>
     </TableRow>

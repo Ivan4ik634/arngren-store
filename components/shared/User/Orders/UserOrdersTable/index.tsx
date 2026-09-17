@@ -24,7 +24,7 @@ const UserOrdersTable: FC<Props> = ({ data }) => {
       </TableHeader>
       <TableBody>
         {data?.map((data) => (
-          <OrderItem key={data.id} order={data} />
+          <OrderItem key={data.id} type="user" order={data} />
         ))}
       </TableBody>
     </Table>

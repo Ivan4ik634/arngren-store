@@ -1,18 +1,13 @@
 'use client';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { statusConfig } from '@/configs/STATUS';
+import OrderItem from '@/components/orders/OrderItem';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useProfile } from '@/hooks/useProfile';
+import { orderService } from '@/services/Order.service';
+import { transactionService } from '@/services/Transaction.service';
 import { CartItemWithOrderT } from '@/types/CartItemT';
-import dayjs from 'dayjs';
+import { OrderWithUserT } from '@/types/OrderT';
 import { Dispatch, FC, SetStateAction } from 'react';
-import DrawerSellerOrderProductDetails from './DrawerSellerOrderProductDetails';
 
 interface Props {
   data: CartItemWithOrderT[] | null | undefined;
@@ -20,11 +15,66 @@ interface Props {
 }
 
 const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
+  const { profile } = useProfile();
+
+  const handleAccept = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
+    if (order.status === 'cancelled') return;
+
+    await orderService.updateOrder(order.id, { status: 'in_shipping' });
+    setCartItems((prev) =>
+      prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'in_shipping' } : ci)),
+    );
+
+    await transactionService.create({
+      user_id: order.user_id.id,
+      amount: order.total,
+      status: 'completed',
+      type: 'purchase',
+      transaction: order.order_id,
+    });
+    if (profile?.id) {
+      await transactionService.create({
+        user_id: profile.id,
+        amount: order.total,
+        status: 'completed',
+        type: 'income',
+        transaction: order.order_id,
+      });
+    }
+  };
+
+  const handleReject = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
+    await orderService.updateOrder(order.id, { status: 'cancelled' });
+    setCartItems((prev) =>
+      prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'cancelled' } : ci)),
+    );
+
+    const existingTransaction = await transactionService.getByOrderIdAndUserId(
+      order.user_id.id,
+      order.order_id,
+    );
+
+    if (existingTransaction) {
+      await transactionService.update(existingTransaction[0].id, {
+        status: existingTransaction[0].status === 'completed' ? 'completed' : 'cancelled',
+      });
+    } else {
+      await transactionService.create({
+        user_id: order.user_id.id,
+        amount: order.total,
+        status: 'cancelled',
+        type: 'purchase',
+        transaction: order.order_id,
+      });
+    }
+  };
+
   return (
     <Table className="mt-5">
       <TableHeader>
         <TableRow>
           <TableHead>Order ID</TableHead>
+          <TableHead>User</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Total</TableHead>
@@ -32,33 +82,15 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.map((data) => {
-          const status = statusConfig[data.order_id.status];
-          return (
-            <TableRow key={data.id}>
-              <TableCell className="font-medium">{data.order_id.order_id}</TableCell>
-              <TableCell>
-                <div>
-                  <p>{dayjs(data.created_at).format('MMM DD YYYY')}</p>
-                  <p className="opacity-50">{dayjs(data.created_at).format('hh:mm A')}</p>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className={`px-4 py-2  w-min rounded-full ${status.className}`}>
-                  <p>{data.order_id.status}</p>
-                </div>
-              </TableCell>
-              <TableCell className="font-bold">${data.order_id.total}</TableCell>
-              <TableCell className="text-right">
-                <DrawerSellerOrderProductDetails
-                  setCartItems={setCartItems}
-                  cartItem={data}
-                  order={data.order_id}
-                />
-              </TableCell>
-            </TableRow>
-          );
-        })}
+        {data?.map((data) => (
+          <OrderItem
+            handleAccept={(order) => handleAccept(order, data)}
+            handleReject={(order) => handleReject(order, data)}
+            key={data.id}
+            type="seller"
+            order={data.order_id}
+          />
+        ))}
       </TableBody>
     </Table>
   );

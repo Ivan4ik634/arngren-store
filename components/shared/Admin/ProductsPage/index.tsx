@@ -1,11 +1,12 @@
 'use client';
 
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { productService } from '@/services/Product.service';
 import { FiltersProductT } from '@/types/FiltersT';
 import { ProductT } from '@/types/ProductT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import ProductsFilters from './ProductsFilters';
 import ProductsStats from './ProductsStats';
 import ProductsTable from './ProductsTable';
@@ -22,11 +23,7 @@ const ProductsPage: FC<Props> = (props) => {
     queryKey: ['products', filters],
     queryFn: () => productService.getProducts(filters),
   });
-  const [products, setProducts] = useState<ProductT[] | undefined | null>(data || []);
-
-  useEffect(() => {
-    setProducts(data);
-  }, [data]);
+  const [products, setProducts] = useSyncQueryData<ProductT>(data);
 
   const checkboxes = useCheckboxes(products || [], (product) => product.id);
 

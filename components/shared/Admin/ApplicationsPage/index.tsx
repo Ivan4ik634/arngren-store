@@ -1,11 +1,12 @@
 'use client';
 
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { applicationService } from '@/services/Application.service';
 import { ApplicationWithProductT } from '@/types/ApplicationT';
 import { FiltersT } from '@/types/FiltersT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import ApplicationsFilters from './ApplicationsFilters';
 import ApplicationsStats from './ApplicationsStats';
 import ApplicationsTable from './ApplicationsTable';
@@ -18,13 +19,7 @@ const ApplicationsPage: FC<Props> = (props) => {
     queryKey: ['applications', filters],
     queryFn: () => applicationService.getApplications(filters),
   });
-  const [applications, setApplications] = useState<ApplicationWithProductT[] | undefined>(
-    data || [],
-  );
-
-  useEffect(() => {
-    setApplications(data);
-  }, [data]);
+  const [applications, setApplications] = useSyncQueryData<ApplicationWithProductT>(data);
 
   const checkboxes = useCheckboxes(applications || [], (application) => application.id);
 

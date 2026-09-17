@@ -85,6 +85,7 @@ export const productService = {
       images,
       count,
       rating,
+      reviews,
       seller(id, name, avatar, email),
       created_at
     `,

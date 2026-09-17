@@ -1,11 +1,12 @@
 'use client';
 
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { orderService } from '@/services/Order.service';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { OrderWithUserT } from '@/types/OrderT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import OrdersFilters from './OrdersFilters';
 import OrdersStats from './OrdersStats';
 import OrdersTable from './OrdersTable';
@@ -20,11 +21,7 @@ const OrdersPage: FC<Props> = (props) => {
     select: (res) => res?.data,
   });
 
-  const [orders, setOrders] = useState<OrderWithUserT[] | undefined | null>(data);
-
-  useEffect(() => {
-    setOrders(data);
-  }, [data]);
+  const [orders, setOrders] = useSyncQueryData<OrderWithUserT>(data);
 
   const checkboxes = useCheckboxes(data || [], (order) => order.id);
 

@@ -1,10 +1,11 @@
 'use client';
 
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { userService } from '@/services/User.service';
 import { UserT } from '@/types/UserT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import CustomerFilters from './CustomerFilters';
 import CustomersTable from './CustomersTable';
 
@@ -17,11 +18,7 @@ const CustomersPage: FC<Props> = (props) => {
     queryFn: () => userService.getUsers(filters),
     select: (res) => res?.data,
   });
-  const [users, setUsers] = useState<UserT[] | undefined | null>(data);
-
-  useEffect(() => {
-    setUsers(data);
-  }, [data]);
+  const [users, setUsers] = useSyncQueryData<UserT>(data);
 
   const checkboxes = useCheckboxes(users || [], (user) => user.id);
   return (

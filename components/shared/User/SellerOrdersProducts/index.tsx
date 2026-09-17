@@ -1,12 +1,13 @@
 'use client';
 
 import { useProfile } from '@/hooks/useProfile';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { cartItemService } from '@/services/CartItem.service';
 import { productService } from '@/services/Product.service';
 import { CartItemWithOrderT } from '@/types/CartItemT';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import SellerOrdersProductsFilters from './SellerOrdersProductsFilters';
 import SellerOrdersProductsTable from './SellerOrdersProductsTable';
 //поиск всех продуктов продавца потом поиск всех карт итемсов, через них видим ордерс и все !!!
@@ -25,11 +26,7 @@ const SellerOrdersProductsPage: FC<Props> = (props) => {
     queryFn: () => cartItemService.getItems(productIds?.flatMap((p) => p.id) || []),
     enabled: !!productIds,
   });
-  const [cartItems, setCartItems] = useState<CartItemWithOrderT[] | undefined | null>(data);
-
-  useEffect(() => {
-    setCartItems(data);
-  }, [data]);
+  const [cartItems, setCartItems] = useSyncQueryData<CartItemWithOrderT>(data);
 
   return (
     <div>

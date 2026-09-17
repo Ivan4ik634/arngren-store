@@ -3,11 +3,12 @@
 import { Button } from '@/components/ui/button';
 import { handleActionAddProduct, handleActionEditProduct } from '@/funcs/ActionFormProduct';
 import { useProfile } from '@/hooks/useProfile';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { productService } from '@/services/Product.service';
 import { FiltersProductT } from '@/types/FiltersT';
 import { ProductT } from '@/types/ProductT';
 import { useQuery } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import ProductCard from '../../ProductCard';
 import DialogFormProduct from './DialogFormProduct';
 import UserProductsFilters from './UserProductsFilters';
@@ -26,10 +27,7 @@ const UserProductsPage: FC<Props> = (props) => {
     queryFn: () => productService.getUserProducts(profile?.id || '', filters),
     enabled: !!profile,
   });
-  const [products, setProducts] = useState<ProductT[] | undefined | null>(data);
-  useEffect(() => {
-    setProducts(data);
-  }, [data]);
+  const [products, setProducts] = useSyncQueryData<ProductT>(data);
 
   const handleDelete = async (id: string) => {
     await productService.deleteProduct(id);

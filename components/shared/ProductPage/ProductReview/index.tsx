@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { reviewService } from '@/services/Review.service';
 import { useReviews } from '@/store/useReviews';
 import { ProductT } from '@/types/ProductT';
@@ -8,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import DialogAddReview from './DialogAddReview';
 
 interface Props {
@@ -23,9 +24,7 @@ const ProductReview: FC<Props> = ({ product }) => {
     enabled: !!id,
   });
   const { setReviews, reviews } = useReviews();
-  useEffect(() => {
-    if (data) setReviews(data);
-  }, [data]);
+  useSyncQueryData(data, setReviews);
   return (
     <div>
       <div className="flex justify-between">

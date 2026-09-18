@@ -10,10 +10,14 @@ class Pages {
   BRANDS = '/brands';
   MENU = '/menu';
   APPLICATION = '/admin/applications';
+
   SETTINGS = '/settings';
   LOGIN = '/login';
   REGISTER = '/register';
+
   WITHDRAWAL = '/admin/withdrawal';
+  ADMIN_DASHBOARD = '/admin/dashboard';
+  DASHBOARD = '/dashboard';
   WISHLIST = '/wishlist';
   CONTACT = '/#contact';
   ABOUT = '/#about';

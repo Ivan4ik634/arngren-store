@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase/client';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { OrderCreateT, OrderUpdateT } from '@/types/OrderT';
+import dayjs from 'dayjs';
 
 export const orderService = {
   async createOrder(order: OrderCreateT) {
@@ -30,7 +31,9 @@ export const orderService = {
 
     return query;
   },
-  async getOrdersDashboard() {
+  async getOrdersDashboard(date: Date) {
+    const start = dayjs(date).startOf('day').toISOString();
+    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
     const res = await supabase
       .from('orders')
       .select(
@@ -39,6 +42,8 @@ export const orderService = {
     user_id(*)
   `,
       )
+      .gte('created_at', start)
+      .lt('created_at', end)
       .order('created_at', { ascending: false })
       .limit(5);
 
@@ -59,7 +64,7 @@ export const orderService = {
     return query;
   },
   async getOrdersLength() {
-    let query = (await supabase.from('orders').select()).count;
+    let query = (await supabase.from('orders').select('*', { count: 'exact', head: true })).count;
 
     return query;
   },

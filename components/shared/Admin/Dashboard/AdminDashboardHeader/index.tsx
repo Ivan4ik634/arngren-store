@@ -4,9 +4,15 @@ import dayjs from 'dayjs';
 import { CalendarDays } from 'lucide-react';
 import { FC } from 'react';
 
-interface Props {}
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-const AdminDashboardHeader: FC<Props> = (props) => {
+interface Props {
+  date: Date;
+  setDate: React.Dispatch<React.SetStateAction<Date>>;
+}
+
+const AdminDashboardHeader: FC<Props> = ({ date, setDate }) => {
   return (
     <div className="mb-7 flex flex-wrap items-start justify-between gap-4">
       <div>
@@ -16,9 +22,24 @@ const AdminDashboardHeader: FC<Props> = (props) => {
           Here’s what’s happening on your platform today.
         </p>
       </div>
-      <button className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs text-slate-600 shadow-sm">
-        <CalendarDays className="size-4" /> {dayjs().format('MMMM DD, YYYY')}
-      </button>
+      <Popover>
+        <PopoverTrigger>
+          <button className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs text-slate-600 shadow-sm">
+            <CalendarDays className="size-4" /> {dayjs(date).format('MMMM DD, YYYY')}
+          </button>
+        </PopoverTrigger>
+
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            captionLayout="dropdown"
+            selected={date}
+            onSelect={(value) => {
+              if (value) setDate(value);
+            }}
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

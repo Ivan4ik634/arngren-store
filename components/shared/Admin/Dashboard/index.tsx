@@ -5,22 +5,27 @@ import { productService } from '@/services/Product.service';
 import { userService } from '@/services/User.service';
 import { withdravalService } from '@/services/Withdrawal.service';
 import { useQuery } from '@tanstack/react-query';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import CardStats from '../ui/CardStats';
 import AdminDashboardHeader from './AdminDashboardHeader';
+import DashboardSidebar from './AdminDashboardSidebar/DashboardSidebar';
 import AdminLatestProducts from './AdminLatestProducts';
 import AdminOrderList from './AdminOrderList';
 import AdminRecentUsers from './AdminRecentUsers';
-import DashboardSidebar from './DashboardSidebar';
 
 const AdminDashboardPage: FC = () => {
   const { data } = useQuery({
     queryKey: ['stats'],
     queryFn: async () => {
-      const orderLength = await orderService.getOrdersLength();
-      const productsLength = await productService.getProductsLength();
-      const usersLength = await userService.getUsersLength();
-      const withdrawalPendingLength = await withdravalService.getWithdrawalPendingLength();
+      const [orderLength, productsLength, usersLength, withdrawalPendingLength] = await Promise.all(
+        [
+          orderService.getOrdersLength(),
+          productService.getProductsLength(),
+          userService.getUsersLength(),
+          withdravalService.getWithdrawalPendingLength(),
+        ],
+      );
+
       return { orderLength, productsLength, usersLength, withdrawalPendingLength };
     },
   });
@@ -30,37 +35,38 @@ const AdminDashboardPage: FC = () => {
     usersLength: data?.usersLength || 0,
     withdrawalPendingLength: data?.withdrawalPendingLength || 0,
   });
+  const [date, setDate] = useState(new Date());
+  const { data: dashboardData } = useQuery({
+    queryKey: ['dashboard', date],
+    queryFn: async () => {
+      const [orders, users, products] = await Promise.all([
+        orderService.getOrdersDashboard(date),
+        userService.getUsersDashboard(date),
+        productService.getProductsDashboard(date),
+      ]);
 
-  const { data: orders } = useQuery({
-    queryKey: ['orders'],
-    queryFn: () => orderService.getOrdersDashboard(),
-    select: (res) => res?.data,
-  });
-  const { data: users } = useQuery({
-    queryKey: ['users'],
-    queryFn: () => userService.getUsersDashboard(),
-    select: (res) => res?.data,
-  });
-  const { data: products } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => productService.getProductsDashboard(),
-    select: (res) => res?.data,
+      return {
+        orders: orders.data,
+        users: users.data,
+        products: products.data,
+      };
+    },
   });
 
   return (
     <main className="min-w-0 bg-[#fbfcfe] py-8 text-slate-700 lg:py-10">
-      <AdminDashboardHeader />
+      <AdminDashboardHeader setDate={setDate} date={date} />
 
       <CardStats className="mt-4 grid grid-cols-4 gap-x-5" data={stats} />
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_228px] ">
-        <AdminOrderList orders={orders} />
+        <AdminOrderList orders={dashboardData?.orders} />
         <DashboardSidebar />
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_228px]">
-        <AdminLatestProducts products={products} />
-        <AdminRecentUsers users={users} />
+        <AdminLatestProducts products={dashboardData?.products} />
+        <AdminRecentUsers users={dashboardData?.users} />
       </div>
     </main>
   );

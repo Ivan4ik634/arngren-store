@@ -34,7 +34,8 @@ export const withdravalService = {
     return (await query).data as any as WithdrawalWithUserT[];
   },
   async getWithdrawalPendingLength(): Promise<number | null> {
-    let query = (await supabase.from('withdrawal').select()).count;
+    let query = (await supabase.from('withdrawal').select('*', { count: 'exact', head: true }))
+      .count;
 
     return query;
   },

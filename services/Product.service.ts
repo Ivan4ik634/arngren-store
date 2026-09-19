@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase/client';
 import { FiltersMenuT, FiltersProductT } from '@/types/FiltersT';
 import { ProductCreateT, ProductT, ProductUpdateT } from '@/types/ProductT';
+import dayjs from 'dayjs';
 
 export const productService = {
   async addProduct(data: ProductCreateT) {
@@ -15,11 +16,16 @@ export const productService = {
     const res = await supabase.from('products').select('id').eq('seller', id);
     return res.data;
   },
-  async getProductsDashboard() {
+  async getProductsDashboard(date: Date) {
+    const start = dayjs(date).startOf('day').toISOString();
+    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
+
     const res = await supabase
       .from('products')
       .select('*')
       .eq('application', true)
+      .gte('created_at', start)
+      .lt('created_at', end)
       .order('created_at', { ascending: false })
       .limit(5);
 
@@ -48,7 +54,7 @@ export const productService = {
     return res.data;
   },
   async getProductsLength(): Promise<number | null> {
-    let query = (await supabase.from('products').select()).count;
+    let query = (await supabase.from('products').select('*', { count: 'exact', head: true })).count;
 
     return query;
   },

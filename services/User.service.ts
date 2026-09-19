@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import { UserRegisterT, UserUpdatePersonalInformationT } from '@/types/UserT';
+import dayjs from 'dayjs';
 
 export const userService = {
   async addUser(id: string, data: Omit<UserRegisterT, 'password'>) {
@@ -10,10 +11,14 @@ export const userService = {
     const res = await supabase.from('profiles').select('*').eq('id', id).single();
     return res;
   },
-  async getUsersDashboard() {
+  async getUsersDashboard(date: Date) {
+    const start = dayjs(date).startOf('day').toISOString();
+    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
     const res = await supabase
       .from('profiles')
       .select('*')
+      .gte('created_at', start)
+      .lt('created_at', end)
       .order('created_at', { ascending: false })
       .limit(5);
     return res;
@@ -26,7 +31,7 @@ export const userService = {
     return await query;
   },
   async getUsersLength() {
-    let query = (await supabase.from('profiles').select()).count;
+    let query = (await supabase.from('profiles').select('*', { count: 'exact', head: true })).count;
 
     return query;
   },

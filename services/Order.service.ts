@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import { FilterOrdersT } from '@/types/FiltersT';
-import { OrderCreateT, OrderUpdateT } from '@/types/OrderT';
+import { OrderCreateT, OrderStatus, OrderUpdateT } from '@/types/OrderT';
 import dayjs from 'dayjs';
 
 export const orderService = {
@@ -34,6 +34,7 @@ export const orderService = {
   async getOrdersDashboard(date: Date) {
     const start = dayjs(date).startOf('day').toISOString();
     const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
+
     const res = await supabase
       .from('orders')
       .select(
@@ -63,10 +64,22 @@ export const orderService = {
     }
     return query;
   },
-  async getOrdersLength() {
-    let query = (await supabase.from('orders').select('*', { count: 'exact', head: true })).count;
+  async getOrdersStats(
+    date: Date,
+  ): Promise<{ length: number | null; data: { status: OrderStatus }[] } | null> {
+    const start = dayjs(date).startOf('day').toISOString();
+    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
 
-    return query;
+    const statsCount = (await supabase.from('orders').select('*', { count: 'exact', head: true }))
+      .count;
+
+    const { data } = await supabase
+      .from('orders')
+      .select('status')
+      .gte('created_at', start)
+      .lt('created_at', end);
+
+    return { length: statsCount, data } as any;
   },
   async deleteMany(ids: string[]) {
     const res = await supabase.from('orders').delete().in('id', ids);

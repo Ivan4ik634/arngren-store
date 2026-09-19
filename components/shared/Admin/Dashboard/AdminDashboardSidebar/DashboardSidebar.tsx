@@ -1,9 +1,18 @@
+import { FC } from 'react';
 import { SafetyCard } from './SafetyCard';
 import StatusOverwiew from './StatusOverwiew';
 
-const DashboardSidebar = () => (
+interface Props {
+  data: {
+    pending: number;
+    approved: number;
+    in_shipping: number;
+    rejected: number;
+  };
+}
+const DashboardSidebar: FC<Props> = ({ data }) => (
   <div className="space-y-4">
-    <StatusOverwiew />
+    <StatusOverwiew data={data} />
     <SafetyCard />
   </div>
 );

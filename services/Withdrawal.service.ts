@@ -1,6 +1,12 @@
 import { supabase } from '@/lib/supabase/client';
 import { FiltersT } from '@/types/FiltersT';
-import { WithdrawalCreateT, WithdrawalUpdateT, WithdrawalWithUserT } from '@/types/WithdrawalT';
+import {
+  PaymentStatus,
+  WithdrawalCreateT,
+  WithdrawalUpdateT,
+  WithdrawalWithUserT,
+} from '@/types/WithdrawalT';
+import dayjs from 'dayjs';
 
 export const withdravalService = {
   async get(filters?: FiltersT): Promise<WithdrawalWithUserT[]> {
@@ -33,11 +39,26 @@ export const withdravalService = {
 
     return (await query).data as any as WithdrawalWithUserT[];
   },
-  async getWithdrawalPendingLength(): Promise<number | null> {
-    let query = (await supabase.from('withdrawal').select('*', { count: 'exact', head: true }))
-      .count;
+  async getWithdrawalStats(
+    date: Date,
+  ): Promise<{ length: number | null; data: { status: PaymentStatus }[] } | null> {
+    const start = dayjs(date).startOf('day').toISOString();
+    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
 
-    return query;
+    let statsCount = (
+      await supabase
+        .from('withdrawal')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending')
+    ).count;
+
+    const { data } = await supabase
+      .from('withdrawal')
+      .select('status')
+      .gte('created_at', start)
+      .lt('created_at', end);
+
+    return { length: statsCount, data } as any;
   },
   async updateStatus(id: string, status: 'pending' | 'completed' | 'failed') {
     const res = await supabase.from('withdrawal').update({ status }).eq('id', id);

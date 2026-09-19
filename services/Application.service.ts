@@ -1,11 +1,34 @@
 import { supabase } from '@/lib/supabase/client';
-import { ApplicationCreateT, ApplicationWithProductT } from '@/types/ApplicationT';
+import {
+  ApplicationCreateT,
+  ApplicationStatus,
+  ApplicationWithProductT,
+} from '@/types/ApplicationT';
 import { FiltersT } from '@/types/FiltersT';
+import dayjs from 'dayjs';
 
 export const applicationService = {
   async create(data: ApplicationCreateT) {
     const res = await supabase.from('applications').insert({ ...data });
     return res;
+  },
+
+  async getApplicationsStats(
+    date: Date,
+  ): Promise<{ length: number | null; data: { status: ApplicationStatus }[] } | null> {
+    const start = dayjs(date).startOf('day').toISOString();
+    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
+    const statsCount = (
+      await supabase.from('applications').select('*', { count: 'exact', head: true })
+    ).count;
+
+    const { data } = await supabase
+      .from('applications')
+      .select('status')
+      .gte('created_at', start)
+      .lt('created_at', end);
+
+    return { length: statsCount, data } as any;
   },
   async get(filters?: FiltersT): Promise<ApplicationWithProductT[]> {
     let query = supabase.from('applications').select(

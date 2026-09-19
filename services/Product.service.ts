@@ -53,10 +53,11 @@ export const productService = {
     const res = await query;
     return res.data;
   },
-  async getProductsLength(): Promise<number | null> {
-    let query = (await supabase.from('products').select('*', { count: 'exact', head: true })).count;
+  async getProductsStats() {
+    const statsCount = (await supabase.from('products').select('*', { count: 'exact', head: true }))
+      .count;
 
-    return query;
+    return { length: statsCount } as any;
   },
   async getProducts(filters?: FiltersProductT): Promise<any> {
     let query = supabase.from('products').select(

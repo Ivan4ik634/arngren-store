@@ -6,11 +6,19 @@ export interface AddressT {
   postal_code: string | null;
   country: string | null;
 }
+
+export type OrderStatus =
+  | 'pending'
+  | 'approved'
+  | 'rejected'
+  | 'in_shipping'
+  | 'processing'
+  | 'cancelled';
 export interface OrderT extends AddressT {
   id: string;
   order_id: string;
   user_id: string;
-  status: 'pending' | 'approved' | 'rejected' | 'in_shipping' | 'processing' | 'cancelled';
+  status: OrderStatus;
   total: number;
   items_length: number;
   created_at: string;

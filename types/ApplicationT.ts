@@ -1,10 +1,11 @@
 import { LucideIcon } from 'lucide-react';
 import { ProductT } from './ProductT';
 
+export type ApplicationStatus = 'pending' | 'approved' | 'rejected';
 export interface ApplicationT {
   id: string;
   product_id: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: ApplicationStatus;
   created_at: string;
 }
 export interface ApplicationWithProductT extends Omit<ApplicationT, 'product_id'> {

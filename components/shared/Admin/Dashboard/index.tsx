@@ -1,5 +1,6 @@
 'use client';
 import { getDashboardStats } from '@/data/AdminStats';
+import { applicationService } from '@/services/Application.service';
 import { orderService } from '@/services/Order.service';
 import { productService } from '@/services/Product.service';
 import { userService } from '@/services/User.service';
@@ -14,28 +15,24 @@ import AdminOrderList from './AdminOrderList';
 import AdminRecentUsers from './AdminRecentUsers';
 
 const AdminDashboardPage: FC = () => {
-  const { data } = useQuery({
-    queryKey: ['stats'],
-    queryFn: async () => {
-      const [orderLength, productsLength, usersLength, withdrawalPendingLength] = await Promise.all(
-        [
-          orderService.getOrdersLength(),
-          productService.getProductsLength(),
-          userService.getUsersLength(),
-          withdravalService.getWithdrawalPendingLength(),
-        ],
-      );
+  const [date, setDate] = useState(new Date());
 
-      return { orderLength, productsLength, usersLength, withdrawalPendingLength };
+  const { data: stats } = useQuery({
+    queryKey: ['stats', date],
+    queryFn: async () => {
+      const [orderStats, productsStats, usersStats, withdrawalStats, applicationStats] =
+        await Promise.all([
+          orderService.getOrdersStats(date),
+          productService.getProductsStats(),
+          userService.getUsersStats(),
+          withdravalService.getWithdrawalStats(date),
+          applicationService.getApplicationsStats(date),
+        ]);
+
+      return { orderStats, productsStats, usersStats, withdrawalStats, applicationStats };
     },
   });
-  const stats = getDashboardStats({
-    productsLength: data?.productsLength || 0,
-    orderLength: data?.orderLength || 0,
-    usersLength: data?.usersLength || 0,
-    withdrawalPendingLength: data?.withdrawalPendingLength || 0,
-  });
-  const [date, setDate] = useState(new Date());
+
   const { data: dashboardData } = useQuery({
     queryKey: ['dashboard', date],
     queryFn: async () => {
@@ -53,15 +50,46 @@ const AdminDashboardPage: FC = () => {
     },
   });
 
+  const getStatusCount = (data: any[] | undefined, status: string) =>
+    data?.filter((item) => item.status === status).length ?? 0;
+
+  const data = {
+    pending:
+      getStatusCount(stats?.withdrawalStats?.data, 'pending') +
+      getStatusCount(stats?.orderStats?.data, 'pending') +
+      getStatusCount(stats?.applicationStats?.data, 'pending'),
+
+    approved:
+      getStatusCount(stats?.withdrawalStats?.data, 'failed') +
+      getStatusCount(stats?.orderStats?.data, 'cancelled') +
+      getStatusCount(stats?.applicationStats?.data, 'approved'),
+
+    rejected:
+      getStatusCount(stats?.withdrawalStats?.data, 'failed') +
+      getStatusCount(stats?.orderStats?.data, 'rejected') +
+      getStatusCount(stats?.applicationStats?.data, 'rejected'),
+
+    in_shipping: getStatusCount(stats?.orderStats?.data, 'in_shipping'),
+  };
+
   return (
     <main className="min-w-0 bg-[#fbfcfe] py-8 text-slate-700 lg:py-10">
       <AdminDashboardHeader setDate={setDate} date={date} />
 
-      <CardStats className="mt-4 grid grid-cols-4 gap-x-5" data={stats} />
+      <CardStats
+        className="mt-4 grid grid-cols-5   gap-x-5"
+        data={getDashboardStats({
+          productsLength: stats?.productsStats?.length || 0,
+          orderLength: stats?.orderStats?.length || 0,
+          usersLength: stats?.usersStats?.length || 0,
+          applicationsLength: stats?.applicationStats?.length || 0,
+          withdrawalPendingLength: stats?.withdrawalStats?.length || 0,
+        })}
+      />
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_228px] ">
         <AdminOrderList orders={dashboardData?.orders} />
-        <DashboardSidebar />
+        <DashboardSidebar data={data} />
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_228px]">

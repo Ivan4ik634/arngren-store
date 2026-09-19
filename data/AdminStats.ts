@@ -4,6 +4,7 @@ import { WithdrawalWithUserT } from '@/types/WithdrawalT';
 import {
   Check,
   Clock,
+  CreditCard,
   DollarSign,
   FileText,
   Handbag,
@@ -84,12 +85,14 @@ interface PropsGetDashboardStats {
   orderLength: number;
   productsLength: number;
   usersLength: number;
+  applicationsLength: number;
   withdrawalPendingLength: number;
 }
 export const getDashboardStats = ({
   orderLength,
   productsLength,
   usersLength,
+  applicationsLength,
   withdrawalPendingLength,
 }: PropsGetDashboardStats): CardStatsT[] => [
   {
@@ -115,6 +118,13 @@ export const getDashboardStats = ({
   },
   {
     icon: FileText,
+    title: 'Total Applications',
+    info: `${applicationsLength}`,
+    iconWrapperClassName: 'bg-rose-50',
+    iconClassName: 'text-rose-500',
+  },
+  {
+    icon: CreditCard,
     title: 'Pending Withdrawals',
     info: `${withdrawalPendingLength}`,
     iconWrapperClassName: 'bg-rose-50',

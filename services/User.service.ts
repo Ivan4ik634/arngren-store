@@ -30,10 +30,11 @@ export const userService = {
     }
     return await query;
   },
-  async getUsersLength() {
-    let query = (await supabase.from('profiles').select('*', { count: 'exact', head: true })).count;
+  async getUsersStats() {
+    const statsCount = (await supabase.from('profiles').select('*', { count: 'exact', head: true }))
+      .count;
 
-    return query;
+    return { length: statsCount } as any;
   },
   async update(id: string, data: UserUpdatePersonalInformationT) {
     const res = await supabase

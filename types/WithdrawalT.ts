@@ -1,6 +1,6 @@
 import { UserT } from './UserT';
 
-type PaymentStatus = 'pending' | 'failed' | 'completed';
+export type PaymentStatus = 'pending' | 'failed' | 'completed';
 
 export interface WithdrawalT {
   id: string;

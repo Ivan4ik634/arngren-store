@@ -33,6 +33,11 @@ export const withdravalService = {
 
     return (await query).data as any as WithdrawalWithUserT[];
   },
+  async getWithdrawalPendingLength(): Promise<number | null> {
+    let query = (await supabase.from('withdrawal').select()).count;
+
+    return query;
+  },
   async editWithdrawal(id: string, status: 'pending' | 'completed' | 'failed') {
     const res = await supabase.from('withdrawal').update({ status }).eq('id', id);
 

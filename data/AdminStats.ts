@@ -10,8 +10,10 @@ import {
   MessageSquare,
   Package,
   ShoppingBag,
+  ShoppingCart,
   Star,
   UserPlus,
+  UserRound,
   Users,
   XCircleIcon,
 } from 'lucide-react';
@@ -76,6 +78,47 @@ export const getApplicationsStats = (applications: ApplicationWithProductT[]): C
     icon: DollarSign,
     title: 'Products Added',
     info: formatNumber(new Set(applications.map((application) => application.product_id)).size),
+  },
+];
+interface PropsGetDashboardStats {
+  orderLength: number;
+  productsLength: number;
+  usersLength: number;
+  withdrawalPendingLength: number;
+}
+export const getDashboardStats = ({
+  orderLength,
+  productsLength,
+  usersLength,
+  withdrawalPendingLength,
+}: PropsGetDashboardStats): CardStatsT[] => [
+  {
+    icon: Package,
+    title: 'Total Products',
+    info: `${productsLength}`,
+    iconWrapperClassName: 'bg-blue-50',
+    iconClassName: 'text-blue-500',
+  },
+  {
+    icon: ShoppingCart,
+    title: 'Total Orders',
+    info: `${orderLength}`,
+    iconWrapperClassName: 'bg-sky-50',
+    iconClassName: 'text-sky-500',
+  },
+  {
+    icon: UserRound,
+    title: 'Total Users',
+    info: `${usersLength}`,
+    iconWrapperClassName: 'bg-emerald-50',
+    iconClassName: 'text-emerald-500',
+  },
+  {
+    icon: FileText,
+    title: 'Pending Withdrawals',
+    info: `${withdrawalPendingLength}`,
+    iconWrapperClassName: 'bg-rose-50',
+    iconClassName: 'text-rose-500',
   },
 ];
 

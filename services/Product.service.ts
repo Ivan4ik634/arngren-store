@@ -15,6 +15,16 @@ export const productService = {
     const res = await supabase.from('products').select('id').eq('seller', id);
     return res.data;
   },
+  async getProductsDashboard() {
+    const res = await supabase
+      .from('products')
+      .select('*')
+      .eq('application', true)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    return res;
+  },
 
   async getUserProducts(id: string, filters?: FiltersProductT): Promise<ProductT[] | null> {
     let query = supabase.from('products').select('*').eq('seller', id);
@@ -36,6 +46,11 @@ export const productService = {
 
     const res = await query;
     return res.data;
+  },
+  async getProductsLength(): Promise<number | null> {
+    let query = (await supabase.from('products').select()).count;
+
+    return query;
   },
   async getProducts(filters?: FiltersProductT): Promise<any> {
     let query = supabase.from('products').select(

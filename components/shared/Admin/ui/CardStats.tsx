@@ -6,12 +6,13 @@ import { FC } from 'react';
 
 interface Props {
   data: CardStatsT[];
+  className?: string;
 }
 
-const CardStats: FC<Props> = (props) => {
+const CardStats: FC<Props> = ({ data, className }) => {
   return (
-    <div className="grid mt-10 grid-cols-5 gap-x-5">
-      {props.data.map((item) => (
+    <div className={` ${className ?? 'grid mt-10 grid-cols-5 gap-x-5'}`}>
+      {data.map((item) => (
         <Card key={item.title}>
           <CardContent className="flex items-center">
             <div className={`p-3 rounded-full ${item.iconWrapperClassName ?? 'bg-primary/10'}`}>

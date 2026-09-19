@@ -10,12 +10,25 @@ export const userService = {
     const res = await supabase.from('profiles').select('*').eq('id', id).single();
     return res;
   },
+  async getUsersDashboard() {
+    const res = await supabase
+      .from('profiles')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(5);
+    return res;
+  },
   async getUsers(filters: { search: string }) {
     let query = supabase.from('profiles').select('*');
     if (filters.search) {
       query = query.ilike('name', `%${filters.search}%`);
     }
     return await query;
+  },
+  async getUsersLength() {
+    let query = (await supabase.from('profiles').select()).count;
+
+    return query;
   },
   async updateUser(id: string, data: UserUpdatePersonalInformationT) {
     const res = await supabase

@@ -30,6 +30,20 @@ export const orderService = {
 
     return query;
   },
+  async getOrdersDashboard() {
+    const res = await supabase
+      .from('orders')
+      .select(
+        `
+    *,
+    user_id(*)
+  `,
+      )
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    return res;
+  },
   async getOrders(filters: FilterOrdersT) {
     let query = supabase.from('orders').select(`
     *,
@@ -44,7 +58,11 @@ export const orderService = {
     }
     return query;
   },
+  async getOrdersLength() {
+    let query = (await supabase.from('orders').select()).count;
 
+    return query;
+  },
   async deleteOrders(ids: string[]) {
     const res = await supabase.from('orders').delete().in('id', ids);
 

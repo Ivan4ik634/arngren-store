@@ -17,7 +17,7 @@ const ApplicationsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });
   const { data } = useQuery({
     queryKey: ['applications', filters],
-    queryFn: () => applicationService.getApplications(filters),
+    queryFn: () => applicationService.get(filters),
   });
   const [applications, setApplications] = useSyncQueryData<ApplicationWithProductT>(data);
 

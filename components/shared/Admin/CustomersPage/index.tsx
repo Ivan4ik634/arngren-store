@@ -15,7 +15,7 @@ const CustomersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<{ search: string }>({ search: '' });
   const { data } = useQuery({
     queryKey: ['customers', filters],
-    queryFn: () => userService.getUsers(filters),
+    queryFn: () => userService.get(filters),
     select: (res) => res?.data,
   });
   const [users, setUsers] = useSyncQueryData<UserT>(data);

@@ -3,11 +3,11 @@ import { UserRegisterT, UserUpdatePersonalInformationT } from '@/types/UserT';
 import dayjs from 'dayjs';
 
 export const userService = {
-  async addUser(id: string, data: Omit<UserRegisterT, 'password'>) {
+  async create(id: string, data: Omit<UserRegisterT, 'password'>) {
     const res = await supabase.from('profiles').insert({ id, ...data });
     return res;
   },
-  async getUser(id: string) {
+  async getById(id: string) {
     const res = await supabase.from('profiles').select('*').eq('id', id).single();
     return res;
   },
@@ -35,18 +35,18 @@ export const userService = {
 
     return query;
   },
-  async updateUser(id: string, data: UserUpdatePersonalInformationT) {
+  async update(id: string, data: UserUpdatePersonalInformationT) {
     const res = await supabase
       .from('profiles')
       .update({ ...data })
       .eq('id', id);
     return res;
   },
-  async deleteUsers(ids: string[]) {
+  async deleteMany(ids: string[]) {
     const res = await supabase.from('profiles').delete().in('id', ids);
     return res;
   },
-  async deleteUser(id: string) {
+  async delete(id: string) {
     const res = await supabase.from('profiles').delete().eq('id', id);
     return res;
   },

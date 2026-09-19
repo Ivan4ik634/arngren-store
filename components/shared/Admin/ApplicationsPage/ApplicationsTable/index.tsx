@@ -35,13 +35,13 @@ const ApplicationsTable: FC<Props> = ({
   handleCheck,
 }) => {
   const handleReject = async (application: ApplicationWithProductT) => {
-    await applicationService.editApplication(application.product_id.id, 'rejected');
+    await applicationService.update(application.product_id.id, 'rejected');
     setApplications((prev) =>
       prev?.map((ap) => (ap.id === application.id ? { ...ap, status: 'rejected' } : ap)),
     );
   };
   const handleApprove = async (application: ApplicationWithProductT) => {
-    await applicationService.editApplication(application.product_id.id, 'approved');
+    await applicationService.update(application.product_id.id, 'approved');
     setApplications((prev) =>
       prev?.map((ap) => (ap.id === application.id ? { ...ap, status: 'approved' } : ap)),
     );

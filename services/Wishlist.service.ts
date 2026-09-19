@@ -3,7 +3,7 @@ import { FiltersProductT } from '@/types/FiltersT';
 import { WishlistWithProductT } from '@/types/WishlistT';
 
 export const wishlistService = {
-  async getWishlists(userId: string, filters: FiltersProductT) {
+  async get(userId: string, filters: FiltersProductT) {
     let query = supabase.from('wishlist').select('*, product_id(*)').eq('user_id', userId);
     if (filters.search) {
       query = query.ilike('product_id.name', `%${filters.search}%`);
@@ -20,7 +20,7 @@ export const wishlistService = {
     const res = await query;
     return res.data?.filter((item) => item.product_id) as any as WishlistWithProductT[];
   },
-  async getWishlist(user_id: string, id: string) {
+  async getById(user_id: string, id: string) {
     let query = supabase
       .from('wishlist')
       .select('id,product_id')
@@ -31,14 +31,14 @@ export const wishlistService = {
     const res = await query;
     return { ...res, data: res.data as any as { id: string; product_id: string } };
   },
-  async addWishlist(user_id: string, product_id: string) {
+  async create(user_id: string, product_id: string) {
     const res = await supabase
       .from('wishlist')
       .insert({ product_id: product_id, user_id })
       .select();
     return res;
   },
-  async deleteWishlist(user_id: string, product_id: string) {
+  async delete(user_id: string, product_id: string) {
     const res = await supabase
       .from('wishlist')
       .delete()

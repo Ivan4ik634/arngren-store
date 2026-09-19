@@ -35,7 +35,7 @@ const ProductsTable: FC<Props> = ({
   setProducts,
 }) => {
   const handleDelete = async (id: string) => {
-    await productService.deleteProduct(id);
+    await productService.delete(id);
     setProducts((prev) => prev?.filter((product) => product.id !== id));
   };
   return (

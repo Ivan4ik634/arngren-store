@@ -17,7 +17,7 @@ const WithdrawalPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });
   const { data } = useQuery({
     queryKey: ['withdrawals', filters],
-    queryFn: () => withdravalService.getAll(filters),
+    queryFn: () => withdravalService.get(filters),
   });
   const [withdrawals, setWithdrawals] = useSyncQueryData<WithdrawalWithUserT>(data);
 

@@ -20,7 +20,7 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   const handleAccept = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
     if (order.status === 'cancelled') return;
 
-    await orderService.updateOrder(order.id, { status: 'in_shipping' });
+    await orderService.update(order.id, { status: 'in_shipping' });
     setCartItems((prev) =>
       prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'in_shipping' } : ci)),
     );
@@ -44,7 +44,7 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   };
 
   const handleReject = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
-    await orderService.updateOrder(order.id, { status: 'cancelled' });
+    await orderService.update(order.id, { status: 'cancelled' });
     setCartItems((prev) =>
       prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'cancelled' } : ci)),
     );

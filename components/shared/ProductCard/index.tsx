@@ -31,7 +31,7 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
     error,
   } = useQuery({
     queryKey: ['wishlist', profile?.id, product.id],
-    queryFn: () => wishlistService.getWishlist(profile?.id || '', product.id),
+    queryFn: () => wishlistService.getById(profile?.id || '', product.id),
     select: (res) => res?.data,
     enabled: !!profile?.id && !!product?.id,
   });
@@ -40,9 +40,9 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
     if (!profile?.id) return;
 
     if (wishlist) {
-      await wishlistService.deleteWishlist(profile.id, product.id);
+      await wishlistService.delete(profile.id, product.id);
     } else {
-      await wishlistService.addWishlist(profile.id, product.id);
+      await wishlistService.create(profile.id, product.id);
     }
 
     refetch();

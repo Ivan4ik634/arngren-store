@@ -10,7 +10,7 @@ export const handleActionAddProduct = async (form: ProductFormCreateT, images: s
   } = await supabase.auth.getUser();
   if (!user) return toast.error('User not found');
 
-  const { data, error } = await productService.addProduct({
+  const { data, error } = await productService.create({
     name: form.name,
     category: form.category,
     price: form.price,
@@ -21,7 +21,7 @@ export const handleActionAddProduct = async (form: ProductFormCreateT, images: s
     images,
   });
 
-  const { error: errorAddApplication } = await applicationService.addApplication({
+  const { error: errorAddApplication } = await applicationService.create({
     product_id: data?.id as string,
   });
 
@@ -38,7 +38,7 @@ export const handleActionEditProduct = async (
   } = await supabase.auth.getUser();
   if (!user) return toast.error('User not found');
 
-  const { data, error } = await productService.editProduct({
+  const { data, error } = await productService.update({
     name: form.name,
     category: form.category,
     price: form.price,
@@ -49,7 +49,7 @@ export const handleActionEditProduct = async (
     images,
   });
 
-  const { error: errorAddApplication } = await applicationService.addApplication({
+  const { error: errorAddApplication } = await applicationService.create({
     product_id: id,
   });
 

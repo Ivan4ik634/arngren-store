@@ -26,7 +26,7 @@ const ApplicationsFilters: FC<Props> = ({
   setFilters,
 }) => {
   const handleReject = async () => {
-    await applicationService.editApplications(idsChecked, 'rejected');
+    await applicationService.updateMany(idsChecked, 'rejected');
     setApplications((prev) =>
       prev?.map((application) =>
         idsChecked.includes(application.id) ? { ...application, status: 'rejected' } : application,
@@ -35,7 +35,7 @@ const ApplicationsFilters: FC<Props> = ({
     setIdsChecked([]);
   };
   const handleApprove = async () => {
-    await applicationService.editApplications(idsChecked, 'approved');
+    await applicationService.updateMany(idsChecked, 'approved');
     setApplications((prev) =>
       prev?.map((application) =>
         idsChecked.includes(application.id) ? { ...application, status: 'approved' } : application,

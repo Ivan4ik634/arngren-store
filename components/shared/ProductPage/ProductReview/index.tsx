@@ -20,7 +20,7 @@ const ProductReview: FC<Props> = ({ product }) => {
   const { id } = useParams<{ id: string }>();
   const { data } = useQuery({
     queryKey: ['reviews'],
-    queryFn: () => reviewService.getAll(id),
+    queryFn: () => reviewService.get(id),
     enabled: !!id,
   });
   const { setReviews, reviews } = useReviews();

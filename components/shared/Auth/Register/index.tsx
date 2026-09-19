@@ -28,7 +28,7 @@ const RegisterPage: FC<Props> = (props) => {
     } = await supabase.auth.signUp({ ...data });
     if (error?.message) return toast.error(error.message);
     if (user?.id) {
-      const { error } = await userService.addUser(user.id, { name: data.name, email: data.email });
+      const { error } = await userService.create(user.id, { name: data.name, email: data.email });
       if (error) return toast.error(error.message);
       return toast.success('Register successfully');
     }

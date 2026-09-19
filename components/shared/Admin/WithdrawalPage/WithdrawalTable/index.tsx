@@ -35,13 +35,13 @@ const WithdrawalTable: FC<Props> = ({
   handleCheck,
 }) => {
   const handleComplete = async (withdrawal: WithdrawalWithUserT) => {
-    await withdravalService.editWithdrawal(withdrawal.id, 'completed');
+    await withdravalService.updateStatus(withdrawal.id, 'completed');
     setWithdrawals((prev) =>
       prev?.map((w) => (w.id === withdrawal.id ? { ...w, status: 'completed' } : w)),
     );
   };
   const handleFail = async (withdrawal: WithdrawalWithUserT) => {
-    await withdravalService.editWithdrawal(withdrawal.id, 'failed');
+    await withdravalService.updateStatus(withdrawal.id, 'failed');
     setWithdrawals((prev) =>
       prev?.map((w) => (w.id === withdrawal.id ? { ...w, status: 'failed' } : w)),
     );

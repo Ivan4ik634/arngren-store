@@ -19,7 +19,7 @@ const WishlistPage: FC<Props> = (props) => {
   const { profile } = useProfile();
   const { data, isFetching } = useQuery({
     queryKey: ['wishlist', filters],
-    queryFn: () => wishlistService.getWishlists(profile?.id || '', filters),
+    queryFn: () => wishlistService.get(profile?.id || '', filters),
     enabled: !!profile,
   });
 

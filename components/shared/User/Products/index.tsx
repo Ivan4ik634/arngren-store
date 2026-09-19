@@ -30,7 +30,7 @@ const UserProductsPage: FC<Props> = (props) => {
   const [products, setProducts] = useSyncQueryData<ProductT>(data);
 
   const handleDelete = async (id: string) => {
-    await productService.deleteProduct(id);
+    await productService.delete(id);
     setProducts((prev) => prev?.filter((product) => product.id !== id));
   };
 

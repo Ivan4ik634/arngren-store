@@ -26,7 +26,7 @@ const ProductsFilters: FC<Props> = ({
   setFilters,
 }) => {
   const handleDelete = async () => {
-    await productService.deleteProducts(idsChecked);
+    await productService.deleteMany(idsChecked);
     setProducts((prev) => prev?.filter((product) => !idsChecked.includes(product.id)));
     setIdsChecked([]);
   };

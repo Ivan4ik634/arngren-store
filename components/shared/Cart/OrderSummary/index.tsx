@@ -32,7 +32,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
       return toast.error('Insufficient balance');
     }
     const orderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
-    const { data: order, error: orderError } = await orderService.createOrder({
+    const { data: order, error: orderError } = await orderService.create({
       user_id: profile.id,
       items_length: buyNow ? 1 : productCards.length,
       total: itemsPrices,
@@ -44,7 +44,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
       return toast.error(orderError?.message || 'Failed to create order');
     }
 
-    const { error: itemsError } = await cartItemService.createItems(
+    const { error: itemsError } = await cartItemService.create(
       buyNow ? [product!] : productCards,
       order.id,
     );
@@ -53,7 +53,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
       return toast.error(itemsError.message);
     }
     for (let i = 0; i < productCards.length; i++) {
-      await productService.editProduct({
+      await productService.update({
         id: productCards[i].product.id,
         count: productCards[i].product.count - productCards[i].count,
       });

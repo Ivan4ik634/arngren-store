@@ -3,7 +3,7 @@ import { CartItemWithOrderT } from '@/types/CartItemT';
 import { ProductT } from '@/types/ProductT';
 
 export const cartItemService = {
-  async createItems(items: { product: ProductT; count: number }[], order_id: string) {
+  async create(items: { product: ProductT; count: number }[], order_id: string) {
     const res = await supabase
       .from('cart_items')
       .insert(

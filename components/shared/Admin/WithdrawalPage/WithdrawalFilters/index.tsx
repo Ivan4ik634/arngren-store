@@ -25,7 +25,7 @@ const WithdrawalFilters: FC<Props> = ({
   setFilters,
 }) => {
   const handleComplete = async () => {
-    await withdravalService.editWithdrawals(idsChecked, 'completed');
+    await withdravalService.updateManyStatus(idsChecked, 'completed');
     setWithdrawals((prev) =>
       prev?.map((withdrawal) =>
         idsChecked.includes(withdrawal.id) ? { ...withdrawal, status: 'completed' } : withdrawal,
@@ -34,7 +34,7 @@ const WithdrawalFilters: FC<Props> = ({
     setIdsChecked([]);
   };
   const handleFail = async () => {
-    await withdravalService.editWithdrawals(idsChecked, 'failed');
+    await withdravalService.updateManyStatus(idsChecked, 'failed');
     setWithdrawals((prev) =>
       prev?.map((withdrawal) =>
         idsChecked.includes(withdrawal.id) ? { ...withdrawal, status: 'failed' } : withdrawal,

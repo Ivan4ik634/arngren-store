@@ -11,7 +11,7 @@ export const useProfile = () => {
     const getProfile = async () => {
       const user = await supabase.auth.getUser();
       if (!user.data.user) return;
-      const res = await userService.getUser(user.data.user.id);
+      const res = await userService.getById(user.data.user.id);
       setProfile(res.data);
       setProfileStore(res.data);
     };

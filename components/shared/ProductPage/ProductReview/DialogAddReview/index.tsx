@@ -53,9 +53,9 @@ const DialogAddReview: FC<Props> = ({ product }) => {
   const handleFormSubmit = async (data: ReviewCreateT) => {
     if (data.rating < 1 && data.rating > 5) return toast.error('Rating must be between 1 and 5');
 
-    const res = await reviewService.addReview(data);
+    const res = await reviewService.create(data);
 
-    await productService.editProduct({
+    await productService.update({
       id,
       rating: (product.rating * product.reviews + res.data.rating) / (product.reviews + 1),
       reviews: product.reviews + 1,

@@ -4,7 +4,7 @@ import { ProductCreateT, ProductT, ProductUpdateT } from '@/types/ProductT';
 import dayjs from 'dayjs';
 
 export const productService = {
-  async addProduct(data: ProductCreateT) {
+  async create(data: ProductCreateT) {
     const res = await supabase
       .from('products')
       .insert({ ...data })
@@ -159,7 +159,7 @@ export const productService = {
 
     return await query;
   },
-  async getProduct(id: string): Promise<ProductT> {
+  async getById(id: string): Promise<ProductT> {
     let query = await supabase
       .from('products')
       .select(
@@ -181,7 +181,7 @@ export const productService = {
 
     return query as any as ProductT;
   },
-  async editProduct(data: ProductUpdateT) {
+  async update(data: ProductUpdateT) {
     const res = await supabase
       .from('products')
       .update({ ...data })
@@ -189,11 +189,11 @@ export const productService = {
     return res;
   },
 
-  async deleteProducts(ids: string[]) {
+  async deleteMany(ids: string[]) {
     const res = await supabase.from('products').delete().in('id', ids);
     return res;
   },
-  async deleteProduct(id: string) {
+  async delete(id: string) {
     const res = await supabase.from('products').delete().eq('id', id);
     return res;
   },

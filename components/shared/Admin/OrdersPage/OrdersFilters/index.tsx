@@ -29,7 +29,7 @@ const OrdersFilters: FC<Props> = ({
   setFilters,
 }) => {
   const handleDeleteRows = async () => {
-    await orderService.deleteOrders(idsChecked);
+    await orderService.deleteMany(idsChecked);
     setOrders((prev) => prev?.filter((order) => !idsChecked.includes(order.id)));
     setIdsChecked([]);
   };

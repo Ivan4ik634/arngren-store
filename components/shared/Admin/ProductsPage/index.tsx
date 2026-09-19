@@ -21,7 +21,7 @@ const ProductsPage: FC<Props> = (props) => {
   });
   const { data } = useQuery({
     queryKey: ['products', filters],
-    queryFn: () => productService.getProducts(filters),
+    queryFn: () => productService.get(filters),
   });
   const [products, setProducts] = useSyncQueryData<ProductT>(data);
 

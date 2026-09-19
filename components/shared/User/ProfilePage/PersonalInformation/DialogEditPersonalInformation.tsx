@@ -71,7 +71,7 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
     });
     if (error) return toast.error('Error updating user');
 
-    const { error: userServiceError } = await userService.updateUser(profile.id, { ...data });
+    const { error: userServiceError } = await userService.update(profile.id, { ...data });
     if (userServiceError) return toast.error('Error updating user');
 
     setProfileStore({

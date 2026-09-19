@@ -3,7 +3,7 @@ import { FiltersT } from '@/types/FiltersT';
 import { WithdrawalCreateT, WithdrawalUpdateT, WithdrawalWithUserT } from '@/types/WithdrawalT';
 
 export const withdravalService = {
-  async getAll(filters?: FiltersT): Promise<WithdrawalWithUserT[]> {
+  async get(filters?: FiltersT): Promise<WithdrawalWithUserT[]> {
     let query = supabase.from('withdrawal').select(
       `
       id,
@@ -39,12 +39,12 @@ export const withdravalService = {
 
     return query;
   },
-  async editWithdrawal(id: string, status: 'pending' | 'completed' | 'failed') {
+  async updateStatus(id: string, status: 'pending' | 'completed' | 'failed') {
     const res = await supabase.from('withdrawal').update({ status }).eq('id', id);
 
     return res;
   },
-  async editWithdrawals(ids: string[], status: 'pending' | 'completed' | 'failed') {
+  async updateManyStatus(ids: string[], status: 'pending' | 'completed' | 'failed') {
     const res = await supabase.from('withdrawal').update({ status }).in('id', ids);
 
     return res;

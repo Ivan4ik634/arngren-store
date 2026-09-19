@@ -3,11 +3,11 @@ import { ApplicationCreateT, ApplicationWithProductT } from '@/types/Application
 import { FiltersT } from '@/types/FiltersT';
 
 export const applicationService = {
-  async addApplication(data: ApplicationCreateT) {
+  async create(data: ApplicationCreateT) {
     const res = await supabase.from('applications').insert({ ...data });
     return res;
   },
-  async getApplications(filters?: FiltersT): Promise<ApplicationWithProductT[]> {
+  async get(filters?: FiltersT): Promise<ApplicationWithProductT[]> {
     let query = supabase.from('applications').select(
       `
       id,
@@ -39,7 +39,7 @@ export const applicationService = {
 
     return (await query).data as any as ApplicationWithProductT[];
   },
-  async editApplication(id: string, status: 'approved' | 'rejected') {
+  async update(id: string, status: 'approved' | 'rejected') {
     await supabase
       .from('products')
       .update({ application: status === 'approved' ? true : false })
@@ -48,7 +48,7 @@ export const applicationService = {
 
     return res;
   },
-  async editApplications(ids: string[], status: 'approved' | 'rejected') {
+  async updateMany(ids: string[], status: 'approved' | 'rejected') {
     await supabase
       .from('products')
       .update({ application: status === 'approved' ? true : false })

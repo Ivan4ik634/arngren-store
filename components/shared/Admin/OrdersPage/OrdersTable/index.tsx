@@ -25,7 +25,7 @@ const OrdersTable: FC<Props> = ({
   handleCheck,
 }) => {
   const handleDelete = async (id: string) => {
-    await orderService.deleteOrder(id);
+    await orderService.delete(id);
     setOrders((prev) => prev?.filter((user) => user.id !== id));
   };
   return (

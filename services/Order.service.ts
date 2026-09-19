@@ -4,7 +4,7 @@ import { OrderCreateT, OrderUpdateT } from '@/types/OrderT';
 import dayjs from 'dayjs';
 
 export const orderService = {
-  async createOrder(order: OrderCreateT) {
+  async create(order: OrderCreateT) {
     const res = await supabase
       .from('orders')
       .insert({ ...order })
@@ -49,7 +49,7 @@ export const orderService = {
 
     return res;
   },
-  async getOrders(filters: FilterOrdersT) {
+  async get(filters: FilterOrdersT) {
     let query = supabase.from('orders').select(`
     *,
     user_id(*)
@@ -68,17 +68,17 @@ export const orderService = {
 
     return query;
   },
-  async deleteOrders(ids: string[]) {
+  async deleteMany(ids: string[]) {
     const res = await supabase.from('orders').delete().in('id', ids);
 
     return res;
   },
-  async deleteOrder(id: string) {
+  async delete(id: string) {
     const res = await supabase.from('orders').delete().eq('id', id);
 
     return res;
   },
-  async updateOrder(id: string, data: OrderUpdateT) {
+  async update(id: string, data: OrderUpdateT) {
     const res = await supabase.from('orders').update(data).eq('id', id);
 
     return res;

@@ -17,7 +17,7 @@ const OrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
   const { data } = useQuery({
     queryKey: ['orders', filters],
-    queryFn: () => orderService.getOrders(filters),
+    queryFn: () => orderService.get(filters),
     select: (res) => res?.data,
   });
 

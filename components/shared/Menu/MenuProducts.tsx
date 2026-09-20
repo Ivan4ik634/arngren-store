@@ -1,5 +1,6 @@
 'use client';
 
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -77,37 +78,41 @@ const MenuProducts: FC<Props> = ({ products }) => {
       </div>
 
       <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {products?.map((product) => {
-          const productInCart = productCards.find((card) => card.product?.id === product.id);
+        {products?.length ? (
+          products?.map((product) => {
+            const productInCart = productCards.find((card) => card.product?.id === product.id);
 
-          return (
-            <ProductCard
-              product={product}
-              profile={profile}
-              className="mt-4 grid grid-cols-[1fr_48px] gap-3"
-              key={product.id}>
-              <Button
-                onClick={() =>
-                  productInCart
-                    ? incrementProductCount(product.id)
-                    : addProductCard({ product, count: 1 })
-                }
-                className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
-                + Add to cart
-              </Button>
-              <Button
-                onClick={() => {
-                  setProduct({ product, count: 1 });
-                  router.push(PAGES.CART + '?buyNow=true');
-                }}
-                variant="outline"
-                size="icon-lg"
-                className="h-9 w-12 rounded-md border-zinc-200 bg-zinc-50">
-                <ShoppingCart className="size-4" />
-              </Button>
-            </ProductCard>
-          );
-        })}
+            return (
+              <ProductCard
+                product={product}
+                profile={profile}
+                className="mt-4 grid grid-cols-[1fr_48px] gap-3"
+                key={product.id}>
+                <Button
+                  onClick={() =>
+                    productInCart
+                      ? incrementProductCount(product.id)
+                      : addProductCard({ product, count: 1 })
+                  }
+                  className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
+                  + Add to cart
+                </Button>
+                <Button
+                  onClick={() => {
+                    setProduct({ product, count: 1 });
+                    router.push(PAGES.CART + '?buyNow=true');
+                  }}
+                  variant="outline"
+                  size="icon-lg"
+                  className="h-9 w-12 rounded-md border-zinc-200 bg-zinc-50">
+                  <ShoppingCart className="size-4" />
+                </Button>
+              </ProductCard>
+            );
+          })
+        ) : (
+          <NotFoundData type="menu" className="col-span-full" />
+        )}
       </div>
     </div>
   );

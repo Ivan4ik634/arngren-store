@@ -1,5 +1,6 @@
 'use client';
 
+import NotFoundData from '@/components/shared/NotFoundData';
 import { PAGES } from '@/configs/PAGES';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
@@ -44,42 +45,50 @@ const CartPage: FC<Props> = (props) => {
 
       <div className="mt-4 flex w-full gap-8 ">
         <div className="">
-          <div className="grid gap-x-10 grid-cols-[minmax(400px,1fr)_100px_120px_100px_20px]">
-            <span className="font-bold text-xl">Product</span>
-            <span className="font-bold text-xl">Price</span>
-            <span className="font-bold text-xl">Quantity</span>
-            <span className="font-bold text-xl">Total</span>
-          </div>
-          {!buyNow
-            ? productCards.map((product) => (
-                <ProductCart
-                  key={product.product.id}
-                  product={product.product}
-                  count={product.count}
-                />
-              ))
-            : product && (
-                <ProductCart
-                  key={product.product.id}
-                  product={product.product}
-                  count={product.count}
-                />
-              )}
-          <div className="flex  pt-3 justify-between">
-            <button
-              onClick={() => (buyNow ? setProduct(null) : clearProductsCard())}
-              className="mt-6 flex items-center gap-2 text-sm ">
-              <span>
-                <Trash className="size-5" />
-              </span>
-              <span>Clear Cart</span>
-            </button>
-            <Link href={PAGES.MENU}>
-              <button className="mt-6 flex items-center gap-2 text-sm font-bold text-[#0969ff]">
-                <span>Continue Shopping</span>
-              </button>
-            </Link>
-          </div>
+          {!buyNow && productCards.length === 0 ? (
+            <div className="w-[740px]">
+              <NotFoundData type="cart" />
+            </div>
+          ) : (
+            <>
+              <div className="grid gap-x-10 grid-cols-[minmax(400px,1fr)_100px_120px_100px_20px]">
+                <span className="font-bold text-xl">Product</span>
+                <span className="font-bold text-xl">Price</span>
+                <span className="font-bold text-xl">Quantity</span>
+                <span className="font-bold text-xl">Total</span>
+              </div>
+              {!buyNow
+                ? productCards.map((product) => (
+                    <ProductCart
+                      key={product.product.id}
+                      product={product.product}
+                      count={product.count}
+                    />
+                  ))
+                : product && (
+                    <ProductCart
+                      key={product.product.id}
+                      product={product.product}
+                      count={product.count}
+                    />
+                  )}
+              <div className="flex  pt-3 justify-between">
+                <button
+                  onClick={() => (buyNow ? setProduct(null) : clearProductsCard())}
+                  className="mt-6 flex items-center gap-2 text-sm ">
+                  <span>
+                    <Trash className="size-5" />
+                  </span>
+                  <span>Clear Cart</span>
+                </button>
+                <Link href={PAGES.MENU}>
+                  <button className="mt-6 flex items-center gap-2 text-sm font-bold text-[#0969ff]">
+                    <span>Continue Shopping</span>
+                  </button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
         <OrderSummary buyNow={buyNow} />
       </div>

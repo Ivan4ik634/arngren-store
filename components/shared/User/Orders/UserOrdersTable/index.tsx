@@ -1,7 +1,15 @@
 'use client';
 
 import OrderItem from '@/components/orders/OrderItem';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import NotFoundData from '@/components/shared/NotFoundData';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { OrderWithUserT } from '@/types/OrderT';
 import { FC } from 'react';
 
@@ -23,9 +31,15 @@ const UserOrdersTable: FC<Props> = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.map((data) => (
-          <OrderItem key={data.id} type="user" order={data} />
-        ))}
+        {data?.length ? (
+          data?.map((data) => <OrderItem key={data.id} type="user" order={data} />)
+        ) : (
+          <TableRow>
+            <TableCell colSpan={6}>
+              <NotFoundData type="orders" />
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

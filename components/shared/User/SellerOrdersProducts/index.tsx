@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
 import { useProfile } from '@/hooks/useProfile';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { cartItemService } from '@/services/CartItem.service';
@@ -16,12 +17,12 @@ type Props = Record<string, never>;
 const SellerOrdersProductsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
   const { profile } = useProfile();
-  const { data: productIds } = useQuery({
+  const { data: productIds, isPending: isPendingIds } = useQuery({
     queryKey: ['products-user-ids', filters],
     queryFn: () => productService.getProductUserIds(profile?.id || ''),
     enabled: !!profile,
   });
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['cart_items', productIds],
     queryFn: () => cartItemService.getItems(productIds?.flatMap((p) => p.id) || []),
     enabled: !!productIds,
@@ -32,7 +33,11 @@ const SellerOrdersProductsPage: FC<Props> = (props) => {
     <div>
       <h1 className="font-bold text-2xl">Orders</h1>
       <SellerOrdersProductsFilters filters={filters} setFilters={setFilters} />
-      <SellerOrdersProductsTable data={cartItems || []} setCartItems={setCartItems} />
+      {isPending || isPendingIds ? (
+        <Loading />
+      ) : (
+        <SellerOrdersProductsTable data={cartItems || []} setCartItems={setCartItems} />
+      )}
     </div>
   );
 };

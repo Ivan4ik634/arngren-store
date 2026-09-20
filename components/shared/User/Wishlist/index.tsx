@@ -1,5 +1,7 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
+import NotFoundData from '@/components/shared/NotFoundData';
 import { useProfile } from '@/hooks/useProfile';
 import { wishlistService } from '@/services/Wishlist.service';
 import { FiltersProductT } from '@/types/FiltersT';
@@ -17,7 +19,7 @@ const WishlistPage: FC<Props> = (props) => {
     category: 'all',
   });
   const { profile } = useProfile();
-  const { data, isFetching } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['wishlist', filters],
     queryFn: () => wishlistService.get(profile?.id || '', filters),
     enabled: !!profile,
@@ -27,19 +29,17 @@ const WishlistPage: FC<Props> = (props) => {
     <div>
       <h1 className="font-bold text-2xl">Wishlist</h1>
       <WishlistFilters filters={filters} setFilters={setFilters} />
-      <div className="grid grid-cols-4 gap-5">
-        {!isFetching ? (
-          (data?.length || 0) !== 0 ? (
-            data?.map((product) => (
-              <ProductCard key={product.id} profile={profile} product={product.product_id} />
-            ))
-          ) : (
-            <p>No products found</p>
-          )
-        ) : (
-          ''
-        )}
-      </div>
+      {isPending ? (
+        <Loading />
+      ) : (data?.length || 0) !== 0 ? (
+        <div className="grid grid-cols-4 gap-5">
+          {data?.map((product) => (
+            <ProductCard key={product.id} profile={profile} product={product.product_id} />
+          ))}
+        </div>
+      ) : (
+        <NotFoundData type="wishlist" />
+      )}
     </div>
   );
 };

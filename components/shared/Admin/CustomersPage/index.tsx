@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { userService } from '@/services/User.service';
@@ -13,7 +14,7 @@ type Props = Record<string, never>;
 
 const CustomersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<{ search: string }>({ search: '' });
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['customers', filters],
     queryFn: () => userService.get(filters),
     select: (res) => res?.data,
@@ -30,7 +31,11 @@ const CustomersPage: FC<Props> = (props) => {
         filters={filters}
         setFilters={setFilters}
       />
-      <CustomersTable setUsers={setUsers} {...checkboxes} users={users} />
+      {isPending ? (
+        <Loading />
+      ) : (
+        <CustomersTable setUsers={setUsers} {...checkboxes} users={users} />
+      )}
     </div>
   );
 };

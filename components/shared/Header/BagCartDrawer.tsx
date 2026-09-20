@@ -10,6 +10,7 @@ import { Minus, Plus, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
+import NotFoundData from '../NotFoundData';
 import ProductCard from '../ProductCard';
 
 interface Props {}
@@ -35,35 +36,39 @@ const BagCartDrawer: FC<Props> = (props) => {
         className="relative text-black transition-colors hover:text-[#0969ff]">
         <ShoppingBag className="size-5" />
       </DrawerTrigger>
-      <DrawerContent className="w-120 pt-5 px-5">
+      <DrawerContent className="w-120 py-5 px-5">
         <DrawerTitle className="font-bold text-2xl">Bag</DrawerTitle>
 
-        <ScrollArea className="h-[87%]">
+        <ScrollArea className="h-[85%]">
           <div className="flex flex-col mt-10 gap-y-5">
-            {productCards.map(({ product, count }) => (
-              <ProductCard
-                profile={profile}
-                className="mt-8 pt-5 border-t"
-                product={product}
-                key={product.id}>
-                <div className=" flex items-center justify-between">
-                  <p className="text-lg font-extrabold text-black">Total</p>
-                  <p className="text-lg font-extrabold text-black">${product.price * count}</p>
-                </div>
-                <div className="mt-5 flex w-full  items-center justify-between">
-                  <div className="border-2   justify-center rounded-[5px] p-3 flex items-center">
-                    <Minus onClick={() => decrementProductCount(product.id)} className="size-7" />
-                    <span className="mx-5 text-xl">{count}</span>
-                    <Plus onClick={() => incrementProductCount(product.id)} className="size-7" />
+            {productCards.length > 0 ? (
+              productCards.map(({ product, count }) => (
+                <ProductCard
+                  profile={profile}
+                  className="mt-8 pt-5 border-t"
+                  product={product}
+                  key={product.id}>
+                  <div className=" flex items-center justify-between">
+                    <p className="text-lg font-extrabold text-black">Total</p>
+                    <p className="text-lg font-extrabold text-black">${product.price * count}</p>
                   </div>
-                  <Button
-                    onClick={() => deleteProductCard(product.id)}
-                    className="h-12 px-5  rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
-                    Delete Product
-                  </Button>
-                </div>
-              </ProductCard>
-            ))}
+                  <div className="mt-5 flex w-full  items-center justify-between">
+                    <div className="border-2   justify-center rounded-[5px] p-3 flex items-center">
+                      <Minus onClick={() => decrementProductCount(product.id)} className="size-7" />
+                      <span className="mx-5 text-xl">{count}</span>
+                      <Plus onClick={() => incrementProductCount(product.id)} className="size-7" />
+                    </div>
+                    <Button
+                      onClick={() => deleteProductCard(product.id)}
+                      className="h-12 px-5  rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
+                      Delete Product
+                    </Button>
+                  </div>
+                </ProductCard>
+              ))
+            ) : (
+              <NotFoundData type="cart" />
+            )}
           </div>
         </ScrollArea>
 

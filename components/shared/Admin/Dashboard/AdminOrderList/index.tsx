@@ -1,5 +1,6 @@
 'use client';
 
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -46,31 +47,39 @@ const AdminOrderList: FC<Props> = ({ orders }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders?.map((order) => (
-              <TableRow
-                key={order.id}
-                className="border-b border-slate-100 last:border-0 hover:bg-slate-50/70">
-                <TableCell className="px-5 py-3 font-medium text-slate-500">
-                  {order.order_id}
+            {orders?.length ? (
+              orders?.map((order) => (
+                <TableRow
+                  key={order.id}
+                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50/70">
+                  <TableCell className="px-5 py-3 font-medium text-slate-500">
+                    {order.order_id}
+                  </TableCell>
+                  <TableCell className="py-3 text-slate-500">{order.user_id.name}</TableCell>
+                  <TableCell className="py-3">
+                    <Badge variant="outline" className={statusConfig[order.status].className}>
+                      {order.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="py-3 text-slate-500">
+                    {dayjs(order.created_at).format('MMM DD, YYYY')}
+                    <span className="block text-[10px] text-slate-400">
+                      {dayjs(order.created_at).format('hh:mm A')}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3 font-medium text-slate-600">
+                    {order.items_length}
+                  </TableCell>
+                  <TableCell className="py-3 font-medium text-slate-600">{order.total}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <NotFoundData type="dashboard-orders" />
                 </TableCell>
-                <TableCell className="py-3 text-slate-500">{order.user_id.name}</TableCell>
-                <TableCell className="py-3">
-                  <Badge variant="outline" className={statusConfig[order.status].className}>
-                    {order.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="py-3 text-slate-500">
-                  {dayjs(order.created_at).format('MMM DD, YYYY')}
-                  <span className="block text-[10px] text-slate-400">
-                    {dayjs(order.created_at).format('hh:mm A')}
-                  </span>
-                </TableCell>
-                <TableCell className="py-3 font-medium text-slate-600">
-                  {order.items_length}
-                </TableCell>
-                <TableCell className="py-3 font-medium text-slate-600">{order.total}</TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CardContent>

@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
 import { orderService } from '@/services/Order.service';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { useQuery } from '@tanstack/react-query';
@@ -12,7 +13,7 @@ type Props = Record<string, never>;
 const UserOrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['orders', filters],
     queryFn: () => orderService.getOrdersUser(filters),
     select: (res) => res?.data,
@@ -22,7 +23,7 @@ const UserOrdersPage: FC<Props> = (props) => {
     <div>
       <h1 className="font-bold text-2xl">Orders</h1>
       <UserOrdersFilters filters={filters} setFilters={setFilters} />
-      <UserOrdersTable data={data} />
+      {isPending ? <Loading /> : <UserOrdersTable data={data} />}
     </div>
   );
 };

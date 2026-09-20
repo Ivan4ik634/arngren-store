@@ -1,5 +1,6 @@
 'use client';
 
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -54,47 +55,55 @@ const CustomersTable: FC<Props> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users?.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell className="w-[50px] ">
-              <Checkbox
-                checked={idsChecked.includes(user.id)}
-                onCheckedChange={() => handleCheck(user.id)}
-              />
-            </TableCell>
+        {users?.length ? (
+          users?.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell className="w-[50px] ">
+                <Checkbox
+                  checked={idsChecked.includes(user.id)}
+                  onCheckedChange={() => handleCheck(user.id)}
+                />
+              </TableCell>
 
-            <TableCell>
-              <div className="flex items-center">
-                <Avatar size="lg">
-                  <AvatarFallback>{user.name[0]}</AvatarFallback>
-                  <AvatarImage src={user.avatar} />
-                </Avatar>
-                <div className="ml-5">
-                  <h1>
-                    <span className="font-bold">{user.name}</span>
-                  </h1>
+              <TableCell>
+                <div className="flex items-center">
+                  <Avatar size="lg">
+                    <AvatarFallback>{user.name[0]}</AvatarFallback>
+                    <AvatarImage src={user.avatar} />
+                  </Avatar>
+                  <div className="ml-5">
+                    <h1>
+                      <span className="font-bold">{user.name}</span>
+                    </h1>
+                  </div>
                 </div>
-              </div>
-            </TableCell>
-            <TableCell>
-              <p className="opacity-50">{user.email}</p>
-            </TableCell>
-            <TableCell>{user.gender}</TableCell>
-            <TableCell>{user.language}</TableCell>
-            <TableCell>
-              <div>
-                <p>{dayjs(user.created_at).format('MMM DD YYYY')} </p>
-                <p className="opacity-50">{dayjs(user.created_at).format('hh:mm A')}</p>
-              </div>
-            </TableCell>
-            <TableCell className="">
-              <div className="flex items-start justify-start w-full space-x-3">
-                <Trash2 onClick={() => handleDelete(user.id)} className="mr-2 text-red-500" />
-                <DrawerDetailsCustomer user={user} handleDeleteUser={handleDelete} />
-              </div>
+              </TableCell>
+              <TableCell>
+                <p className="opacity-50">{user.email}</p>
+              </TableCell>
+              <TableCell>{user.gender}</TableCell>
+              <TableCell>{user.language}</TableCell>
+              <TableCell>
+                <div>
+                  <p>{dayjs(user.created_at).format('MMM DD YYYY')} </p>
+                  <p className="opacity-50">{dayjs(user.created_at).format('hh:mm A')}</p>
+                </div>
+              </TableCell>
+              <TableCell className="">
+                <div className="flex items-start justify-start w-full space-x-3">
+                  <Trash2 onClick={() => handleDelete(user.id)} className="mr-2 text-red-500" />
+                  <DrawerDetailsCustomer user={user} handleDeleteUser={handleDelete} />
+                </div>
+              </TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7}>
+              <NotFoundData type="customers" />
             </TableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

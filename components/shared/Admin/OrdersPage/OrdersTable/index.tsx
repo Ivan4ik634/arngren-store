@@ -1,8 +1,16 @@
 'use client';
 
 import OrderItem from '@/components/orders/OrderItem';
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { orderService } from '@/services/Order.service';
 import { OrderWithUserT } from '@/types/OrderT';
 import { Dispatch, FC, SetStateAction } from 'react';
@@ -45,16 +53,24 @@ const OrdersTable: FC<Props> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.map((order) => (
-          <OrderItem
-            key={order.id}
-            order={order}
-            handleCheck={handleCheck}
-            idsChecked={idsChecked}
-            handleDelete={handleDelete}
-            type="admin"
-          />
-        ))}
+        {data?.length ? (
+          data?.map((order) => (
+            <OrderItem
+              key={order.id}
+              order={order}
+              handleCheck={handleCheck}
+              idsChecked={idsChecked}
+              handleDelete={handleDelete}
+              type="admin"
+            />
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={8}>
+              <NotFoundData type="admin-orders" />
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

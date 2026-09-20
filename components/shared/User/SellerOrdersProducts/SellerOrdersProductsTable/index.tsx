@@ -1,7 +1,15 @@
 'use client';
 
 import OrderItem from '@/components/orders/OrderItem';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import NotFoundData from '@/components/shared/NotFoundData';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { useProfile } from '@/hooks/useProfile';
 import { orderService } from '@/services/Order.service';
 import { transactionService } from '@/services/Transaction.service';
@@ -82,15 +90,23 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.map((data) => (
-          <OrderItem
-            handleAccept={(order) => handleAccept(order, data)}
-            handleReject={(order) => handleReject(order, data)}
-            key={data.id}
-            type="seller"
-            order={data.order_id}
-          />
-        ))}
+        {data?.length ? (
+          data?.map((data) => (
+            <OrderItem
+              handleAccept={(order) => handleAccept(order, data)}
+              handleReject={(order) => handleReject(order, data)}
+              key={data.id}
+              type="seller"
+              order={data.order_id}
+            />
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={6}>
+              <NotFoundData type="seller-orders" />
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

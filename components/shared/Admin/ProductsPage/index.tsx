@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { productService } from '@/services/Product.service';
@@ -19,7 +20,7 @@ const ProductsPage: FC<Props> = (props) => {
     category: 'all',
     availability: 'all',
   });
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['products', filters],
     queryFn: () => productService.get(filters),
   });
@@ -37,7 +38,11 @@ const ProductsPage: FC<Props> = (props) => {
         filters={filters}
         setFilters={setFilters}
       />
-      <ProductsTable setProducts={setProducts} {...checkboxes} products={products} />
+      {isPending ? (
+        <Loading />
+      ) : (
+        <ProductsTable setProducts={setProducts} {...checkboxes} products={products} />
+      )}
     </div>
   );
 };

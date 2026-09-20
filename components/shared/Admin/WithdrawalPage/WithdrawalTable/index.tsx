@@ -1,5 +1,6 @@
 'use client';
 
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -62,68 +63,76 @@ const WithdrawalTable: FC<Props> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {withdrawals?.map((withdrawal) => (
-          <TableRow key={withdrawal.id}>
-            <TableHead className="w-[50px] ">
-              <Checkbox
-                checked={idsChecked.includes(withdrawal.id)}
-                onCheckedChange={() => handleCheck(withdrawal.id)}
-              />
-            </TableHead>
-            <TableCell>
-              <div className="flex items-center">
-                <Avatar size="lg">
-                  <AvatarFallback>{withdrawal.user_id.name[0]}</AvatarFallback>
-                  <AvatarImage src={withdrawal.user_id.avatar} />
-                </Avatar>
-                <div className="ml-5">
-                  <h1>
-                    <span className="font-bold">{withdrawal.user_id.name}</span>
-                  </h1>
-                  <p className="opacity-50">{withdrawal.user_id.email}</p>
-                </div>
-              </div>
-            </TableCell>
-            <TableCell>
-              <p className="font-medium">{withdrawal.iban}</p>
-            </TableCell>
-            <TableCell>
-              <p className="font-bold text-primary">${withdrawal.amount}</p>
-            </TableCell>
-            <TableCell>
-              <div>
-                <p>{dayjs(withdrawal.created_at).format('MMM DD YYYY')}</p>
-                <p className="opacity-50">{dayjs(withdrawal.created_at).format('hh:mm A')}</p>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div
-                className={`px-4 py-2  w-min rounded-full ${withdrawal.status === 'completed' ? 'bg-green-500/20' : withdrawal.status === 'failed' ? 'bg-red-500/20' : 'bg-yellow-500/20'}`}>
-                <p
-                  className={
-                    withdrawal.status === 'completed'
-                      ? 'text-green-500'
-                      : withdrawal.status === 'failed'
-                        ? 'text-red-500'
-                        : 'text-yellow-500'
-                  }>
-                  {withdrawal.status}
-                </p>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div className="flex items-start justify-start  space-x-5">
-                <Check onClick={() => handleComplete(withdrawal)} className="text-green-500" />
-                <X onClick={() => handleFail(withdrawal)} className="text-red-500" />
-                <DrawerDetailsWithdrawal
-                  handleComplete={handleComplete}
-                  handleFail={handleFail}
-                  withdrawal={withdrawal}
+        {withdrawals?.length ? (
+          withdrawals?.map((withdrawal) => (
+            <TableRow key={withdrawal.id}>
+              <TableHead className="w-[50px] ">
+                <Checkbox
+                  checked={idsChecked.includes(withdrawal.id)}
+                  onCheckedChange={() => handleCheck(withdrawal.id)}
                 />
-              </div>
+              </TableHead>
+              <TableCell>
+                <div className="flex items-center">
+                  <Avatar size="lg">
+                    <AvatarFallback>{withdrawal.user_id.name[0]}</AvatarFallback>
+                    <AvatarImage src={withdrawal.user_id.avatar} />
+                  </Avatar>
+                  <div className="ml-5">
+                    <h1>
+                      <span className="font-bold">{withdrawal.user_id.name}</span>
+                    </h1>
+                    <p className="opacity-50">{withdrawal.user_id.email}</p>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell>
+                <p className="font-medium">{withdrawal.iban}</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-bold text-primary">${withdrawal.amount}</p>
+              </TableCell>
+              <TableCell>
+                <div>
+                  <p>{dayjs(withdrawal.created_at).format('MMM DD YYYY')}</p>
+                  <p className="opacity-50">{dayjs(withdrawal.created_at).format('hh:mm A')}</p>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div
+                  className={`px-4 py-2  w-min rounded-full ${withdrawal.status === 'completed' ? 'bg-green-500/20' : withdrawal.status === 'failed' ? 'bg-red-500/20' : 'bg-yellow-500/20'}`}>
+                  <p
+                    className={
+                      withdrawal.status === 'completed'
+                        ? 'text-green-500'
+                        : withdrawal.status === 'failed'
+                          ? 'text-red-500'
+                          : 'text-yellow-500'
+                    }>
+                    {withdrawal.status}
+                  </p>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-start justify-start  space-x-5">
+                  <Check onClick={() => handleComplete(withdrawal)} className="text-green-500" />
+                  <X onClick={() => handleFail(withdrawal)} className="text-red-500" />
+                  <DrawerDetailsWithdrawal
+                    handleComplete={handleComplete}
+                    handleFail={handleFail}
+                    withdrawal={withdrawal}
+                  />
+                </div>
+              </TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7}>
+              <NotFoundData type="withdrawals" />
             </TableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

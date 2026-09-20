@@ -1,5 +1,7 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Button } from '@/components/ui/button';
 import { handleActionAddProduct, handleActionEditProduct } from '@/funcs/ActionFormProduct';
 import { useProfile } from '@/hooks/useProfile';
@@ -22,7 +24,7 @@ const UserProductsPage: FC<Props> = (props) => {
     availability: 'all',
   });
   const { profile } = useProfile();
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['products', filters],
     queryFn: () => productService.getUserProducts(profile?.id || '', filters),
     enabled: !!profile,
@@ -46,28 +48,36 @@ const UserProductsPage: FC<Props> = (props) => {
         </DialogFormProduct>
       </div>
       <UserProductsFilters filters={filters} setFilters={setFilters} />
-      <div className="mt-5 grid grid-cols-4 gap-5">
-        {products?.map((product) => (
-          <ProductCard
-            className=" gap-x-2 mt-5 justify-end flex w-full"
-            profile={profile}
-            key={product.id}
-            product={product}>
-            <DialogFormProduct
-              init={{ ...product }}
-              className="w-full"
-              action={(form, images) => handleActionEditProduct(form, images, product.id)}>
-              <Button className="w-full px-8 textl-xl py-5">Edit</Button>
-            </DialogFormProduct>
-            <Button
-              className=" px-8 textl-xl py-5"
-              onClick={() => handleDelete(product.id)}
-              variant="destructive">
-              Delete
-            </Button>
-          </ProductCard>
-        ))}
-      </div>
+      {isPending ? (
+        <Loading />
+      ) : (
+        <div className="mt-5 grid grid-cols-4 gap-5">
+          {products?.length ? (
+            products?.map((product) => (
+              <ProductCard
+                className=" gap-x-2 mt-5 justify-end flex w-full"
+                profile={profile}
+                key={product.id}
+                product={product}>
+                <DialogFormProduct
+                  init={{ ...product }}
+                  className="w-full"
+                  action={(form, images) => handleActionEditProduct(form, images, product.id)}>
+                  <Button className="w-full px-8 textl-xl py-5">Edit</Button>
+                </DialogFormProduct>
+                <Button
+                  className=" px-8 textl-xl py-5"
+                  onClick={() => handleDelete(product.id)}
+                  variant="destructive">
+                  Delete
+                </Button>
+              </ProductCard>
+            ))
+          ) : (
+            <NotFoundData type="products" className="col-span-full" />
+          )}
+        </div>
+      )}
     </div>
   );
 };

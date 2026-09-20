@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/components/shared/Loading';
 import { getDashboardStats } from '@/data/AdminStats';
 import { applicationService } from '@/services/Application.service';
 import { orderService } from '@/services/Order.service';
@@ -18,7 +19,7 @@ import AdminRecentUsers from './AdminRecentUsers';
 const AdminDashboardPage: FC = () => {
   const [date, setDate] = useState(new Date());
 
-  const { data: stats } = useQuery({
+  const { data: stats, isPending: isPendingStats } = useQuery({
     queryKey: ['stats'],
     queryFn: async () => {
       const [orderStats, productsStats, usersStats, withdrawalStats, applicationStats] =
@@ -34,7 +35,7 @@ const AdminDashboardPage: FC = () => {
     },
   });
 
-  const { data: dashboardData } = useQuery({
+  const { data: dashboardData, isPending: isPendingDashboard } = useQuery({
     queryKey: ['dashboard', date],
     queryFn: async () => {
       const [orders, users, products, applications, withdrawals] = await Promise.all([
@@ -92,16 +93,22 @@ const AdminDashboardPage: FC = () => {
         })}
       />
 
-      <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_228px] ">
-        <AdminOrderList orders={dashboardData?.orders.res} />
-        <StatusOverwiew data={data} />
-      </div>
+      {isPendingStats || isPendingDashboard ? (
+        <Loading className="py-24" />
+      ) : (
+        <>
+          <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_228px] ">
+            <AdminOrderList orders={dashboardData?.orders.res} />
+            <StatusOverwiew data={data} />
+          </div>
 
-      <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_228px]">
-        <AdminLatestProducts products={dashboardData?.products} />
-        <AdminRecentUsers users={dashboardData?.users} />
-        <SafetyCard />
-      </div>
+          <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_228px]">
+            <AdminLatestProducts products={dashboardData?.products} />
+            <AdminRecentUsers users={dashboardData?.users} />
+            <SafetyCard />
+          </div>
+        </>
+      )}
     </main>
   );
 };

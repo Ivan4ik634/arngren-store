@@ -1,5 +1,6 @@
 'use client';
 
+import NotFoundData from '@/components/shared/NotFoundData';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
@@ -42,40 +43,48 @@ const BalanceTransactionHistory: FC<Props> = ({ transactions }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions?.map((transaction) => {
-              const status = statusConfig[transaction.status];
-              const type = typeConfig[transaction.type];
+            {transactions?.length ? (
+              transactions?.map((transaction) => {
+                const status = statusConfig[transaction.status];
+                const type = typeConfig[transaction.type];
 
-              const sumbol =
-                transaction.type === 'income' || transaction.type === 'deposit' ? '+' : '-';
-              return (
-                <TableRow key={transaction.id}>
-                  <TableCell className="font-medium">{transaction.transaction}</TableCell>
-                  <TableCell>
-                    <div>
-                      <p>{dayjs(transaction.created_at).format('MMM DD YYYY')}</p>
-                      <p className="opacity-50">
-                        {dayjs(transaction.created_at).format('hh:mm A')}
-                      </p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className={type.className + 'px-4 py-2 w-min rounded-full'}>
-                      <p>{transaction.type}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className={status.className + 'px-4 py-2 w-min rounded-full'}>
-                      <p>{status.label}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    className={`font-bold text-right ${sumbol === '+' ? 'text-green-500' : 'text-red-500'}`}>
-                    {sumbol}${transaction.amount}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                const sumbol =
+                  transaction.type === 'income' || transaction.type === 'deposit' ? '+' : '-';
+                return (
+                  <TableRow key={transaction.id}>
+                    <TableCell className="font-medium">{transaction.transaction}</TableCell>
+                    <TableCell>
+                      <div>
+                        <p>{dayjs(transaction.created_at).format('MMM DD YYYY')}</p>
+                        <p className="opacity-50">
+                          {dayjs(transaction.created_at).format('hh:mm A')}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className={type.className + 'px-4 py-2 w-min rounded-full'}>
+                        <p>{transaction.type}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className={status.className + 'px-4 py-2 w-min rounded-full'}>
+                        <p>{status.label}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      className={`font-bold text-right ${sumbol === '+' ? 'text-green-500' : 'text-red-500'}`}>
+                      {sumbol}${transaction.amount}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <NotFoundData type="balance" />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>

@@ -1,6 +1,7 @@
 'use client';
 import { ChevronRight, Search } from 'lucide-react';
 
+import Loading from '@/components/shared/Loading';
 import { Input } from '@/components/ui/input';
 import { productService } from '@/services/Product.service';
 import { useFilters } from '@/store/useFilters';
@@ -10,7 +11,7 @@ import MenuProducts from './MenuProducts';
 
 export function MenuPage() {
   const { filters, setFilters } = useFilters();
-  const { data: products } = useQuery({
+  const { data: products, isPending } = useQuery({
     queryKey: ['products', filters],
     queryFn: () => productService.getProductsMenu(filters),
     select: (data) => data.data,
@@ -47,7 +48,7 @@ export function MenuPage() {
       <div className="mt-4 grid w-full gap-8 lg:grid-cols-[250px_minmax(0,1fr)]">
         <Filters />
         <div className="min-w-0">
-          <MenuProducts products={products} />
+          {isPending ? <Loading /> : <MenuProducts products={products} />}
         </div>
       </div>
     </main>

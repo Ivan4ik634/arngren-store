@@ -1,3 +1,4 @@
+import NotFoundData from '@/components/shared/NotFoundData';
 import { PAGES } from '@/configs/PAGES';
 import { UserT } from '@/types/UserT';
 import dayjs from 'dayjs';
@@ -11,24 +12,28 @@ interface Props {
 const AdminRecentUsers: FC<Props> = ({ users }) => {
   return (
     <DashboardList title="Recent Users" icon={UsersRound} action={PAGES.CUSTOMERS}>
-      <div className="space-y-1">
-        {users?.map((user, index) => (
-          <div
-            key={user.email}
-            className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-slate-50">
-            <div className="flex size-8 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-500">
-              {user.email[0].toUpperCase()}
+      {users?.length ? (
+        <div className="space-y-1">
+          {users?.map((user, index) => (
+            <div
+              key={user.email}
+              className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-slate-50">
+              <div className="flex size-8 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-500">
+                {user.email[0].toUpperCase()}
+              </div>
+              <div className="flex flex-col">
+                <span className="flex-1 truncate text-[10px] text-slate-600">{user.name}</span>
+                <span className=" text-[10px] text-slate-600">{user.email}</span>
+                <span className="hidden text-[10px] text-slate-400 sm:block">
+                  {dayjs(user.created_at).format('DD MMM YYYY')}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="flex-1 truncate text-[10px] text-slate-600">{user.name}</span>
-              <span className=" text-[10px] text-slate-600">{user.email}</span>
-              <span className="hidden text-[10px] text-slate-400 sm:block">
-                {dayjs(user.created_at).format('DD MMM YYYY')}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <NotFoundData type="dashboard-users" />
+      )}
     </DashboardList>
   );
 };

@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { withdravalService } from '@/services/Withdrawal.service';
@@ -15,7 +16,7 @@ type Props = Record<string, never>;
 
 const WithdrawalPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['withdrawals', filters],
     queryFn: () => withdravalService.get(filters),
   });
@@ -33,7 +34,15 @@ const WithdrawalPage: FC<Props> = (props) => {
         filters={filters}
         setFilters={setFilters}
       />
-      <WithdrawalTable {...checkboxes} setWithdrawals={setWithdrawals} withdrawals={withdrawals} />
+      {isPending ? (
+        <Loading />
+      ) : (
+        <WithdrawalTable
+          {...checkboxes}
+          setWithdrawals={setWithdrawals}
+          withdrawals={withdrawals}
+        />
+      )}
     </div>
   );
 };

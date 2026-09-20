@@ -13,14 +13,11 @@ export const applicationService = {
     return res;
   },
 
-  async getApplicationsStats(
+  async getApplicationsDashboard(
     date: Date,
-  ): Promise<{ length: number | null; data: { status: ApplicationStatus }[] } | null> {
+  ): Promise<{ data: { status: ApplicationStatus }[] | null }> {
     const start = dayjs(date).startOf('day').toISOString();
     const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
-    const statsCount = (
-      await supabase.from('applications').select('*', { count: 'exact', head: true })
-    ).count;
 
     const { data } = await supabase
       .from('applications')
@@ -28,7 +25,14 @@ export const applicationService = {
       .gte('created_at', start)
       .lt('created_at', end);
 
-    return { length: statsCount, data } as any;
+    return { data };
+  },
+  async getApplicationsStats(): Promise<{ length: number | null }> {
+    const statsCount = (
+      await supabase.from('applications').select('*', { count: 'exact', head: true })
+    ).count;
+
+    return { length: statsCount } as any;
   },
   async get(filters?: FiltersT): Promise<ApplicationWithProductT[]> {
     let query = supabase.from('applications').select(

@@ -3,7 +3,7 @@
 import ProfilePage from '@/components/shared/User/ProfilePage';
 import { FC } from 'react';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const Profile: FC<Props> = (props) => {
   return <ProfilePage />;

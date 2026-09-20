@@ -13,7 +13,7 @@ interface Props {
   allChecked: boolean;
   handleCheckAll: () => void;
   handleCheck: (id: string) => void;
-  setOrders: Dispatch<SetStateAction<OrderWithUserT[] | null | undefined>>;
+  setOrders: Dispatch<SetStateAction<OrderWithUserT[] | undefined>>;
 }
 
 const OrdersTable: FC<Props> = ({

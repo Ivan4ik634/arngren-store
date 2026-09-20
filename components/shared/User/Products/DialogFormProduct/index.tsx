@@ -85,14 +85,13 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
               </div>
               <div className="w-full ml-5 gap-5 grid grid-cols-2">
                 {images.slice(1).map((image, index) => (
-                  <div className="relative w-full aspect-square">
+                  <div key={image} className="relative w-full aspect-square">
                     <button
                       onClick={() => handleImagesDelete(image)}
                       className="absolute right-2 top-2 z-10 text-zinc-400 hover:text-red-500">
                       <X />
                     </button>
                     <img
-                      key={index}
                       src={image}
                       alt="Product image"
                       className="w-full rounded-[5px] aspect-square object-fill"

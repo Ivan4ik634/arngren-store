@@ -15,7 +15,7 @@ interface Props {
   setFilters: Dispatch<SetStateAction<FilterOrdersT>>;
   idsChecked: string[];
   setIdsChecked: Dispatch<SetStateAction<string[]>>;
-  setOrders: Dispatch<SetStateAction<OrderWithUserT[] | null | undefined>>;
+  setOrders: Dispatch<SetStateAction<OrderWithUserT[] | undefined>>;
 }
 
 //Дальше сделать надо все Actions Потом сделать гугл авторизацию

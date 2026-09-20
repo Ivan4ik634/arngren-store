@@ -12,7 +12,7 @@ import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const RegisterPage: FC<Props> = (props) => {
   const {

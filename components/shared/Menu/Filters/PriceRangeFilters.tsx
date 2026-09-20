@@ -6,20 +6,21 @@ import { FC } from 'react';
 
 interface Props {}
 
-const PriceRangeFilters: FC<Props> = (props) => {
+const PriceRangeFilters: FC<Props> = () => {
   const { filters, setFilters } = useFilters();
+  const handleValueChange = (value: number | readonly number[]) => {
+    if (Array.isArray(value) && value.length === 2) {
+      setFilters({ ...filters, priceRange: [value[0], value[1]] });
+    }
+  };
+
   return (
     <div className="flex flex-col w-full mt-8 ">
       <h1 className="font-bold">Price range</h1>
 
       <Slider
-        onValueChange={(value) => setFilters({ ...filters, priceRange: value })}
+        onValueChange={handleValueChange}
         value={filters.priceRange}
-        onValueStart={(value) => setFilters({ ...filters, priceRange: value })}
-        onValueEnd={(value) => setFilters({ ...filters, priceRange: value })}
-        onValueChangeEnd={(value) => setFilters({ ...filters, priceRange: value })}
-        onValueChangeStart={(value) => setFilters({ ...filters, priceRange: value })}
-        onValueChangeCommit={(value) => setFilters({ ...filters, priceRange: value })}
         className="w-[200px] mt-3 border"
         min={0}
         max={100}

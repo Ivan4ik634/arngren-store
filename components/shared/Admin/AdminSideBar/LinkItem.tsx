@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
-interface Props extends LinkT {}
+type Props = LinkT;
 
 const LinkItem: FC<Props> = (props) => {
   const pathname = usePathname();

@@ -11,7 +11,7 @@ import WithdrawalFilters from './WithdrawalFilters';
 import WithdrawalStats from './WithdrawalStats';
 import WithdrawalTable from './WithdrawalTable';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const WithdrawalPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });

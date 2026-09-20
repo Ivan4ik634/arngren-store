@@ -8,7 +8,7 @@ import { FC, useState } from 'react';
 import ProductCard from '../../ProductCard';
 import WishlistFilters from './WishlistFilters';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const WishlistPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersProductT>({

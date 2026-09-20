@@ -9,7 +9,7 @@ import { FC, useState } from 'react';
 import CustomerFilters from './CustomerFilters';
 import CustomersTable from './CustomersTable';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const CustomersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<{ search: string }>({ search: '' });

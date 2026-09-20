@@ -14,7 +14,7 @@ interface Props {
       search: string;
     }>
   >;
-  setUsers: Dispatch<SetStateAction<UserT[] | undefined | null>>;
+  setUsers: Dispatch<SetStateAction<UserT[] | undefined>>;
   idsChecked: string[];
   setIdsChecked: Dispatch<SetStateAction<string[]>>;
 }

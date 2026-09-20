@@ -40,7 +40,7 @@ const ProductReview: FC<Props> = ({ product }) => {
       </div>
       <div className="flex flex-col mt-10 gap-y-5">
         {reviews?.map((review) => (
-          <div className="flex gap-x-5">
+          <div key={review.id} className="flex gap-x-5">
             <Avatar size="lg">
               <AvatarFallback>{review.user_id.name[0]}</AvatarFallback>
               <AvatarImage src={review.user_id.avatar} />

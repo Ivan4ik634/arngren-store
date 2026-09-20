@@ -11,7 +11,7 @@ import ApplicationsFilters from './ApplicationsFilters';
 import ApplicationsStats from './ApplicationsStats';
 import ApplicationsTable from './ApplicationsTable';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const ApplicationsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });

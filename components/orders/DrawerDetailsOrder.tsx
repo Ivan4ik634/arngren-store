@@ -174,7 +174,7 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
                     props.handleAccept!(order);
                     setOpen(false);
                   }}
-                  disabled={order.status !== 'cancelled'}
+                  disabled={order.status !== 'pending'}
                   variant="default"
                   className="flex-1 bg-green-600 hover:bg-green-700">
                   <CheckCircle2 className="mr-2 h-4 w-4" />

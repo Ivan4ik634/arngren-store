@@ -21,7 +21,7 @@ interface Props {
   products: ProductT[] | undefined | null;
   idsChecked: string[];
   allChecked: boolean;
-  setProducts: Dispatch<SetStateAction<ProductT[] | undefined | null>>;
+  setProducts: Dispatch<SetStateAction<ProductT[] | undefined>>;
   handleCheckAll: () => void;
   handleCheck: (id: string) => void;
 }

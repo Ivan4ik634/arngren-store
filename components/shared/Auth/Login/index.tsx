@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 import { FaGoogle } from 'react-icons/fa';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const LoginPage: FC<Props> = (props) => {
   const {

@@ -11,14 +11,14 @@ import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
   data: CartItemWithOrderT[] | null | undefined;
-  setCartItems: Dispatch<SetStateAction<CartItemWithOrderT[] | null | undefined>>;
+  setCartItems: Dispatch<SetStateAction<CartItemWithOrderT[] | undefined>>;
 }
 
 const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   const { profile } = useProfile();
 
   const handleAccept = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
-    if (order.status === 'cancelled') return;
+    if (order.status !== 'pending') return;
 
     await orderService.update(order.id, { status: 'in_shipping' });
     setCartItems((prev) =>

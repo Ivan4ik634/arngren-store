@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     await supabase.from('transaction').insert({
       user_id: session.metadata?.user_id,
-      amount: session.amount_total as number,
+      amount: (session.amount_total ?? 0) / 100,
       status: 'completed',
       type: 'deposit',
       transaction: randomDeposit,
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     await supabase.from('transaction').insert({
       user_id: intent.metadata?.user_id,
-      amount: intent.amount as number,
+      amount: intent.amount / 100,
       status: 'failed',
       type: 'deposit',
       transaction: randomDeposit,

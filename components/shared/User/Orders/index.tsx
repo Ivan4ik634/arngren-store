@@ -7,7 +7,7 @@ import { FC, useState } from 'react';
 import UserOrdersFilters from './UserOrdersFilters';
 import UserOrdersTable from './UserOrdersTable';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const UserOrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });

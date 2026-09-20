@@ -11,7 +11,7 @@ import ProductsFilters from './ProductsFilters';
 import ProductsStats from './ProductsStats';
 import ProductsTable from './ProductsTable';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const ProductsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersProductT>({

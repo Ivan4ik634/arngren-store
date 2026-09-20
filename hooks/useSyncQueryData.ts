@@ -14,13 +14,13 @@ export const useSyncQueryData = <T>(
   data: T[] | undefined | null,
   setter?: (value: T[]) => void,
 ) => {
-  const [items, setItems] = useState<T[] | undefined | null>(data);
+  const [items, setItems] = useState<T[] | undefined>(data ?? undefined);
 
   useEffect(() => {
     if (setter) {
       if (data) setter(data);
     } else {
-      setItems(data);
+      queueMicrotask(() => setItems(data ?? undefined));
     }
   }, [data, setter]);
 

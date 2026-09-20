@@ -11,7 +11,7 @@ import { FC, useState } from 'react';
 import SellerOrdersProductsFilters from './SellerOrdersProductsFilters';
 import SellerOrdersProductsTable from './SellerOrdersProductsTable';
 //поиск всех продуктов продавца потом поиск всех карт итемсов, через них видим ордерс и все !!!
-interface Props {}
+type Props = Record<string, never>;
 
 const SellerOrdersProductsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });

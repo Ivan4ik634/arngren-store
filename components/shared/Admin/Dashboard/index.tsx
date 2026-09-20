@@ -9,7 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import CardStats from '../ui/CardStats';
 import AdminDashboardHeader from './AdminDashboardHeader';
-import DashboardSidebar from './AdminDashboardSidebar/DashboardSidebar';
+import { SafetyCard } from './AdminDashboardSidebar/SafetyCard';
+import StatusOverwiew from './AdminDashboardSidebar/StatusOverwiew';
 import AdminLatestProducts from './AdminLatestProducts';
 import AdminOrderList from './AdminOrderList';
 import AdminRecentUsers from './AdminRecentUsers';
@@ -18,15 +19,15 @@ const AdminDashboardPage: FC = () => {
   const [date, setDate] = useState(new Date());
 
   const { data: stats } = useQuery({
-    queryKey: ['stats', date],
+    queryKey: ['stats'],
     queryFn: async () => {
       const [orderStats, productsStats, usersStats, withdrawalStats, applicationStats] =
         await Promise.all([
-          orderService.getOrdersStats(date),
+          orderService.getOrdersStats(),
           productService.getProductsStats(),
           userService.getUsersStats(),
-          withdravalService.getWithdrawalStats(date),
-          applicationService.getApplicationsStats(date),
+          withdravalService.getWithdrawalStats(),
+          applicationService.getApplicationsStats(),
         ]);
 
       return { orderStats, productsStats, usersStats, withdrawalStats, applicationStats };
@@ -36,40 +37,44 @@ const AdminDashboardPage: FC = () => {
   const { data: dashboardData } = useQuery({
     queryKey: ['dashboard', date],
     queryFn: async () => {
-      const [orders, users, products] = await Promise.all([
+      const [orders, users, products, applications, withdrawals] = await Promise.all([
         orderService.getOrdersDashboard(date),
         userService.getUsersDashboard(date),
         productService.getProductsDashboard(date),
+        applicationService.getApplicationsDashboard(date),
+        withdravalService.getWithdrawalDashboard(date),
       ]);
 
       return {
-        orders: orders.data,
+        orders: orders,
         users: users.data,
         products: products.data,
+        applications,
+        withdrawals,
       };
     },
   });
 
-  const getStatusCount = (data: any[] | undefined, status: string) =>
+  const getStatusCount = (data: { status: string }[] | null | undefined, status: string) =>
     data?.filter((item) => item.status === status).length ?? 0;
 
   const data = {
     pending:
-      getStatusCount(stats?.withdrawalStats?.data, 'pending') +
-      getStatusCount(stats?.orderStats?.data, 'pending') +
-      getStatusCount(stats?.applicationStats?.data, 'pending'),
+      getStatusCount(dashboardData?.withdrawals?.data, 'pending') +
+      getStatusCount(dashboardData?.orders?.statuses, 'pending') +
+      getStatusCount(dashboardData?.applications?.data, 'pending'),
 
     approved:
-      getStatusCount(stats?.withdrawalStats?.data, 'failed') +
-      getStatusCount(stats?.orderStats?.data, 'cancelled') +
-      getStatusCount(stats?.applicationStats?.data, 'approved'),
+      getStatusCount(dashboardData?.withdrawals?.data, 'completed') +
+      getStatusCount(dashboardData?.orders?.statuses, 'approved') +
+      getStatusCount(dashboardData?.applications?.data, 'approved'),
 
     rejected:
-      getStatusCount(stats?.withdrawalStats?.data, 'failed') +
-      getStatusCount(stats?.orderStats?.data, 'rejected') +
-      getStatusCount(stats?.applicationStats?.data, 'rejected'),
+      getStatusCount(dashboardData?.withdrawals?.data, 'failed') +
+      getStatusCount(dashboardData?.orders?.statuses, 'rejected') +
+      getStatusCount(dashboardData?.applications?.data, 'rejected'),
 
-    in_shipping: getStatusCount(stats?.orderStats?.data, 'in_shipping'),
+    in_shipping: getStatusCount(dashboardData?.orders?.statuses, 'in_shipping'),
   };
 
   return (
@@ -88,13 +93,14 @@ const AdminDashboardPage: FC = () => {
       />
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_228px] ">
-        <AdminOrderList orders={dashboardData?.orders} />
-        <DashboardSidebar data={data} />
+        <AdminOrderList orders={dashboardData?.orders.res} />
+        <StatusOverwiew data={data} />
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_228px]">
         <AdminLatestProducts products={dashboardData?.products} />
         <AdminRecentUsers users={dashboardData?.users} />
+        <SafetyCard />
       </div>
     </main>
   );

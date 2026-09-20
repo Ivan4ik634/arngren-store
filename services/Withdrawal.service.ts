@@ -39,18 +39,9 @@ export const withdravalService = {
 
     return (await query).data as any as WithdrawalWithUserT[];
   },
-  async getWithdrawalStats(
-    date: Date,
-  ): Promise<{ length: number | null; data: { status: PaymentStatus }[] } | null> {
+  async getWithdrawalDashboard(date: Date): Promise<{ data: { status: PaymentStatus }[] | null }> {
     const start = dayjs(date).startOf('day').toISOString();
     const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
-
-    let statsCount = (
-      await supabase
-        .from('withdrawal')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'pending')
-    ).count;
 
     const { data } = await supabase
       .from('withdrawal')
@@ -58,7 +49,17 @@ export const withdravalService = {
       .gte('created_at', start)
       .lt('created_at', end);
 
-    return { length: statsCount, data } as any;
+    return { data };
+  },
+  async getWithdrawalStats(): Promise<{ length: number | null }> {
+    let statsCount = (
+      await supabase
+        .from('withdrawal')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending')
+    ).count;
+
+    return { length: statsCount };
   },
   async updateStatus(id: string, status: 'pending' | 'completed' | 'failed') {
     const res = await supabase.from('withdrawal').update({ status }).eq('id', id);

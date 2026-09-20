@@ -11,7 +11,7 @@ import OrdersFilters from './OrdersFilters';
 import OrdersStats from './OrdersStats';
 import OrdersTable from './OrdersTable';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const OrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });

@@ -13,7 +13,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
   setFilters: Dispatch<SetStateAction<FiltersProductT>>;
-  setProducts: Dispatch<SetStateAction<ProductT[] | undefined | null>>;
+  setProducts: Dispatch<SetStateAction<ProductT[] | undefined>>;
   setIdsChecked: Dispatch<SetStateAction<string[]>>;
   filters: FiltersProductT;
   idsChecked: string[];

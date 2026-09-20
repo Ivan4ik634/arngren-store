@@ -23,7 +23,7 @@ export const userService = {
       .limit(5);
     return res;
   },
-  async getUsers(filters: { search: string }) {
+  async get(filters: { search: string }) {
     let query = supabase.from('profiles').select('*');
     if (filters.search) {
       query = query.ilike('name', `%${filters.search}%`);

@@ -13,7 +13,7 @@ import ProductCard from '../../ProductCard';
 import DialogFormProduct from './DialogFormProduct';
 import UserProductsFilters from './UserProductsFilters';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const UserProductsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersProductT>({

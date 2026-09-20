@@ -8,7 +8,7 @@ import { FC } from 'react';
 import DialogEditProfile from './DialogEditProfile';
 import PersonalInformation from './PersonalInformation';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const ProfilePage: FC<Props> = (props) => {
   useProfile();

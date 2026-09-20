@@ -10,6 +10,7 @@ export async function POST(req: Request) {
 
     const { amount, user_id } = body;
 
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin;
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [
@@ -24,8 +25,8 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      success_url: `http://localhost:3000/checkout/success`,
-      cancel_url: `http://localhost:3000/checkout`,
+      success_url: `${origin}/checkout/success`,
+      cancel_url: `${origin}/checkout`,
       metadata: {
         type: 'deposit',
         user_id,

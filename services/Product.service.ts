@@ -59,7 +59,7 @@ export const productService = {
 
     return { length: statsCount } as any;
   },
-  async getProducts(filters?: FiltersProductT): Promise<any> {
+  async get(filters?: FiltersProductT): Promise<any> {
     let query = supabase.from('products').select(
       `
       id,

@@ -4,7 +4,7 @@ import { UserLinks } from '@/data/Links';
 import { FC } from 'react';
 import LinkItem from '../../Admin/AdminSideBar/LinkItem';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const UserSideBar: FC<Props> = (props) => {
   return (

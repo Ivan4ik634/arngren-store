@@ -22,7 +22,7 @@ interface Props {
   idsChecked: string[];
   allChecked: boolean;
   handleCheckAll: () => void;
-  setUsers: Dispatch<SetStateAction<UserT[] | undefined | null>>;
+  setUsers: Dispatch<SetStateAction<UserT[] | undefined>>;
   handleCheck: (id: string) => void;
 }
 
@@ -55,7 +55,7 @@ const CustomersTable: FC<Props> = ({
       </TableHeader>
       <TableBody>
         {users?.map((user) => (
-          <TableRow>
+          <TableRow key={user.id}>
             <TableCell className="w-[50px] ">
               <Checkbox
                 checked={idsChecked.includes(user.id)}

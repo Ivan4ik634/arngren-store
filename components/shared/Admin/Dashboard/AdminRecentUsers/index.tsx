@@ -1,5 +1,6 @@
 import { PAGES } from '@/configs/PAGES';
 import { UserT } from '@/types/UserT';
+import dayjs from 'dayjs';
 import { UsersRound } from 'lucide-react';
 import { FC } from 'react';
 import { DashboardList } from '../AdminDashboardList';
@@ -18,11 +19,11 @@ const AdminRecentUsers: FC<Props> = ({ users }) => {
             <div className="flex size-8 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-500">
               {user.email[0].toUpperCase()}
             </div>
-            <div>
+            <div className="flex flex-col">
               <span className="flex-1 truncate text-[10px] text-slate-600">{user.name}</span>
-              <span className="flex-1 truncate text-[10px] text-slate-600">{user.email}</span>
+              <span className=" text-[10px] text-slate-600">{user.email}</span>
               <span className="hidden text-[10px] text-slate-400 sm:block">
-                Sep {16 - index}, 2026
+                {dayjs(user.created_at).format('DD MMM YYYY')}
               </span>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import { FilterOrdersT } from '@/types/FiltersT';
-import { OrderCreateT, OrderStatus, OrderUpdateT } from '@/types/OrderT';
+import { OrderCreateT, OrderStatus, OrderUpdateT, OrderWithUserT } from '@/types/OrderT';
 import dayjs from 'dayjs';
 
 export const orderService = {
@@ -31,11 +31,13 @@ export const orderService = {
 
     return query;
   },
-  async getOrdersDashboard(date: Date) {
+  async getOrdersDashboard(
+    date: Date,
+  ): Promise<{ res: OrderWithUserT[] | null; statuses: { status: OrderStatus }[] | null }> {
     const start = dayjs(date).startOf('day').toISOString();
     const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
 
-    const res = await supabase
+    const { data: orders } = await supabase
       .from('orders')
       .select(
         `
@@ -48,7 +50,13 @@ export const orderService = {
       .order('created_at', { ascending: false })
       .limit(5);
 
-    return res;
+    const { data: statuses } = await supabase
+      .from('orders')
+      .select('status')
+      .gte('created_at', start)
+      .lt('created_at', end);
+
+    return { res: orders, statuses };
   },
   async get(filters: FilterOrdersT) {
     let query = supabase.from('orders').select(`
@@ -64,22 +72,11 @@ export const orderService = {
     }
     return query;
   },
-  async getOrdersStats(
-    date: Date,
-  ): Promise<{ length: number | null; data: { status: OrderStatus }[] } | null> {
-    const start = dayjs(date).startOf('day').toISOString();
-    const end = dayjs(date).add(1, 'day').startOf('day').toISOString();
-
+  async getOrdersStats(): Promise<{ length: number | null } | null> {
     const statsCount = (await supabase.from('orders').select('*', { count: 'exact', head: true }))
       .count;
 
-    const { data } = await supabase
-      .from('orders')
-      .select('status')
-      .gte('created_at', start)
-      .lt('created_at', end);
-
-    return { length: statsCount, data } as any;
+    return { length: statsCount } as any;
   },
   async deleteMany(ids: string[]) {
     const res = await supabase.from('orders').delete().in('id', ids);

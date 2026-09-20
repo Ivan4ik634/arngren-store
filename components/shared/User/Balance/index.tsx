@@ -8,7 +8,7 @@ import BalanceOverwiew from './BalanceOverwiew';
 import BalanceTopUpWithdraw from './BalanceTopUpWithdraw';
 import BalanceTransactionHistory from './BalanceTransactionHistory';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const BalancePage: FC<Props> = (props) => {
   const { profile } = useProfile();

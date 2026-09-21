@@ -1,6 +1,7 @@
 'use client';
 
 import Loading from '@/components/shared/Loading';
+import { useDebounce } from '@/hooks/useDebounce';
 import { orderService } from '@/services/Order.service';
 import { FilterOrdersT } from '@/types/FiltersT';
 import { useQuery } from '@tanstack/react-query';
@@ -12,10 +13,11 @@ type Props = Record<string, never>;
 
 const UserOrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
+  const debouncedFilters = useDebounce(filters, 300);
 
   const { data, isPending } = useQuery({
-    queryKey: ['orders', filters],
-    queryFn: () => orderService.getOrdersUser(filters),
+    queryKey: ['orders', debouncedFilters],
+    queryFn: () => orderService.getOrdersUser(debouncedFilters),
     select: (res) => res?.data,
   });
 

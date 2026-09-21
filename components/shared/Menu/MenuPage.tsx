@@ -1,8 +1,8 @@
 'use client';
 import { ChevronRight, Search } from 'lucide-react';
 
-import Loading from '@/components/shared/Loading';
 import { Input } from '@/components/ui/input';
+import { useDebounce } from '@/hooks/useDebounce';
 import { productService } from '@/services/Product.service';
 import { useFilters } from '@/store/useFilters';
 import { useQuery } from '@tanstack/react-query';
@@ -11,9 +11,12 @@ import MenuProducts from './MenuProducts';
 
 export function MenuPage() {
   const { filters, setFilters } = useFilters();
+
+  const debouncedFilters = useDebounce(filters, 300);
+
   const { data: products, isPending } = useQuery({
-    queryKey: ['products', filters],
-    queryFn: () => productService.getProductsMenu(filters),
+    queryKey: ['products', debouncedFilters],
+    queryFn: () => productService.getProductsMenu(debouncedFilters),
     select: (data) => data.data,
   });
 
@@ -40,7 +43,7 @@ export function MenuPage() {
             placeholder="Search for products..."
             className="h-12 rounded-full border-zinc-300 pl-14 pr-28 text-base shadow-sm"
             value={filters.search}
-            onChange={(e) => setFilters((prev) => ({ ...filters, search: e.target.value }))}
+            onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
           />
         </div>
       </div>
@@ -48,7 +51,7 @@ export function MenuPage() {
       <div className="mt-4 grid w-full gap-8 lg:grid-cols-[250px_minmax(0,1fr)]">
         <Filters />
         <div className="min-w-0">
-          {isPending ? <Loading /> : <MenuProducts products={products} />}
+          <MenuProducts isPending={isPending} products={products} />
         </div>
       </div>
     </main>

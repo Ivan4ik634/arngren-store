@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { PAGES } from '@/configs/PAGES';
+import { useProfile } from '@/hooks/useProfile';
 import { usePathname } from 'next/navigation';
 import BagCartDrawer from './BagCartDrawer';
 
@@ -15,6 +16,9 @@ const navItems = [
 ];
 
 export function Header() {
+  const { profile } = useProfile();
+  const isAuthenticated = Boolean(profile);
+
   return (
     <header className="sticky top-0 z-30 border-b border-zinc-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[70px] w-full max-w-[1500px] items-center gap-8 px-6 lg:px-10">
@@ -41,36 +45,53 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex items-center  gap-5">
-          <Link href={PAGES.PROFILE}>
-            <button
-              className="hidden text-black transition-colors hover:text-[#0969ff] sm:block"
-              aria-label="Account">
-              <UserRound className="size-5" />
-            </button>
-          </Link>
-          <Link href={PAGES.BALANCE}>
-            <button
-              className="relative text-black transition-colors hover:text-[#0969ff]"
-              aria-label="Wallet">
-              <Wallet className="size-5" />
-            </button>
-          </Link>
-          <Link href={PAGES.WISHLIST}>
-            <button
-              className="relative text-black transition-colors hover:text-[#0969ff]"
-              aria-label="Wishlist">
-              <Heart className="size-5" />
-            </button>
-          </Link>
-          <BagCartDrawer />
-          <Link href={PAGES.CART}>
-            <Button className="hidden h-9 rounded-md bg-[#0969ff] px-7 shadow-[0_8px_18px_rgba(9,105,255,0.22)] hover:bg-[#0057df] md:inline-flex">
-              Order now
-            </Button>
-          </Link>
-          <button className="lg:hidden" aria-label="Open menu">
-            <Package className="size-6" />
-          </button>
+          {isAuthenticated ? (
+            <>
+              <Link href={PAGES.PROFILE}>
+                <button
+                  className="hidden text-black transition-colors hover:text-[#0969ff] sm:block"
+                  aria-label="Account">
+                  <UserRound className="size-5" />
+                </button>
+              </Link>
+              <Link href={PAGES.BALANCE}>
+                <button
+                  className="relative text-black transition-colors hover:text-[#0969ff]"
+                  aria-label="Wallet">
+                  <Wallet className="size-5" />
+                </button>
+              </Link>
+              <Link href={PAGES.WISHLIST}>
+                <button
+                  className="relative text-black transition-colors hover:text-[#0969ff]"
+                  aria-label="Wishlist">
+                  <Heart className="size-5" />
+                </button>
+              </Link>
+              <BagCartDrawer />
+              <Link href={PAGES.CART}>
+                <Button className="hidden h-9 rounded-md bg-[#0969ff] px-7 shadow-[0_8px_18px_rgba(9,105,255,0.22)] hover:bg-[#0057df] md:inline-flex">
+                  Order now
+                </Button>
+              </Link>
+              <button className="lg:hidden" aria-label="Open menu">
+                <Package className="size-6" />
+              </button>
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link href={PAGES.REGISTER}>
+                <Button variant="outline" className="h-9 rounded-md px-5">
+                  Register
+                </Button>
+              </Link>
+              <Link href={PAGES.LOGIN}>
+                <Button className="h-9 rounded-md bg-[#0969ff] px-7 shadow-[0_8px_18px_rgba(9,105,255,0.22)] hover:bg-[#0057df]">
+                  Login
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>

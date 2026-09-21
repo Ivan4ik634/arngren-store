@@ -166,7 +166,7 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
             <Calendar className="h-3 w-3" />
             <span>Placed on {new Date(order.created_at).toLocaleDateString()}</span>
           </div>
-          <div className="mt-auto pt-6">
+          <div className="mt-auto w-full flex gap-x-5 pt-6">
             {props.type === 'seller' && (
               <>
                 <Button

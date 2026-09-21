@@ -2,6 +2,7 @@
 
 import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { applicationService } from '@/services/Application.service';
 import { ApplicationWithProductT } from '@/types/ApplicationT';
@@ -16,9 +17,10 @@ type Props = Record<string, never>;
 
 const ApplicationsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });
+  const debouncedFilters = useDebounce(filters, 300);
   const { data, isPending } = useQuery({
-    queryKey: ['applications', filters],
-    queryFn: () => applicationService.get(filters),
+    queryKey: ['applications', debouncedFilters],
+    queryFn: () => applicationService.get(debouncedFilters),
   });
   const [applications, setApplications] = useSyncQueryData<ApplicationWithProductT>(data);
 

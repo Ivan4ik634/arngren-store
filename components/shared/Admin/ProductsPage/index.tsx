@@ -2,6 +2,7 @@
 
 import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { productService } from '@/services/Product.service';
 import { FiltersProductT } from '@/types/FiltersT';
@@ -20,9 +21,10 @@ const ProductsPage: FC<Props> = (props) => {
     category: 'all',
     availability: 'all',
   });
+  const debouncedFilters = useDebounce(filters, 300);
   const { data, isPending } = useQuery({
-    queryKey: ['products', filters],
-    queryFn: () => productService.get(filters),
+    queryKey: ['products', debouncedFilters],
+    queryFn: () => productService.get(debouncedFilters),
   });
   const [products, setProducts] = useSyncQueryData<ProductT>(data);
 

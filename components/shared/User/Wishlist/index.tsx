@@ -2,6 +2,7 @@
 
 import Loading from '@/components/shared/Loading';
 import NotFoundData from '@/components/shared/NotFoundData';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 import { wishlistService } from '@/services/Wishlist.service';
 import { FiltersProductT } from '@/types/FiltersT';
@@ -18,10 +19,11 @@ const WishlistPage: FC<Props> = (props) => {
     availability: 'all',
     category: 'all',
   });
+  const debouncedFilters = useDebounce(filters, 300);
   const { profile } = useProfile();
   const { data, isPending } = useQuery({
-    queryKey: ['wishlist', filters],
-    queryFn: () => wishlistService.get(profile?.id || '', filters),
+    queryKey: ['wishlist', debouncedFilters],
+    queryFn: () => wishlistService.get(profile?.id || '', debouncedFilters),
     enabled: !!profile,
   });
 

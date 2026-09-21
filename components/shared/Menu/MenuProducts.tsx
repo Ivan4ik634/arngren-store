@@ -19,13 +19,15 @@ import { ProductT } from '@/types/ProductT';
 import { ShoppingCart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
+import Loading from '../Loading';
 import ProductCard from '../ProductCard';
 
 interface Props {
   products: ProductT[] | undefined;
+  isPending: boolean;
 }
 
-const MenuProducts: FC<Props> = ({ products }) => {
+const MenuProducts: FC<Props> = ({ products, isPending }) => {
   const { filters, setFilters } = useFilters();
   const { addProductCard, incrementProductCount, productCards } = useProductCart();
   const { profile } = useProfile();
@@ -77,43 +79,47 @@ const MenuProducts: FC<Props> = ({ products }) => {
         </div>
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {products?.length ? (
-          products?.map((product) => {
-            const productInCart = productCards.find((card) => card.product?.id === product.id);
+      {isPending ? (
+        <Loading className="mt-30" />
+      ) : (
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {products?.length ? (
+            products?.map((product) => {
+              const productInCart = productCards.find((card) => card.product?.id === product.id);
 
-            return (
-              <ProductCard
-                product={product}
-                profile={profile}
-                className="mt-4 grid grid-cols-[1fr_48px] gap-3"
-                key={product.id}>
-                <Button
-                  onClick={() =>
-                    productInCart
-                      ? incrementProductCount(product.id)
-                      : addProductCard({ product, count: 1 })
-                  }
-                  className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
-                  + Add to cart
-                </Button>
-                <Button
-                  onClick={() => {
-                    setProduct({ product, count: 1 });
-                    router.push(PAGES.CART + '?buyNow=true');
-                  }}
-                  variant="outline"
-                  size="icon-lg"
-                  className="h-9 w-12 rounded-md border-zinc-200 bg-zinc-50">
-                  <ShoppingCart className="size-4" />
-                </Button>
-              </ProductCard>
-            );
-          })
-        ) : (
-          <NotFoundData type="menu" className="col-span-full" />
-        )}
-      </div>
+              return (
+                <ProductCard
+                  product={product}
+                  profile={profile}
+                  className="mt-4 grid grid-cols-[1fr_48px] gap-3"
+                  key={product.id}>
+                  <Button
+                    onClick={() =>
+                      productInCart
+                        ? incrementProductCount(product.id)
+                        : addProductCard({ product, count: 1 })
+                    }
+                    className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
+                    + Add to cart
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setProduct({ product, count: 1 });
+                      router.push(PAGES.CART + '?buyNow=true');
+                    }}
+                    variant="outline"
+                    size="icon-lg"
+                    className="h-9 w-12 rounded-md border-zinc-200 bg-zinc-50">
+                    <ShoppingCart className="size-4" />
+                  </Button>
+                </ProductCard>
+              );
+            })
+          ) : (
+            <NotFoundData type="menu" className="col-span-full" />
+          )}
+        </div>
+      )}
     </div>
   );
 };

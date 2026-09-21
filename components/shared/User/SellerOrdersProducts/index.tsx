@@ -1,6 +1,7 @@
 'use client';
 
 import Loading from '@/components/shared/Loading';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { cartItemService } from '@/services/CartItem.service';
@@ -16,9 +17,10 @@ type Props = Record<string, never>;
 
 const SellerOrdersProductsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
+  const debouncedFilters = useDebounce(filters, 300);
   const { profile } = useProfile();
   const { data: productIds, isPending: isPendingIds } = useQuery({
-    queryKey: ['products-user-ids', filters],
+    queryKey: ['products-user-ids', debouncedFilters],
     queryFn: () => productService.getProductUserIds(profile?.id || ''),
     enabled: !!profile,
   });

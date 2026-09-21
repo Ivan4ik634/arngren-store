@@ -2,6 +2,7 @@
 
 import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { orderService } from '@/services/Order.service';
 import { FilterOrdersT } from '@/types/FiltersT';
@@ -16,9 +17,10 @@ type Props = Record<string, never>;
 
 const OrdersPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
+  const debouncedFilters = useDebounce(filters, 300);
   const { data, isPending } = useQuery({
-    queryKey: ['orders', filters],
-    queryFn: () => orderService.get(filters),
+    queryKey: ['orders', debouncedFilters],
+    queryFn: () => orderService.get(debouncedFilters),
     select: (res) => res?.data,
   });
 

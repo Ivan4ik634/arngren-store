@@ -2,6 +2,7 @@
 
 import Loading from '@/components/shared/Loading';
 import { useCheckboxes } from '@/hooks/useCheckboxes';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { withdravalService } from '@/services/Withdrawal.service';
 import { FiltersT } from '@/types/FiltersT';
@@ -16,9 +17,10 @@ type Props = Record<string, never>;
 
 const WithdrawalPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FiltersT>({ search: '', category: 'all', status: 'all' });
+  const debouncedFilters = useDebounce(filters, 300);
   const { data, isPending } = useQuery({
-    queryKey: ['withdrawals', filters],
-    queryFn: () => withdravalService.get(filters),
+    queryKey: ['withdrawals', debouncedFilters],
+    queryFn: () => withdravalService.get(debouncedFilters),
   });
   const [withdrawals, setWithdrawals] = useSyncQueryData<WithdrawalWithUserT>(data);
 

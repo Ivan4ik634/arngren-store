@@ -4,6 +4,7 @@ import Loading from '@/components/shared/Loading';
 import NotFoundData from '@/components/shared/NotFoundData';
 import { Button } from '@/components/ui/button';
 import { handleActionAddProduct, handleActionEditProduct } from '@/funcs/ActionFormProduct';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 import { useSyncQueryData } from '@/hooks/useSyncQueryData';
 import { productService } from '@/services/Product.service';
@@ -23,10 +24,11 @@ const UserProductsPage: FC<Props> = (props) => {
     category: 'all',
     availability: 'all',
   });
+  const debouncedFilters = useDebounce(filters, 300);
   const { profile } = useProfile();
   const { data, isPending } = useQuery({
-    queryKey: ['products', filters],
-    queryFn: () => productService.getUserProducts(profile?.id || '', filters),
+    queryKey: ['products', debouncedFilters],
+    queryFn: () => productService.getUserProducts(profile?.id || '', debouncedFilters),
     enabled: !!profile,
   });
   const [products, setProducts] = useSyncQueryData<ProductT>(data);

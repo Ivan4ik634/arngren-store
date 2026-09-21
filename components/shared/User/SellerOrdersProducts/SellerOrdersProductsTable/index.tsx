@@ -30,7 +30,9 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
 
     await orderService.update(order.id, { status: 'in_shipping' });
     setCartItems((prev) =>
-      prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'in_shipping' } : ci)),
+      prev?.map((ci) =>
+        ci.id === cartItem.id ? { ...ci, order_id: { ...ci.order_id, status: 'cancelled' } } : ci,
+      ),
     );
 
     await transactionService.create({
@@ -54,7 +56,9 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   const handleReject = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
     await orderService.update(order.id, { status: 'cancelled' });
     setCartItems((prev) =>
-      prev?.map((ci) => (ci.id === cartItem.id ? { ...ci, status: 'cancelled' } : ci)),
+      prev?.map((ci) =>
+        ci.id === cartItem.id ? { ...ci, order_id: { ...ci.order_id, status: 'cancelled' } } : ci,
+      ),
     );
 
     const existingTransaction = await transactionService.getByOrderIdAndUserId(
@@ -91,7 +95,7 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
       </TableHeader>
       <TableBody>
         {data?.length ? (
-          data?.map((data) => (
+          data?.map((data, i) => (
             <OrderItem
               handleAccept={(order) => handleAccept(order, data)}
               handleReject={(order) => handleReject(order, data)}

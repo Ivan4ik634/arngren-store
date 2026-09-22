@@ -18,6 +18,7 @@ const navItems = [
 export function Header() {
   const { profile } = useProfile();
   const isAuthenticated = Boolean(profile);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-30 border-b border-zinc-200 bg-white/95 backdrop-blur">
@@ -28,7 +29,6 @@ export function Header() {
 
         <nav className="hidden items-center gap-10 text-sm font-semibold text-black lg:flex">
           {navItems.map((item) => {
-            const pathname = usePathname();
             return (
               <Link
                 href={item.link}

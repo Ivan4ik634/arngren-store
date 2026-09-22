@@ -1,7 +1,10 @@
-import { FC } from 'react';
+import LandingPage from '@/components/shared/LandingPage';
 
-const HomePage: FC = () => {
-  return <div>Page</div>;
+const HomePage = () => {
+  return (
+    <>
+      <LandingPage />;
+    </>
+  );
 };
-
 export default HomePage;

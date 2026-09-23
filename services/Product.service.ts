@@ -109,14 +109,11 @@ export const productService = {
         `
       id,
       name,
-      category,
-      brand,
+      description,
       price,
       images,
-      count,
       rating,
       reviews,
-      seller(id, name, avatar, email),
       created_at
     `,
       )

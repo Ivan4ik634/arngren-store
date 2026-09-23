@@ -5,6 +5,7 @@ import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@/components/
 import { Input } from '@/components/ui/input';
 import { AddressT } from '@/types/OrderT';
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface Props {
   onCheckout: (address: AddressT) => void;
@@ -24,6 +25,8 @@ const CheckoutDrawer: FC<Props> = ({ onCheckout }) => {
   };
 
   const handleSubmit = () => {
+    if (!address.address || !address.city || !address.postal_code || !address.country)
+      return toast.error('Please fill in all the fields');
     onCheckout(address);
     setOpen(false);
   };

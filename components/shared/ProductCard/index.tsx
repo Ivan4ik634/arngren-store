@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { PAGES } from '@/configs/PAGES';
+import { cn } from '@/lib/utils';
 import { wishlistService } from '@/services/Wishlist.service';
 import { ProductT } from '@/types/ProductT';
 import { UserT } from '@/types/UserT';
@@ -77,23 +78,25 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
         </Carousel>
       </div>
 
-      <Link href={PAGES.PRODUCT(product.id)}>
-        <div className="mt-3 min-w-0">
-          <h3 className="truncate text-base font-bold text-black">{product.name}</h3>
-          <p className="mt-1 text-sm text-zinc-500">{product.description.slice(0, 50)}</p>
-        </div>
-
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-lg font-extrabold text-black">$ {product.price}</p>
-          <div className="flex items-center gap-1 text-sm">
-            <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
-            <span className="font-semibold text-[#0969ff]">{product.rating}</span>
-            <span className="text-zinc-500">({product.reviews})</span>
+      <div className="flex h-full flex-col">
+        <Link href={PAGES.PRODUCT(product.id)} className="flex flex-1 flex-col">
+          <div className="mt-3 min-w-0">
+            <h3 className="truncate text-base font-bold text-black">{product.name}</h3>
+            <p className="mt-1 text-sm text-zinc-500">{product.description.slice(0, 50)}</p>
           </div>
-        </div>
-      </Link>
 
-      {children && <div className={className}>{children}</div>}
+          <div className="mt-auto flex items-center justify-between pt-4">
+            <p className="text-lg font-extrabold text-black">$ {product.price}</p>
+            <div className="flex items-center gap-1 text-sm">
+              <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
+              <span className="font-semibold text-[#0969ff]">{product.rating}</span>
+              <span className="text-zinc-500">({product.reviews})</span>
+            </div>
+          </div>
+        </Link>
+
+        {children && <div className={cn('mt-4', className)}>{children}</div>}
+      </div>
     </Card>
   );
 };

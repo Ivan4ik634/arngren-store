@@ -5,6 +5,7 @@ import { FC } from 'react';
 import Container from '../Container';
 import AboutSection from './AboutSection';
 import HeroSection from './HeroSection';
+import HowItWorkSection from './HowItWorkSection';
 import PopularProducts from './PopularProducts';
 import WhatWeOfferSection from './WhatWeOfferSection';
 
@@ -17,6 +18,7 @@ const LandingPage: FC<Props> = () => {
       <AboutSection />
       <WhatWeOfferSection />
       <PopularProducts />
+      <HowItWorkSection />
     </Container>
   );
 };

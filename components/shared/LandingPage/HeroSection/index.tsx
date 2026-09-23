@@ -1,6 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import Description from '@/components/ui/description';
+import Title from '@/components/ui/title';
 import { PAGES } from '@/configs/PAGES';
 import { ArrowRight, ShieldCheck, Sparkles, Truck } from 'lucide-react';
 import Link from 'next/link';
@@ -17,20 +19,20 @@ const benefits = [
 const HeroSection: FC<Props> = (props) => {
   return (
     <main className="relative isolate h-[calc(100svh-150px)] overflow-hidden ">
-      <div className="relative mx-auto gap-x-27  flex h-full max-w-[1400px] items-center  py-16  lg:py-20">
+      <div className="relative mx-auto gap-x-27  flex h-full items-center  py-16  lg:py-20">
         <div className="w-full max-w-[600px] flex-1 lg:-translate-y-2">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
             PREMIUM MARKETPLACE
           </p>
-          <h1 className="text-[60px]   font-extrabold leading-[0.97] tracking-[-0.065em] text-[#071124]">
+          <Title>
             Better products.
             <br />
             <span className="text-[#0969ff]">For your life.</span>
-          </h1>
-          <p className="mt-6   text-[15px] leading-[1.55] text-[#61738f] sm:text-base">
+          </Title>
+          <Description>
             Discover high-quality products, modern style and reliable brands. Everything you need —
             in one place.
-          </p>
+          </Description>
 
           <div className="mt-7 flex gap-x-5">
             <Link href={PAGES.MENU} className="">

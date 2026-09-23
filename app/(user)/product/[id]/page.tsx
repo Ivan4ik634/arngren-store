@@ -15,11 +15,22 @@ export default async function Product({ params }: ProductPageProps) {
   const cookieStore = await cookies();
   const supabase = supabaseServer(cookieStore);
 
-  const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (error || !data) {
-    notFound();
+  if (!user) return notFound();
+
+  const { data: product, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', id)
+    .or(`seller.eq.${user.id},application.eq.true`)
+    .single();
+
+  if (error || !product) {
+    return notFound();
   }
 
-  return <ProductPage product={data} />;
+  return <ProductPage product={product} />;
 }

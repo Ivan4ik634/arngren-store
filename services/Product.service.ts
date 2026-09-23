@@ -59,6 +59,14 @@ export const productService = {
 
     return { length: statsCount } as any;
   },
+  async getPopular(limit: number = 4) {
+    const res = await supabase
+      .from('products')
+      .select('id,images,name,price,rating,reviews,description')
+      .order('rating', { ascending: false })
+      .limit(limit);
+    return res.data;
+  },
   async get(filters?: FiltersProductT): Promise<any> {
     let query = supabase.from('products').select(
       `

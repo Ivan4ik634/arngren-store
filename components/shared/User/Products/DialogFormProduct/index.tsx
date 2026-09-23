@@ -142,6 +142,7 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
             />
             <SelectFilter
               options={brandFilters}
+              search
               onChange={(e) => setForm({ ...form, brand: e })}
               value={form.brand!}
               label="Brands"

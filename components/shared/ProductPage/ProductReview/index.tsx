@@ -32,8 +32,11 @@ const ProductReview: FC<Props> = ({ product }) => {
           <h3 className="text-2xl font-bold">Reviews</h3>
           <div className="flex items-center">
             <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
-            <span className="mx-1 font-semibold text-[#0969ff]">{4.5}</span>
-            <span className="text-zinc-500"> ({10})</span>
+            <span className="mx-1 font-semibold text-[#0969ff]">
+              {reviews.reduce((acc, review) => acc + review.rating, 0) /
+                (reviews.length !== 0 ? reviews.length : 1)}
+            </span>
+            <span className="text-zinc-500"> ({reviews.length})</span>
           </div>
         </div>
         <DialogAddReview product={product} />

@@ -1,8 +1,9 @@
 'use client';
 
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
-import { SelectRootChangeEventDetails } from '@base-ui/react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import { Button } from './button';
+import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from './command';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 export interface SelectFilterOptionT {
   label: string;
@@ -13,28 +14,45 @@ interface Props {
   label: string;
   value?: string;
   options: SelectFilterOptionT[];
-  onChange?:
-    | ((value: string | null, eventDetails: SelectRootChangeEventDetails) => void)
-    | undefined;
+  search?: boolean;
+  onChange?: (value: string | null) => void;
 }
 
 const SelectFilter: FC<Props> = (props) => {
+  const { search = false } = props;
+
+  const [open, setOpen] = useState(false);
+
   const selectedOption = props.options.find((option) => option.value === props.value);
   const triggerLabel = `${props.label}:${selectedOption?.label ?? 'All'}`;
 
   return (
-    <Select value={props.value} onValueChange={props.onChange}>
-      <SelectTrigger>
-        <span className="text-muted-foreground">{triggerLabel}</span>
-      </SelectTrigger>
-      <SelectContent>
-        {props.options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger>
+        <Button variant="outline" role="combobox" className="text-muted-foreground justify-between">
+          {triggerLabel}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="p-0">
+        <Command>
+          {search && <CommandInput placeholder="Search..." />}
+          <CommandList>
+            <CommandEmpty>No results</CommandEmpty>
+            {props.options.map((option) => (
+              <CommandItem
+                key={option.value}
+                value={option.label}
+                onSelect={() => {
+                  props.onChange && props.onChange(option.value);
+                  setOpen(false);
+                }}>
+                {option.label}
+              </CommandItem>
+            ))}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 

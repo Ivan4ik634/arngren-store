@@ -21,6 +21,7 @@ class Pages {
   WISHLIST = '/wishlist';
   CONTACT = '/#contact';
   ABOUT = '/#about';
+  CALLBACK_GOOGLE = '/callback/google';
   BALANCE = '/balance';
   PRODUCT(id: string) {
     return `/product/${id}`;

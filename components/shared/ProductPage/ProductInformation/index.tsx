@@ -28,7 +28,7 @@ const ProductInformation: FC<Props> = ({ product }) => {
   return (
     <div className="flex gap-y-[50px] gap-x-[25px]">
       <div className="aspect-square h-[600px]">
-        <img className="w-full aspect-square rounded-[5px]" src={product.images[0]} />
+        <img className="w-full object-cover aspect-square rounded-[5px]" src={product.images[0]} />
         <div className="gap-5 grid mt-5 grid-cols-4">
           {product.images.slice(1).map((image, index) => (
             <img key={index} className="w-full aspect-square rounded-[5px]" src={image} />
@@ -47,7 +47,8 @@ const ProductInformation: FC<Props> = ({ product }) => {
             <div className="flex items-center">
               <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
               <span className="mx-1 font-semibold text-[#0969ff]">
-                {reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length}
+                {reviews.reduce((acc, review) => acc + review.rating, 0) /
+                  (reviews.length !== 0 ? reviews.length : 1)}
               </span>
               <span className="text-zinc-500"> ({reviews.length})</span>
             </div>
@@ -63,7 +64,7 @@ const ProductInformation: FC<Props> = ({ product }) => {
         </div>
 
         <div className="mt-auto border-t border-zinc-500 flex flex-col gap-2">
-          <div className="py-5 flex justify-between border-b font-bold text-2xl">
+          <div className="py-5 flex justify-between font-bold text-2xl">
             <p>Total</p>
             <p>${product.price * count}</p>
           </div>

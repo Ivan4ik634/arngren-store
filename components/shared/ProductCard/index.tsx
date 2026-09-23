@@ -80,7 +80,7 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
       <Link href={PAGES.PRODUCT(product.id)}>
         <div className="mt-3 min-w-0">
           <h3 className="truncate text-base font-bold text-black">{product.name}</h3>
-          <p className="mt-1 text-sm text-zinc-500">{product.category}</p>
+          <p className="mt-1 text-sm text-zinc-500">{product.description.slice(0, 50)}</p>
         </div>
 
         <div className="mt-4 flex items-center justify-between">

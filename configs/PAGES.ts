@@ -15,12 +15,16 @@ class Pages {
   LOGIN = '/login';
   REGISTER = '/register';
 
+  FAQ = '/#faq';
+  HOW_IT_WORKS = '/#how-it-works';
+  HERO = '/#hero';
+  ABOUT = '/#about';
+  CONTACT = '/#footer';
+
   WITHDRAWAL = '/admin/withdrawal';
   ADMIN_DASHBOARD = '/admin/dashboard';
   DASHBOARD = '/dashboard';
   WISHLIST = '/wishlist';
-  CONTACT = '/#contact';
-  ABOUT = '/#about';
   CALLBACK_GOOGLE = '/callback/google';
   BALANCE = '/balance';
   PRODUCT(id: string) {

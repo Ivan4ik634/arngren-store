@@ -4,6 +4,10 @@ import { FC } from 'react';
 
 import Container from '../Container';
 import AboutSection from './AboutSection';
+import BigCtaSection from './BigCtaSection';
+import CustomerReviews from './CustomerReviews';
+import FaqSection from './FaqSection';
+import Footer from './Footer';
 import HeroSection from './HeroSection';
 import HowItWorkSection from './HowItWorkSection';
 import PopularProducts from './PopularProducts';
@@ -19,6 +23,10 @@ const LandingPage: FC<Props> = () => {
       <WhatWeOfferSection />
       <PopularProducts />
       <HowItWorkSection />
+      <CustomerReviews />
+      <FaqSection />
+      <BigCtaSection />
+      <Footer />
     </Container>
   );
 };

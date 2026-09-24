@@ -71,7 +71,7 @@ const HeroSection: FC<Props> = (props) => {
         <img
           src="/landing/hero.png"
           alt="Premium products including sneakers, headphones, and a water bottle"
-          className="w-[700px] rounded-2xl object-cover object-center"
+          className="w-[600px] rounded-2xl object-cover object-center"
         />
       </div>
     </main>

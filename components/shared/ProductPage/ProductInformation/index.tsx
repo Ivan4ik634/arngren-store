@@ -1,7 +1,9 @@
 'use client';
 
+import AuthRequiredDialog from '@/components/shared/AuthRequiredDialog';
 import { Button } from '@/components/ui/button';
 import { PAGES } from '@/configs/PAGES';
+import { useProfile } from '@/hooks/useProfile';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { useReviews } from '@/store/useReviews';
@@ -16,12 +18,26 @@ interface Props {
 
 const ProductInformation: FC<Props> = ({ product }) => {
   const [count, setCount] = useState(1);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const { addProductCard } = useProductCart();
   const { setProduct } = useProductBuyNow();
+  const { profile } = useProfile();
   const router = useRouter();
   const { reviews } = useReviews();
 
+  const handleAddToCart = () => {
+    if (!profile?.id) {
+      setAuthDialogOpen(true);
+      return;
+    }
+    addProductCard({ product, count });
+  };
+
   const handleBuynow = () => {
+    if (!profile?.id) {
+      setAuthDialogOpen(true);
+      return;
+    }
     setProduct({ product, count });
     router.push(PAGES.CART + '?buyNow=true');
   };
@@ -69,9 +85,7 @@ const ProductInformation: FC<Props> = ({ product }) => {
             <p>${product.price * count}</p>
           </div>
           <div className="pt-5">
-            <Button
-              onClick={() => addProductCard({ product, count })}
-              className="text-xl w-full py-8">
+            <Button onClick={handleAddToCart} className="text-xl w-full py-8">
               <Plus />
               Add to Cart
             </Button>
@@ -85,6 +99,7 @@ const ProductInformation: FC<Props> = ({ product }) => {
           </div>
         </div>
       </div>
+      <AuthRequiredDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </div>
   );
 };

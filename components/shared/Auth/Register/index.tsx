@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { PAGES } from '@/configs/PAGES';
+import { signInWithGoogle } from '@/funcs/SignInWithGoogle';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
 import { UserRegisterT } from '@/types/UserT';
@@ -11,6 +12,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { FaGoogle } from 'react-icons/fa6';
 
 type Props = Record<string, never>;
 
@@ -21,16 +23,18 @@ const RegisterPage: FC<Props> = (props) => {
     formState: { errors },
   } = useForm<UserRegisterT>();
   const onSubmit: SubmitHandler<UserRegisterT> = async (data) => {
-    console.log('123');
     const {
       data: { user },
       error,
     } = await supabase.auth.signUp({ ...data });
+
     if (error?.message) return toast.error(error.message);
     if (user?.id) {
       const { error } = await userService.create(user.id, { name: data.name, email: data.email });
       if (error) return toast.error(error.message);
-      return toast.success('Register successfully');
+
+      toast.success('Register successfully');
+      window.location.href = PAGES.HOME;
     }
   };
   return (
@@ -70,8 +74,13 @@ const RegisterPage: FC<Props> = (props) => {
             />
             {errors.password && <span className="text-red-500">{errors.password.message}</span>}
           </div>
+
           <Button type="submit" className="w-full mt-5">
             Register
+          </Button>
+          <Button onClick={signInWithGoogle} className="w-full mt-2" variant="outline">
+            <FaGoogle className="mr-2" />
+            Login with Google
           </Button>
           <div className="mt-5 flex w-full justify-center">
             <p>

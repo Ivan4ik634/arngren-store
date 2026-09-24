@@ -34,7 +34,7 @@ const HowItWorkSection: FC<Props> = (props) => {
   return (
     <main
       id="how-it-works"
-      className="relative isolate flex flex-col justify-center h-screen overflow-hidden ">
+      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden ">
       <div className="relative flex  max-w-[1400px] items-center  py-16  lg:py-20">
         <div className="w-full max-w-[600px] ">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">

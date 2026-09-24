@@ -8,7 +8,7 @@ import { productService } from '@/services/Product.service';
 import { reviewService } from '@/services/Review.service';
 import { useReviews } from '@/store/useReviews';
 import { ProductT } from '@/types/ProductT';
-import { ReviewCreateT } from '@/types/ReviewT';
+import { ReviewCreateT, ReviewWithUserT } from '@/types/ReviewT';
 import { Star } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
@@ -17,9 +17,10 @@ import toast from 'react-hot-toast';
 
 interface Props {
   product: ProductT;
+  reviews: ReviewWithUserT[];
 }
 
-const DialogAddReview: FC<Props> = ({ product }) => {
+const DialogAddReview: FC<Props> = ({ product, reviews }) => {
   const [hoveredRating, setHoveredRating] = useState(0);
   const [open, setOpen] = useState(false);
   const { id } = useParams<{ id: string }>();
@@ -51,6 +52,8 @@ const DialogAddReview: FC<Props> = ({ product }) => {
   const activeRating = hoveredRating || rating;
 
   const handleFormSubmit = async (data: ReviewCreateT) => {
+    if (reviews.some((review) => review.user_id.id === profile?.id))
+      return toast.error('You have already left a review');
     if (data.rating < 1 && data.rating > 5) return toast.error('Rating must be between 1 and 5');
 
     const res = await reviewService.create(data);

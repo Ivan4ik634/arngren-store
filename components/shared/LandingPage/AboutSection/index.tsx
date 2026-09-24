@@ -8,7 +8,7 @@ interface Props {}
 
 const AboutSection: FC<Props> = (props) => {
   return (
-    <main id="about" className="relative isolate h-[100svh] overflow-hidden ">
+    <main id="about" className="relative isolate min-h-[600px] py-24 overflow-hidden ">
       <div className="relative mx-auto gap-x-27  flex h-full items-center  py-16  lg:py-20">
         <img
           src="/landing/about.png"

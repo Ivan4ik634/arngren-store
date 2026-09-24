@@ -1,5 +1,6 @@
 'use client';
 
+import AuthRequiredDialog from '@/components/shared/AuthRequiredDialog';
 import NotFoundData from '@/components/shared/NotFoundData';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +19,7 @@ import { useProductCart } from '@/store/useProductCart';
 import { ProductT } from '@/types/ProductT';
 import { ShoppingCart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Loading from '../Loading';
 import ProductCard from '../ProductCard';
 
@@ -33,6 +34,25 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
   const { profile } = useProfile();
   const { setProduct } = useProductBuyNow();
   const router = useRouter();
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+
+  const handleAddToCart = (product: ProductT) => {
+    if (!profile?.id) {
+      setAuthDialogOpen(true);
+      return;
+    }
+    const productInCart = productCards.find((card) => card.product?.id === product.id);
+    productInCart ? incrementProductCount(product.id) : addProductCard({ product, count: 1 });
+  };
+
+  const handleBuyNow = (product: ProductT) => {
+    if (!profile?.id) {
+      setAuthDialogOpen(true);
+      return;
+    }
+    setProduct({ product, count: 1 });
+    router.push(PAGES.CART + '?buyNow=true');
+  };
 
   return (
     <div className="flex min-w-0 w-full flex-col gap-5">
@@ -94,19 +114,12 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
                   className="mt-4 grid grid-cols-[1fr_48px] gap-3"
                   key={product.id}>
                   <Button
-                    onClick={() =>
-                      productInCart
-                        ? incrementProductCount(product.id)
-                        : addProductCard({ product, count: 1 })
-                    }
+                    onClick={() => handleAddToCart(product)}
                     className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
                     + Add to cart
                   </Button>
                   <Button
-                    onClick={() => {
-                      setProduct({ product, count: 1 });
-                      router.push(PAGES.CART + '?buyNow=true');
-                    }}
+                    onClick={() => handleBuyNow(product)}
                     variant="outline"
                     size="icon-lg"
                     className="h-9 w-12 rounded-md border-zinc-200 bg-zinc-50">
@@ -120,6 +133,7 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
           )}
         </div>
       )}
+      <AuthRequiredDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </div>
   );
 };

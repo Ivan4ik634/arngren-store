@@ -34,7 +34,7 @@ const WhatWeOfferSection: FC<Props> = (props) => {
   return (
     <main
       id="about"
-      className="relative isolate flex flex-col justify-center h-screen overflow-hidden ">
+      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden ">
       <div className="relative flex  max-w-[1400px] items-center  py-16  lg:py-20">
         <div className="w-full max-w-[600px] ">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
@@ -52,11 +52,11 @@ const WhatWeOfferSection: FC<Props> = (props) => {
           <Card key={index}>
             <CardContent className="flex items-start">
               <div className="p-3 rounded-full bg-primary/10">
-                <item.icon className="size-10 text-primary" />
+                <item.icon className="size-6 text-primary" />
               </div>
               <div className="ml-4">
-                <Title className="font-bold text-[28px]  tracking-[-0.02em]">{item.title}</Title>
-                <Description className="text-[20px]">{item.detail}</Description>
+                <Title className="font-bold text-[20px]  tracking-[-0.02em]">{item.title}</Title>
+                <Description>{item.detail}</Description>
               </div>
             </CardContent>
           </Card>

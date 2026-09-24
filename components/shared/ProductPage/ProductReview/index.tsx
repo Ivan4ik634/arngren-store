@@ -39,7 +39,7 @@ const ProductReview: FC<Props> = ({ product }) => {
             <span className="text-zinc-500"> ({reviews.length})</span>
           </div>
         </div>
-        <DialogAddReview product={product} />
+        <DialogAddReview reviews={reviews} product={product} />
       </div>
       <div className="flex flex-col mt-10 gap-y-5">
         {reviews?.map((review) => (

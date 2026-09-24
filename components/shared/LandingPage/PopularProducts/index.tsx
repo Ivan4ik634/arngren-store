@@ -23,7 +23,7 @@ const PopularProducts: FC<Props> = () => {
   return (
     <main
       id="popular"
-      className="relative isolate flex flex-col justify-center h-screen overflow-hidden">
+      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden">
       <div className="relative  flex  items-center py-16 lg:py-20">
         <div className="w-full ">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">

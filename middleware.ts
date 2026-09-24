@@ -84,6 +84,11 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Already authenticated → don't allow login/register pages
+  if (user && (pathname === PAGES.LOGIN || pathname === PAGES.REGISTER)) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
   if (isAdminRoute) {
     if (!user) {
       return NextResponse.redirect(new URL('/login', request.url));

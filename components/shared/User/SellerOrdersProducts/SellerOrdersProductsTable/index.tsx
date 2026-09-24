@@ -31,7 +31,7 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
     await orderService.update(order.id, { status: 'in_shipping' });
     setCartItems((prev) =>
       prev?.map((ci) =>
-        ci.id === cartItem.id ? { ...ci, order_id: { ...ci.order_id, status: 'cancelled' } } : ci,
+        ci.id === cartItem.id ? { ...ci, order_id: { ...ci.order_id, status: 'in_shipping' } } : ci,
       ),
     );
 

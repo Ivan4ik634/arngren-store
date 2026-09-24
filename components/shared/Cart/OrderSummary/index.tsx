@@ -69,7 +69,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
         <div className="py-5 space-y-3">
           <div className="flex  justify-between">
             <p>Items ({buyNow ? 1 : productCards.length})</p>
-            <p className="font-semibold">${itemsPrices > 500 ? itemsPrices : itemsPrices + 5}</p>
+            <p className="font-semibold">${itemsPrices}</p>
           </div>
           <div className="flex  justify-between">
             <p>Shipping </p>
@@ -79,7 +79,7 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
         <div className="">
           <div className="flex border-t pt-5 justify-between">
             <p className="font-semibold">Total</p>
-            <p className="font-semibold">${itemsPrices}</p>
+            <p className="font-semibold">${itemsPrices > 500 ? itemsPrices : itemsPrices + 5}</p>
           </div>
           <CheckoutDrawer onCheckout={handleCheckout} />
         </div>

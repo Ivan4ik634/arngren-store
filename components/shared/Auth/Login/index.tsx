@@ -27,8 +27,9 @@ const LoginPage: FC<Props> = (props) => {
     const { error } = await supabase.auth.signInWithPassword(data);
 
     if (error?.message) return toast.error(error.message);
+    toast.success('Register successfully');
 
-    return toast.success('Register successfully');
+    window.location.href = PAGES.HOME;
   };
 
   return (

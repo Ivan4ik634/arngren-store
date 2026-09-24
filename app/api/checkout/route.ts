@@ -20,13 +20,13 @@ export async function POST(req: Request) {
             product_data: {
               name: 'Balance deposit',
             },
-            unit_amount: Math.round(amount * 100), // amount в долларах -> центы
+            unit_amount: Math.round(amount * 100),
           },
           quantity: 1,
         },
       ],
-      success_url: `${origin}/checkout/success`,
-      cancel_url: `${origin}/checkout`,
+      success_url: `${origin}/balance`,
+      cancel_url: `${origin}/balance`,
       metadata: {
         type: 'deposit',
         user_id,

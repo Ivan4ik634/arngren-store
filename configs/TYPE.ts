@@ -20,4 +20,3 @@ export const typeConfig = {
     className: 'bg-blue-100 text-blue-700 hover:bg-blue-100',
   },
 };
-type TransactionType = 'income' | 'deposit' | 'purchase' | 'withdraw';

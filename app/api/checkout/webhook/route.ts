@@ -31,6 +31,15 @@ export async function POST(req: NextRequest) {
     if (!session.metadata?.user_id) {
       return NextResponse.json({ error: 'user ID missing' }, { status: 400 });
     }
+    const { data } = await supabase
+      .from('profile')
+      .select('balance')
+      .eq('id', session.metadata?.user_id)
+      .single();
+
+    if (!data) {
+      return NextResponse.json({ error: 'Profile not found' }, { status: 400 });
+    }
 
     await supabase.from('transaction').insert({
       user_id: session.metadata?.user_id,
@@ -39,6 +48,10 @@ export async function POST(req: NextRequest) {
       type: 'deposit',
       transaction: randomDeposit,
     });
+    await supabase
+      .from('balance')
+      .update({ balance: data.balance + session.metadata?.user_id })
+      .eq('id', session.metadata?.user_id);
 
     console.log('Оплата успешна:', session.id);
   }

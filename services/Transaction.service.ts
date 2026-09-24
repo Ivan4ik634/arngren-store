@@ -3,7 +3,11 @@ import { TransactionCreateT, TransactionT } from '@/types/TransactionT';
 
 export const transactionService = {
   async getByUserId(user_id: string): Promise<TransactionT[] | null> {
-    const res = await supabase.from('transaction').select('*').eq('user_id', user_id);
+    const res = await supabase
+      .from('transaction')
+      .select('*')
+      .eq('user_id', user_id)
+      .order('created_at', { ascending: false });
 
     return res.data;
   },

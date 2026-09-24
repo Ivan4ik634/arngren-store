@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     });
     await supabase
       .from('balance')
-      .update({ balance: data.balance + session.metadata?.user_id })
+      .update({ balance: data.balance + (session.amount_total ?? 0) / 100 })
       .eq('id', session.metadata?.user_id);
 
     console.log('Оплата успешна:', session.id);

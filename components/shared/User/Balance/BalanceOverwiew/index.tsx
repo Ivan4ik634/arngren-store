@@ -13,11 +13,17 @@ interface Props {
 
 const BalanceOverwiew: FC<Props> = ({ profile, transactions }) => {
   const totalIncome = transactions?.reduce(
-    (acc, transaction) => (transaction.type === 'income' ? acc + transaction.amount : acc),
+    (acc, transaction) =>
+      transaction.type === 'income' || transaction.type === 'deposit'
+        ? acc + transaction.amount
+        : acc,
     0,
   );
   const totaPurchase = transactions?.reduce(
-    (acc, transaction) => (transaction.type === 'purchase' ? acc + transaction.amount : acc),
+    (acc, transaction) =>
+      transaction.type === 'purchase' || transaction.type === 'withdraw'
+        ? acc + transaction.amount
+        : acc,
     0,
   );
   return (

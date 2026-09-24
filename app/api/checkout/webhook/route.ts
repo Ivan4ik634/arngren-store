@@ -31,28 +31,55 @@ export async function POST(req: NextRequest) {
     if (!session.metadata?.user_id) {
       return NextResponse.json({ error: 'user ID missing' }, { status: 400 });
     }
-    const { data, error } = await supabase
+    const userId = session.metadata?.user_id;
+    const amount = (session.amount_total ?? 0) / 100;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID missing in metadata' }, { status: 400 });
+    }
+
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('balance')
-      .eq('id', session.metadata?.user_id)
+      .eq('id', userId)
       .single();
 
-    if (error) {
+    if (profileError) {
+      console.error('PROFILE ERROR:', profileError);
+
       return NextResponse.json({ error: 'Profile not found' }, { status: 400 });
     }
 
-    await supabase.from('transaction').insert({
-      user_id: session.metadata?.user_id,
-      amount: (session.amount_total ?? 0) / 100,
+    const { error: transactionError } = await supabase.from('transaction').insert({
+      user_id: userId,
+      amount,
       status: 'completed',
       type: 'deposit',
       transaction: randomDeposit,
     });
-    await supabase
-      .from('profiles')
-      .update({ balance: data.balance + (session.amount_total ?? 0) / 100 })
-      .eq('id', session.metadata?.user_id);
 
+    if (transactionError) {
+      console.error('TRANSACTION ERROR:', transactionError);
+
+      return NextResponse.json({ error: 'Transaction creation failed' }, { status: 400 });
+    }
+
+    const { data: updatedProfile, error: updateError } = await supabase
+      .from('profiles')
+      .update({
+        balance: (profile.balance ?? 0) + amount,
+      })
+      .eq('id', userId)
+      .select('balance')
+      .single();
+
+    if (updateError) {
+      console.error('BALANCE UPDATE ERROR:', updateError);
+
+      return NextResponse.json({ error: 'Balance update failed' }, { status: 400 });
+    }
+
+    console.log('Balance updated:', updatedProfile.balance);
     console.log('Оплата успешна:', session.id);
   }
 

@@ -62,12 +62,12 @@ const BalanceTransactionHistory: FC<Props> = ({ transactions }) => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className={type.className + 'px-4 py-2  rounded-full'}>
+                      <div className={type.className + 'px-4 py-2 w-min  rounded-full'}>
                         <p>{type.label}</p>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className={status.className + 'px-4 py-2  rounded-full'}>
+                      <div className={status.className + 'px-4 py-2 w-min  rounded-full'}>
                         <p>{status.label}</p>
                       </div>
                     </TableCell>

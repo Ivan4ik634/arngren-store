@@ -27,7 +27,7 @@ const AboutSection: FC<Props> = (props) => {
             more enjoyable. We carefully select products that combine quality, modern design, and
             practical functionality. From everyday essentials to modern lifestyle products, our goal
             is to bring everything you need into one simple and convenient place. Our mission is
-            simple — better products, for your life.
+            simple - better products, for your life.
           </Description>
         </div>
       </div>

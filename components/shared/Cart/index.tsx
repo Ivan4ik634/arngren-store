@@ -21,9 +21,7 @@ const CartPage: FC<Props> = (props) => {
   const { product, setProduct } = useProductBuyNow();
 
   useEffect(() => {
-    if (search.get('buyNow') === 'true') {
-      setBuyNow(true);
-    }
+    setBuyNow(search.get('buyNow') === 'true');
   }, [search]);
 
   return (

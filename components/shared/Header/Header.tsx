@@ -56,14 +56,14 @@ export function Header() {
               </Link>
               <Link href={PAGES.BALANCE}>
                 <button
-                  className="relative text-black transition-colors hover:text-[#0969ff]"
+                  className="relative text-black transition-colors hover:text-[#0969ff] sm:block"
                   aria-label="Wallet">
                   <Wallet className="size-5" />
                 </button>
               </Link>
               <Link href={PAGES.WISHLIST}>
                 <button
-                  className="relative text-black transition-colors hover:text-[#0969ff]"
+                  className="relative text-black transition-colors hover:text-[#0969ff] sm:block"
                   aria-label="Wishlist">
                   <Heart className="size-5" />
                 </button>

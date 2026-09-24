@@ -4,6 +4,7 @@ import { create } from 'zustand';
 type Filters = {
   filters: FiltersMenuT;
   setFilters: (value: FiltersMenuT | ((prev: FiltersMenuT) => FiltersMenuT)) => void;
+  clearFilters: () => void;
 };
 
 export const useFilters = create<Filters>((set) => ({
@@ -19,4 +20,16 @@ export const useFilters = create<Filters>((set) => ({
     set((state) => ({
       filters: typeof value === 'function' ? value(state.filters) : value,
     })),
+
+  clearFilters: () =>
+    set({
+      filters: {
+        search: '',
+        categories: ['all'],
+        priceRange: [0, 100],
+        availability: [true, true],
+        brand: [],
+        sortBy: 'Price: Low to High',
+      },
+    }),
 }));

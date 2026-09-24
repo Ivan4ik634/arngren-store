@@ -30,7 +30,7 @@ const HeroSection: FC<Props> = (props) => {
             <span className="text-[#0969ff]">For your life.</span>
           </Title>
           <Description>
-            Discover high-quality products, modern style and reliable brands. Everything you need —
+            Discover high-quality products, modern style and reliable brands. Everything you need -
             in one place.
           </Description>
 

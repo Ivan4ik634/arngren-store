@@ -12,6 +12,16 @@ export const applicationService = {
     const res = await supabase.from('applications').insert({ ...data });
     return res;
   },
+  async getByProductIdAndUserId(product_id: string, user_id: string) {
+    const res = await supabase
+      .from('applications')
+      .select('*')
+      .eq('product_id', product_id)
+      .eq('user_id', user_id)
+      .single();
+
+    return res;
+  },
 
   async getApplicationsDashboard(
     date: Date,
@@ -66,21 +76,41 @@ export const applicationService = {
 
     return (await query).data as any as ApplicationWithProductT[];
   },
-  async update(id: string, status: 'approved' | 'rejected') {
+  async update(id: string, status?: 'approved' | 'rejected') {
     await supabase
       .from('products')
       .update({ application: status === 'approved' ? true : false })
       .eq('id', id);
-    const res = await supabase.from('applications').update({ status }).eq('product_id', id);
+    const res = await supabase.from('applications').update({}).eq('product_id', id);
 
     return res;
   },
-  async updateMany(ids: string[], status: 'approved' | 'rejected') {
+
+  async updateStatus(product_id: string, status: 'approved' | 'rejected' | 'pending') {
     await supabase
       .from('products')
       .update({ application: status === 'approved' ? true : false })
+      .eq('id', product_id);
+    const res = await supabase.from('applications').update({ status }).eq('product_id', product_id);
+
+    return res;
+  },
+
+  async updateMany(ids: string[], status: 'approved' | 'rejected') {
+    const { data: applications } = await supabase
+      .from('applications')
+      .select('product_id')
       .in('id', ids);
-    const res = await supabase.from('applications').update({ status }).in('product_id', ids);
+
+    const productIds = applications?.map((a) => a.product_id) || [];
+
+    if (productIds.length) {
+      await supabase
+        .from('products')
+        .update({ application: status === 'approved' ? true : false })
+        .in('id', productIds);
+    }
+    const res = await supabase.from('applications').update({ status }).in('id', ids);
 
     return res;
   },

@@ -43,6 +43,10 @@ export const userService = {
       .eq('id', id);
     return res;
   },
+  async updateBalance(id: string, balance: number) {
+    const res = await supabase.from('profiles').update({ balance }).eq('id', id);
+    return res;
+  },
   async deleteMany(ids: string[]) {
     const res = await supabase.from('profiles').delete().in('id', ids);
     return res;

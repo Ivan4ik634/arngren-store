@@ -1,13 +1,17 @@
 'use client';
 
+import { PAGES } from '@/configs/PAGES';
 import { useProfile } from '@/hooks/useProfile';
 import { cartItemService } from '@/services/CartItem.service';
 import { orderService } from '@/services/Order.service';
 import { productService } from '@/services/Product.service';
+import { transactionService } from '@/services/Transaction.service';
+import { userService } from '@/services/User.service';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { AddressT } from '@/types/OrderT';
 import { Lock, Truck, Undo2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import toast from 'react-hot-toast';
 import CheckoutDrawer from './CheckoutDrawer';
@@ -17,25 +21,31 @@ interface Props {
 }
 
 const OrderSummary: FC<Props> = ({ buyNow = false }) => {
-  const { productCards } = useProductCart();
+  const { productCards, clearProductsCard } = useProductCart();
   const { product } = useProductBuyNow();
+
+  const router = useRouter();
+
   const itemsPrices = buyNow
-    ? (product?.product.price || 0) * (product?.count || 1) + 5
+    ? (product?.product.price || 0) * (product?.count || 1)
     : productCards.reduce((acc, item) => acc + item.product.price * item.count, 0);
+
+  const shipping = itemsPrices > 500 ? 0 : 5;
+  const total = itemsPrices + shipping;
 
   const { profile } = useProfile();
   const handleCheckout = async (address: AddressT) => {
     if (!profile?.id) {
       return toast.error('User not found');
     }
-    if (profile.balance < itemsPrices) {
+    if (profile.balance < total) {
       return toast.error('Insufficient balance');
     }
     const orderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
     const { data: order, error: orderError } = await orderService.create({
       user_id: profile.id,
       items_length: buyNow ? 1 : productCards.length,
-      total: itemsPrices,
+      total,
       order_id: orderNumber,
       ...address,
     });
@@ -44,22 +54,40 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
       return toast.error(orderError?.message || 'Failed to create order');
     }
 
-    const { error: itemsError } = await cartItemService.create(
-      buyNow ? [product!] : productCards,
-      order.id,
-    );
+    const items = buyNow ? [product!] : productCards;
+
+    const { error: itemsError } = await cartItemService.create(items, order.id);
 
     if (itemsError) {
       return toast.error(itemsError.message);
     }
-    for (let i = 0; i < productCards.length; i++) {
+
+    for (let i = 0; i < items.length; i++) {
       await productService.update({
-        id: productCards[i].product.id,
-        count: productCards[i].product.count - productCards[i].count,
+        id: items[i].product.id,
+        count: items[i].product.count - items[i].count,
       });
     }
 
+    const { error: balanceError } = await userService.updateBalance(
+      profile.id,
+      profile.balance - total,
+    );
+    if (balanceError) {
+      return toast.error(balanceError.message);
+    }
+
+    await transactionService.create({
+      user_id: profile.id,
+      amount: total,
+      status: 'completed',
+      type: 'purchase',
+      transaction: orderNumber,
+    });
+    clearProductsCard();
+
     toast.success('Order created successfully');
+    router.push(PAGES.ORDERS);
   };
 
   return (
@@ -73,15 +101,15 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
           </div>
           <div className="flex  justify-between">
             <p>Shipping </p>
-            <p className="font-semibold">${itemsPrices > 500 ? 0 : 5}</p>
+            <p className="font-semibold">${shipping}</p>
           </div>
         </div>
         <div className="">
           <div className="flex border-t pt-5 justify-between">
             <p className="font-semibold">Total</p>
-            <p className="font-semibold">${itemsPrices > 500 ? itemsPrices : itemsPrices + 5}</p>
+            <p className="font-semibold">${total}</p>
           </div>
-          <CheckoutDrawer onCheckout={handleCheckout} />
+          {!buyNow && productCards.length === 0 && <CheckoutDrawer onCheckout={handleCheckout} />}
         </div>
       </div>
       <div className="border space-y-8 w-full  p-7  rounded-[10px]">

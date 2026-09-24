@@ -10,10 +10,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { useProfile } from '@/hooks/useProfile';
 import { useUploadImages } from '@/hooks/useUploadImages';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
-import { useProfileStore } from '@/store/useProfileStore';
 import { UserT, UserUpdateT } from '@/types/UserT';
 import { Pen } from 'lucide-react';
 import { FC, useEffect } from 'react';
@@ -31,7 +31,7 @@ const DialogEditProfile: FC<Props> = ({ profile }) => {
       setValue('avatar', url[0]);
     },
   });
-  const { setProfileStore } = useProfileStore();
+  const { setProfile } = useProfile();
   const {
     register,
     setValue,
@@ -69,7 +69,7 @@ const DialogEditProfile: FC<Props> = ({ profile }) => {
     const { error: userServiceError } = await userService.update(profile.id, { ...data });
     if (userServiceError) return toast.error('Error updating user');
 
-    setProfileStore({ ...profile, ...data });
+    setProfile({ ...profile, ...data });
 
     toast.success('User updated successfully');
   };

@@ -9,6 +9,7 @@ import {
   Package,
   User,
   Users,
+  Wallet,
 } from 'lucide-react';
 
 export const AdminLinks: LinkT[] = [
@@ -48,6 +49,11 @@ export const UserLinks: LinkT[] = [
     icon: User,
     name: 'My profile',
     href: PAGES.PROFILE,
+  },
+  {
+    icon: Wallet,
+    name: 'My balance',
+    href: PAGES.BALANCE,
   },
   {
     icon: ListOrdered,

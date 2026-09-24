@@ -41,16 +41,20 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
   const handleWithdraw = async () => {
     if (!profile) return toast.error('User not found');
     if (!iban || !withdrawAmount) return toast.error('Please fill all the fields');
+    if (withdrawAmount > profile.balance)
+      return toast.error('Insufficient balance for this withdrawal');
 
     const { error } = await withdravalService.add({
       amount: withdrawAmount,
       iban,
       user_id: profile?.id,
     });
-    if (error) return;
+
+    if (error) return toast.error(error.message || 'Withdrawal failed');
 
     toast.success('Withdrawal successfully');
     setIban('');
+    setWithdrawAmount(0);
   };
   return (
     <div className="mt-5 grid gap-5 lg:grid-cols-2">

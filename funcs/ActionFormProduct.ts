@@ -38,7 +38,7 @@ export const handleActionEditProduct = async (
   } = await supabase.auth.getUser();
   if (!user) return toast.error('User not found');
 
-  const { data, error } = await productService.update({
+  const { error } = await productService.update({
     name: form.name,
     category: form.category,
     price: form.price,
@@ -49,10 +49,9 @@ export const handleActionEditProduct = async (
     images,
   });
 
-  const { error: errorAddApplication } = await applicationService.create({
-    product_id: id,
-  });
+  // Переводим продукт обратно на модерацию
+  const { error: errorUpdateApplication } = await applicationService.updateStatus(id, 'pending');
 
-  if (error || errorAddApplication) return toast.error('Error adding product');
-  toast.success('Product added successfully');
+  if (error || errorUpdateApplication) return toast.error('Error editing product');
+  toast.success('Product edited successfully');
 };

@@ -64,9 +64,9 @@ export const orderService = {
     user_id(*)
   `);
 
-    // if (filters.search) {
-    //   query = query.ilike('order_id', `%${filters.search}%`);
-    // }
+    if (filters.search) {
+      query = query.ilike('order_id', `%${filters.search}%`);
+    }
     if (filters.status && filters.status !== 'all') {
       query = query.eq('status', filters.status);
     }

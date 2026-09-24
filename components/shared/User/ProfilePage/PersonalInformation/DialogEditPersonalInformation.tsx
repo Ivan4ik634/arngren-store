@@ -19,9 +19,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { languages } from '@/data/Languages';
+import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/lib/supabase/client';
 import { userService } from '@/services/User.service';
-import { useProfileStore } from '@/store/useProfileStore';
 import { UserT, UserUpdatePersonalInformationT } from '@/types/UserT';
 import dayjs from 'dayjs';
 import { ArrowDown, Pen } from 'lucide-react';
@@ -49,7 +49,7 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
       language: profile?.language || 'English',
     },
   });
-  const { setProfileStore } = useProfileStore();
+  const { setProfile } = useProfile();
 
   useEffect(() => {
     if (!profile) return;
@@ -74,7 +74,7 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
     const { error: userServiceError } = await userService.update(profile.id, { ...data });
     if (userServiceError) return toast.error('Error updating user');
 
-    setProfileStore({
+    setProfile({
       ...profile,
       ...data,
       dateOfBirth: dayjs(data.dateOfBirth).format('DD MMM YYYY'),

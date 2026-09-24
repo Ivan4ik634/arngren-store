@@ -31,7 +31,7 @@ const PopularProducts: FC<Props> = () => {
           </p>
           <Title>Most loved by our customers.</Title>
           <Description className="w-[700px]">
-            Discover the products our community can't stop talking about — top rated and
+            Discover the products our community can't stop talking about - top rated and
             customer-approved.
           </Description>
         </div>

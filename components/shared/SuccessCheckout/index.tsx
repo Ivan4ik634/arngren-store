@@ -2,6 +2,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { PAGES } from '@/configs/PAGES';
 import { CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -22,10 +23,10 @@ export default function SuccessCheckout() {
 
         <div className="flex flex-col gap-3 pt-2">
           <Button className="w-full">
-            <Link href="/">Back to Home</Link>
+            <Link href={PAGES.HOME}>Back to Home</Link>
           </Button>
           <Button variant="outline" className="w-full">
-            <Link href="/orders">View Orders</Link>
+            <Link href={PAGES.ORDERS}>View Orders</Link>
           </Button>
         </div>
       </div>

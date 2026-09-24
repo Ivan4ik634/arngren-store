@@ -19,7 +19,7 @@ const ProductCart: FC<Props> = ({ product, count }) => {
         <img src={product.images[0]} className="w-[100px] aspect-square object-cover" />
         <div className="ml-5 space-y-2">
           <h3 className="text-base font-bold text-black">{product.name}</h3>
-          <p className="mt-1 text-sm text-zinc-500">{product.category}</p>
+          <p className="mt-1 text-sm text-zinc-500">{product.description}</p>
           <div className="flex items-center">
             <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
             <span className="mx-1 font-semibold text-[#0969ff]">{product.rating}</span>

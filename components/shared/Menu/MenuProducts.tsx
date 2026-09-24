@@ -114,7 +114,9 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
                   className="mt-4 grid grid-cols-[1fr_48px] gap-3"
                   key={product.id}>
                   <Button
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() =>
+                      productInCart ? incrementProductCount(product.id) : handleAddToCart(product)
+                    }
                     className="h-9 rounded-md bg-[#0969ff] text-sm hover:bg-[#0057df]">
                     + Add to cart
                   </Button>

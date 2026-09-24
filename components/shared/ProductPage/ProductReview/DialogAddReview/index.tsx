@@ -54,15 +54,17 @@ const DialogAddReview: FC<Props> = ({ product, reviews }) => {
   const handleFormSubmit = async (data: ReviewCreateT) => {
     if (reviews.some((review) => review.user_id.id === profile?.id))
       return toast.error('You have already left a review');
-    if (data.rating < 1 && data.rating > 5) return toast.error('Rating must be between 1 and 5');
+    if (data.rating < 1 || data.rating > 5) return toast.error('Rating must be between 1 and 5');
 
-    const res = await reviewService.create(data);
-
-    await productService.update({
+    const { error } = await productService.update({
       id,
-      rating: (product.rating * product.reviews + res.data.rating) / (product.reviews + 1),
+      rating: (product.rating * product.reviews + data.rating) / (product.reviews + 1),
       reviews: product.reviews + 1,
     });
+
+    if (error) return toast.error(error.message);
+
+    const res = await reviewService.create(data);
 
     addReview(res.data);
     setOpen(false);

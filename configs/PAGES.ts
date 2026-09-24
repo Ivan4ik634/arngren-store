@@ -10,6 +10,7 @@ class Pages {
   BRANDS = '/brands';
   MENU = '/menu';
   APPLICATION = '/admin/applications';
+  CHECKOUT_SUCCESS = '/checkout/success';
 
   SETTINGS = '/settings';
   LOGIN = '/login';

@@ -21,7 +21,6 @@ export default function AuthCallbackPage() {
         return;
       }
 
-      // Клиент сам обменивает code из URL, getSession() дожидается этого
       const {
         data: { session },
         error,
@@ -36,12 +35,12 @@ export default function AuthCallbackPage() {
 
       const user = session.user;
 
-      const { error: profileError } = await supabase.from('profile').upsert(
+      const { error: profileError } = await supabase.from('profiles').upsert(
         {
           id: user.id,
           email: user.email,
-          full_name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? null,
-          avatar_url: user.user_metadata?.avatar_url ?? null,
+          name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? null,
+          avatar: user.user_metadata?.avatar_url ?? null,
         },
         { onConflict: 'id', ignoreDuplicates: true },
       );

@@ -25,16 +25,15 @@ const socialLinks = [
 
 const Footer: FC<Props> = (props) => {
   return (
-    <footer className="border-t border-zinc-200 bg-white">
+    <footer id="footer" className="border-t border-zinc-200 bg-white">
       <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-10 px-6 py-14 lg:flex-row lg:items-start lg:justify-between lg:px-10">
-        {/* Logo + description */}
         <div className="max-w-[320px]">
           <Link href={PAGES.HOME} className="text-2xl font-black tracking-tight text-black">
             ARNGREN
           </Link>
           <p className="mt-4 text-sm leading-relaxed text-zinc-500">
             A modern marketplace with carefully selected products, reliable brands and a seamless
-            shopping experience — everything you need in one place.
+            shopping experience - everything you need in one place.
           </p>
         </div>
 
@@ -51,7 +50,6 @@ const Footer: FC<Props> = (props) => {
           ))}
         </nav>
 
-        {/* Social */}
         <div className="flex flex-col gap-3">
           <p className="text-sm font-bold uppercase tracking-wider text-zinc-400">Follow us</p>
           <div className="flex gap-3">

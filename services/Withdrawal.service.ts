@@ -62,16 +62,71 @@ export const withdravalService = {
     return { length: statsCount };
   },
   async updateStatus(id: string, status: 'pending' | 'completed' | 'failed') {
+    const { data: withdrawal } = await supabase
+      .from('withdrawal')
+      .select('user_id, amount, status')
+      .eq('id', id)
+      .single();
+
     const res = await supabase.from('withdrawal').update({ status }).eq('id', id);
+
+    // Если вывод отклонён — возвращаем деньги пользователю
+    if (status === 'failed' && withdrawal) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('id', withdrawal.user_id)
+        .single();
+      await supabase
+        .from('profiles')
+        .update({ balance: (profile?.balance || 0) + withdrawal.amount })
+        .eq('id', withdrawal.user_id);
+    }
 
     return res;
   },
   async updateManyStatus(ids: string[], status: 'pending' | 'completed' | 'failed') {
+    const { data: withdrawals } = await supabase
+      .from('withdrawal')
+      .select('user_id, amount')
+      .in('id', ids);
+
     const res = await supabase.from('withdrawal').update({ status }).in('id', ids);
+
+    // Если выводы отклонены — возвращаем деньги пользователям
+    if (status === 'failed' && withdrawals?.length) {
+      for (const w of withdrawals) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('balance')
+          .eq('id', w.user_id)
+          .single();
+        await supabase
+          .from('profiles')
+          .update({ balance: (profile?.balance || 0) + w.amount })
+          .eq('id', w.user_id);
+      }
+    }
 
     return res;
   },
   async add(data: WithdrawalCreateT) {
+    // Проверяем баланс и списываем сумму вывода
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('balance')
+      .eq('id', data.user_id)
+      .single();
+
+    if (!profile || (profile.balance || 0) < data.amount) {
+      return { data: null, error: { message: 'Insufficient balance' } as any };
+    }
+
+    await supabase
+      .from('profiles')
+      .update({ balance: (profile.balance || 0) - data.amount })
+      .eq('id', data.user_id);
+
     const res = await supabase.from('withdrawal').insert(data).select('*,user_id(*)').single();
 
     await supabase.from('transaction').insert({

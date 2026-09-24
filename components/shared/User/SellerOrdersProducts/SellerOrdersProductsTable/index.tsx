@@ -13,9 +13,11 @@ import {
 import { useProfile } from '@/hooks/useProfile';
 import { orderService } from '@/services/Order.service';
 import { transactionService } from '@/services/Transaction.service';
+import { userService } from '@/services/User.service';
 import { CartItemWithOrderT } from '@/types/CartItemT';
 import { OrderWithUserT } from '@/types/OrderT';
 import { Dispatch, FC, SetStateAction } from 'react';
+import toast from 'react-hot-toast';
 
 interface Props {
   data: CartItemWithOrderT[] | null | undefined;
@@ -26,7 +28,8 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   const { profile } = useProfile();
 
   const handleAccept = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
-    if (order.status !== 'pending') return;
+    if (!profile?.id) return toast.error('User not found');
+    if (order.status !== 'pending') return toast.error('Order is not pending');
 
     await orderService.update(order.id, { status: 'in_shipping' });
     setCartItems((prev) =>
@@ -35,22 +38,19 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
       ),
     );
 
+    // Начисляем продавцу его долю заказа (цена его позиции)
+    const { data: sellerProfile } = await userService.getById(profile.id);
+    await userService.updateBalance(profile.id, (sellerProfile?.balance || 0) + cartItem.price);
+
     await transactionService.create({
-      user_id: order.user_id.id,
-      amount: order.total,
+      user_id: profile.id,
+      amount: cartItem.price,
       status: 'completed',
-      type: 'purchase',
+      type: 'income',
       transaction: order.order_id,
     });
-    if (profile?.id) {
-      await transactionService.create({
-        user_id: profile.id,
-        amount: order.total,
-        status: 'completed',
-        type: 'income',
-        transaction: order.order_id,
-      });
-    }
+
+    toast.success('Order accepted');
   };
 
   const handleReject = async (order: OrderWithUserT, cartItem: CartItemWithOrderT) => {
@@ -61,24 +61,28 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
       ),
     );
 
-    const existingTransaction = await transactionService.getByOrderIdAndUserId(
+    // Возвращаем покупателю его долю заказа
+    const { data: buyerProfile } = await userService.getById(order.user_id.id);
+    await userService.updateBalance(
       order.user_id.id,
-      order.order_id,
+      (buyerProfile?.balance || 0) + cartItem.price,
     );
 
-    if (existingTransaction) {
-      await transactionService.update(existingTransaction[0].id, {
-        status: existingTransaction[0].status === 'completed' ? 'completed' : 'cancelled',
-      });
-    } else {
-      await transactionService.create({
-        user_id: order.user_id.id,
-        amount: order.total,
-        status: 'cancelled',
-        type: 'purchase',
-        transaction: order.order_id,
-      });
+    await transactionService.create({
+      user_id: order.user_id.id,
+      amount: cartItem.price,
+      status: 'cancelled',
+      type: 'purchase',
+      transaction: order.order_id,
+    });
+
+    // Если продавец уже получил деньги (заказ был принят), списываем обратно
+    if (order.status === 'in_shipping' && profile?.id) {
+      const { data: sellerProfile } = await userService.getById(profile.id);
+      await userService.updateBalance(profile.id, (sellerProfile?.balance || 0) - cartItem.price);
     }
+
+    toast.success('Order cancelled');
   };
 
   return (

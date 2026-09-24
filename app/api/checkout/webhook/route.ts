@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       transaction: randomDeposit,
     });
     await supabase
-      .from('balance')
+      .from('profile')
       .update({ balance: data.balance + (session.amount_total ?? 0) / 100 })
       .eq('id', session.metadata?.user_id);
 

@@ -18,7 +18,7 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [iban, setIban] = useState('');
   const handleTopUp = async () => {
-    if (!profile) return toast.error('User not found');
+    if (!profile?.id) return toast.error('User not found');
     if (!amount) return toast.error('Please fill all the fields');
 
     const res = await fetch('/api/checkout', {
@@ -28,6 +28,7 @@ const BalanceTopUpWithdraw: FC<Props> = ({ profile }) => {
       },
       body: JSON.stringify({
         amount,
+        user_id: profile.id,
       }),
     });
 

@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
 
     if (!session.metadata?.user_id) {
-      return NextResponse.json({ error: 'Order ID missing' }, { status: 400 });
+      return NextResponse.json({ error: 'user ID missing' }, { status: 400 });
     }
 
     await supabase.from('transaction').insert({
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     const intent = event.data.object as Stripe.PaymentIntent;
 
     if (!intent.metadata?.user_id) {
-      return NextResponse.json({ error: 'Order ID missing' }, { status: 400 });
+      return NextResponse.json({ error: 'user ID missing' }, { status: 400 });
     }
 
     await supabase.from('transaction').insert({

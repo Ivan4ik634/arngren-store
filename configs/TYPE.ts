@@ -7,7 +7,7 @@ export const typeConfig = {
   deposit: {
     value: 'deposit',
     label: 'Deposit',
-    className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100',
+    className: ' text-yellow-700 ',
   },
   purchase: {
     value: 'purchase',

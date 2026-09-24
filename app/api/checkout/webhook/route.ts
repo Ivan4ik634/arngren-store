@@ -31,13 +31,13 @@ export async function POST(req: NextRequest) {
     if (!session.metadata?.user_id) {
       return NextResponse.json({ error: 'user ID missing' }, { status: 400 });
     }
-    const { data } = await supabase
-      .from('profile')
+    const { data, error } = await supabase
+      .from('profiles')
       .select('balance')
       .eq('id', session.metadata?.user_id)
       .single();
 
-    if (!data) {
+    if (error) {
       return NextResponse.json({ error: 'Profile not found' }, { status: 400 });
     }
 

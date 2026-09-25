@@ -18,17 +18,22 @@ type Props = Record<string, never>;
 const SellerOrdersProductsPage: FC<Props> = (props) => {
   const [filters, setFilters] = useState<FilterOrdersT>({ search: '', status: 'all' });
   const debouncedFilters = useDebounce(filters, 300);
+
   const { profile } = useProfile();
+
   const { data: productIds, isPending: isPendingIds } = useQuery({
-    queryKey: ['products-user-ids', debouncedFilters],
+    queryKey: ['products-user-ids'],
     queryFn: () => productService.getProductUserIds(profile?.id || ''),
     enabled: !!profile,
   });
+
   const { data, isPending } = useQuery({
-    queryKey: ['cart_items', productIds],
-    queryFn: () => cartItemService.getItems(productIds?.flatMap((p) => p.id) || []),
+    queryKey: ['cart_items', productIds, debouncedFilters],
+    queryFn: () =>
+      cartItemService.getItems(productIds?.flatMap((p) => p.id) || [], debouncedFilters),
     enabled: !!productIds,
   });
+
   const [cartItems, setCartItems] = useSyncQueryData<CartItemWithOrderT>(data);
 
   return (

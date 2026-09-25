@@ -33,83 +33,97 @@ const BalanceTransactionHistory: FC<Props> = ({ transactions }) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-3 lg:hidden">
-          {transactions?.length ? transactions.map((transaction) => {
-            const status = statusConfig[transaction.status];
-            const type = typeConfig[transaction.type];
-            const symbol = transaction.type === 'income' || transaction.type === 'deposit' ? '+' : '-';
-            return (
-              <article key={transaction.id} className="min-w-0 rounded-lg border border-zinc-200 p-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="break-all font-medium">{transaction.transaction}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{dayjs(transaction.created_at).format('MMM DD YYYY, hh:mm A')}</p>
+          {transactions?.length ? (
+            transactions.map((transaction) => {
+              const status = statusConfig[transaction.status];
+              const type = typeConfig[transaction.type];
+              const symbol =
+                transaction.type === 'income' || transaction.type === 'deposit' ? '+' : '-';
+              return (
+                <article
+                  key={transaction.id}
+                  className="min-w-0 rounded-lg border border-zinc-200 p-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="break-all font-medium">{transaction.transaction}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {dayjs(transaction.created_at).format('MMM DD YYYY, hh:mm A')}
+                      </p>
+                    </div>
+                    <p
+                      className={`shrink-0 font-bold ${symbol === '+' ? 'text-green-500' : 'text-red-500'}`}>
+                      {symbol}${transaction.amount}
+                    </p>
                   </div>
-                  <p className={`shrink-0 font-bold ${symbol === '+' ? 'text-green-500' : 'text-red-500'}`}>{symbol}${transaction.amount}</p>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                  <span className={`${type.className} rounded-full px-3 py-1`}>{type.label}</span>
-                  <span className={`${status.className} rounded-full px-3 py-1`}>{status.label}</span>
-                </div>
-              </article>
-            );
-          }) : <NotFoundData type="balance" />}
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                    <span className={`${type.className} rounded-full px-3 py-1`}>{type.label}</span>
+                    <span className={`${status.className} rounded-full px-3 py-1`}>
+                      {status.label}
+                    </span>
+                  </div>
+                </article>
+              );
+            })
+          ) : (
+            <NotFoundData type="balance" />
+          )}
         </div>
         <div className="hidden lg:block">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Transaction</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {transactions?.length ? (
-              transactions?.map((transaction) => {
-                const status = statusConfig[transaction.status];
-                const type = typeConfig[transaction.type];
-
-                const sumbol =
-                  transaction.type === 'income' || transaction.type === 'deposit' ? '+' : '-';
-                return (
-                  <TableRow key={transaction.id}>
-                    <TableCell className="font-medium">{transaction.transaction}</TableCell>
-                    <TableCell>
-                      <div>
-                        <p>{dayjs(transaction.created_at).format('MMM DD YYYY')}</p>
-                        <p className="opacity-50">
-                          {dayjs(transaction.created_at).format('hh:mm A')}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className={type.className + 'px-4 py-2 w-min  rounded-full'}>
-                        <p>{type.label}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className={status.className + 'px-4 py-2 w-min  rounded-full'}>
-                        <p>{status.label}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell
-                      className={`font-bold text-right ${sumbol === '+' ? 'text-green-500' : 'text-red-500'}`}>
-                      {sumbol}${transaction.amount}
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={5}>
-                  <NotFoundData type="balance" />
-                </TableCell>
+                <TableHead>Transaction</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {transactions?.length ? (
+                transactions?.map((transaction) => {
+                  const status = statusConfig[transaction.status];
+                  const type = typeConfig[transaction.type];
+
+                  const sumbol =
+                    transaction.type === 'income' || transaction.type === 'deposit' ? '+' : '-';
+                  return (
+                    <TableRow key={transaction.id}>
+                      <TableCell className="font-medium">{transaction.transaction}</TableCell>
+                      <TableCell>
+                        <div>
+                          <p>{dayjs(transaction.created_at).format('MMM DD YYYY')}</p>
+                          <p className="opacity-50">
+                            {dayjs(transaction.created_at).format('hh:mm A')}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className={type.className + ' px-5 py-2 w-min rounded-full'}>
+                          {type.label}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className={status.className + ' px-5 py-2 w-min rounded-full'}>
+                          {status.label}
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        className={`font-bold text-right ${sumbol === '+' ? 'text-green-500' : 'text-red-500'}`}>
+                        {sumbol}${transaction.amount}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <NotFoundData type="balance" />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
       </CardContent>
     </Card>

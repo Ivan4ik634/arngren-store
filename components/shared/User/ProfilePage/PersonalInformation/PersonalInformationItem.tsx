@@ -17,7 +17,7 @@ const PersonalInformationItem: FC<Props> = (props) => {
         </div>
         <p>{props.title}</p>
       </div>
-      <div className="break-words pl-12 sm:pl-0">{props.info}</div>
+      <div className="break-words  ">{props.info}</div>
     </div>
   );
 };

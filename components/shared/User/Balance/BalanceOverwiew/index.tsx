@@ -28,7 +28,7 @@ const BalanceOverwiew: FC<Props> = ({ profile, transactions }) => {
   );
   return (
     <div className="mt-5 grid gap-5 lg:grid-cols-3">
-      <Card className="bg-linear-to-br from-primary/15 to-primary/5">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Wallet className="size-5" />

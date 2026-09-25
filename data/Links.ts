@@ -7,10 +7,54 @@ import {
   LayoutDashboard,
   ListOrdered,
   Package,
+  ShoppingCart,
   User,
+  UserRound,
   Users,
   Wallet,
 } from 'lucide-react';
+
+export const HeaderLinks: LinkT[] = [
+  {
+    name: 'Home',
+    href: PAGES.HOME,
+  },
+  {
+    name: 'Menu',
+    href: PAGES.MENU,
+  },
+  {
+    name: 'Contact',
+    href: PAGES.CONTACT,
+  },
+  {
+    name: 'About',
+    href: PAGES.ABOUT,
+  },
+];
+
+export const HeaderUserLinks: LinkT[] = [
+  {
+    icon: UserRound,
+    name: 'My profile',
+    href: PAGES.PROFILE,
+  },
+  {
+    icon: Wallet,
+    name: 'My balance',
+    href: PAGES.BALANCE,
+  },
+  {
+    icon: Heart,
+    name: 'Wishlist',
+    href: PAGES.WISHLIST,
+  },
+  {
+    icon: ShoppingCart,
+    name: 'Cart and checkout',
+    href: PAGES.CART,
+  },
+];
 
 export const AdminLinks: LinkT[] = [
   {

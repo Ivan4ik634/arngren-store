@@ -29,7 +29,7 @@ const Footer: FC<Props> = (props) => {
       <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-10 px-6 py-14 lg:flex-row lg:items-start lg:justify-between lg:px-10">
         <div className="max-w-[320px]">
           <Link href={PAGES.HOME} className="text-2xl font-black tracking-tight text-black">
-            ARNGREN
+            <img src="/logo.png" alt="ARNGREN" className="w-[200px] object-cover aspect-video" />
           </Link>
           <p className="mt-4 text-sm leading-relaxed text-zinc-500">
             A modern marketplace with carefully selected products, reliable brands and a seamless

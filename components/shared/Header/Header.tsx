@@ -24,7 +24,7 @@ export function Header() {
     <header className="sticky w-full  h-[70px] top-0 z-10 border-b border-zinc-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-[70px] w-full max-w-[1500px] items-center gap-8 px-6 lg:px-10">
         <Link href={PAGES.HOME} className="text-2xl font-black tracking-tight text-black">
-          ARNGREN
+          <img src="/logo.png" alt="ARNGREN" className="w-[250px] aspect-video" />
         </Link>
 
         <nav className="hidden items-center gap-10 text-sm font-semibold text-black lg:flex">

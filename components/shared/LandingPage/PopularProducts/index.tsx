@@ -11,9 +11,7 @@ import { FC } from 'react';
 import Loading from '../../Loading';
 import ProductCard from '../../ProductCard';
 
-interface Props {}
-
-const PopularProducts: FC<Props> = () => {
+const PopularProducts: FC = () => {
   const { profile } = useProfile();
   const { data: products, isPending } = useQuery({
     queryKey: ['popular-products'],
@@ -23,15 +21,15 @@ const PopularProducts: FC<Props> = () => {
   return (
     <main
       id="popular"
-      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden">
-      <div className="relative  flex  items-center py-16 lg:py-20">
+      className="relative isolate flex flex-col justify-center overflow-hidden py-10 sm:py-14 lg:min-h-[600px] lg:py-24">
+      <div className="relative flex items-center py-6 sm:py-10 lg:py-20">
         <div className="w-full ">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
             POPULAR PRODUCTS
           </p>
           <Title>Most loved by our customers.</Title>
-          <Description className="w-[700px]">
-            Discover the products our community can't stop talking about - top rated and
+          <Description className="w-full max-w-[700px]">
+            Discover the products our community can&apos;t stop talking about - top rated and
             customer-approved.
           </Description>
         </div>

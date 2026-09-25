@@ -8,38 +8,26 @@ import { useProfile } from '@/hooks/useProfile';
 import { useProductCart } from '@/store/useProductCart';
 import { Minus, Plus, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import NotFoundData from '../NotFoundData';
 import ProductCard from '../ProductCard';
 
-interface Props {}
-
-const BagCartDrawer: FC<Props> = (props) => {
+const BagCartDrawer: FC = () => {
   const [open, setOpen] = useState(false);
   const { productCards } = useProductCart();
   const { profile } = useProfile();
   const { deleteProductCard, incrementProductCount, decrementProductCount } = useProductCart();
-  const pathname = usePathname();
-
-  //сделать вишлист и сделать продукт страницу, и лендинг страницу на последок
-  // сделать слайдер фото  на главной менюшка
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger
         onClick={() => setOpen(true)}
-        className="relative text-black transition-colors hover:text-[#0969ff]">
+        className="relative flex size-10 items-center justify-center text-black transition-colors hover:text-[#0969ff]">
         <ShoppingBag className="size-5" />
       </DrawerTrigger>
-      <DrawerContent className="w-120 py-5 px-5">
+      <DrawerContent className="w-[min(30rem,100vw)] px-4 py-5 sm:px-5">
         <DrawerTitle className="font-bold text-2xl">Bag</DrawerTitle>
 
-        <ScrollArea className="h-[85%]">
+        <ScrollArea className="min-h-0 flex-1">
           <div className="flex flex-col mt-10 gap-y-5">
             {productCards.length > 0 ? (
               productCards.map(({ product, count }) => (
@@ -76,7 +64,7 @@ const BagCartDrawer: FC<Props> = (props) => {
           <p className="text-lg font-bold">
             Total: $ {productCards.reduce((acc, card) => acc + card.count * card.product.price, 0)}
           </p>
-          <Link href={PAGES.CART}>
+          <Link href={PAGES.CART} onClick={() => setOpen(false)}>
             <Button size="lg" className="mt-5 w-full">
               Order now
             </Button>

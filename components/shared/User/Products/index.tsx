@@ -40,7 +40,7 @@ const UserProductsPage: FC<Props> = (props) => {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-bold text-2xl">Products</h1>
           <p className="opacity-50"> Manage your products</p>
@@ -53,7 +53,7 @@ const UserProductsPage: FC<Props> = (props) => {
       {isPending ? (
         <Loading />
       ) : (
-        <div className="mt-5 grid grid-cols-4 gap-5">
+        <div className="mt-5 grid grid-cols-1 gap-4 min-[600px]:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {products?.length ? (
             products?.map((product) => (
               <ProductCard

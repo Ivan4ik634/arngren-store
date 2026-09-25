@@ -52,7 +52,7 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
     <Card className="group relative gap-0 rounded-lg border border-zinc-200 bg-white p-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] ring-0">
       <button
         onClick={handleWishlist}
-        className={`absolute right-4 top-4 z-10 text-zinc-400 hover:text-red-500 `}
+        className="absolute right-3 top-3 z-10 flex size-10 items-center justify-center rounded-full bg-white/90 text-zinc-400 hover:text-red-500 sm:right-4 sm:top-4"
         aria-label="Favorite">
         <Heart
           className={`size-5 ${wishlist?.product_id === product.id && !error ? 'text-red-500 fill-red-500' : ''} `}
@@ -60,13 +60,13 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
       </button>
 
       <div className="relative w-full">
-        <Carousel className="relative w-full px-12">
+        <Carousel className="relative w-full px-9 sm:px-12">
           <CarouselContent>
             {product.images?.map((image, index) => (
               <CarouselItem key={index}>
                 <Link href={PAGES.PRODUCT(product.id)}>
                   <div className="flex h-40 w-full items-center justify-center">
-                    <img src={image} alt={image} className="max-h-36 max-w-full object-contain" />
+                    <img src={image} alt={product.name} className="max-h-36 max-w-full object-contain" />
                   </div>
                 </Link>
               </CarouselItem>
@@ -82,7 +82,7 @@ const ProductCard: FC<Props> = ({ product, profile, className, children }) => {
         <Link href={PAGES.PRODUCT(product.id)} className="flex flex-1 flex-col">
           <div className="mt-3 min-w-0">
             <h3 className="truncate text-base font-bold text-black">{product.name}</h3>
-            <p className="mt-1 text-sm text-zinc-500">{product.description.slice(0, 50)}</p>
+            <p className="mt-1 line-clamp-2 break-words text-sm text-zinc-500">{product.description.slice(0, 80)}</p>
           </div>
 
           <div className="mt-auto flex items-center justify-between pt-4">

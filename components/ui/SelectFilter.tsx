@@ -29,7 +29,7 @@ const SelectFilter: FC<Props> = (props) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <Button variant="outline" role="combobox" className="text-muted-foreground justify-between">
+        <Button variant="outline" role="combobox" className="w-full min-w-0 justify-between text-muted-foreground">
           {triggerLabel}
         </Button>
       </PopoverTrigger>
@@ -43,7 +43,7 @@ const SelectFilter: FC<Props> = (props) => {
                 key={option.value}
                 value={option.label}
                 onSelect={() => {
-                  props.onChange && props.onChange(option.value);
+                  if (props.onChange) props.onChange(option.value);
                   setOpen(false);
                 }}>
                 {option.label}

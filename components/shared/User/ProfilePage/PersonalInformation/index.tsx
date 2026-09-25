@@ -13,8 +13,8 @@ interface Props {
 const PersonalInformation: FC<Props> = ({ profile }) => {
   return (
     <div className=" mt-10">
-      <div className="flex justify-between">
-        <h1 className="font-bold text-2xl">Personal Information</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-bold sm:text-2xl">Personal Information</h1>
         <DialogEditPersonalInformation profile={profile} />
       </div>
       <div className="mt-3">

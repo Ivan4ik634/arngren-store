@@ -87,7 +87,7 @@ const DialogEditProfile: FC<Props> = ({ profile }) => {
           <DialogTitle>Edit profile</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-3">
-          <div className="flex items-center">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <Avatar className="h-[75px] w-[75px]" onClick={() => ref.current?.click()}>
               <AvatarFallback>{name?.[0]?.toUpperCase()}</AvatarFallback>
               <AvatarImage src={avatar} />
@@ -99,7 +99,7 @@ const DialogEditProfile: FC<Props> = ({ profile }) => {
               onChange={handleImagesUpload}
               accept="image/*"
             />
-            <div className="ml-3 w-full gap-y-3 flex flex-col">
+            <div className="flex w-full min-w-0 flex-col gap-y-3 sm:ml-3">
               <p>Name</p>
               <Input
                 placeholder="Name"

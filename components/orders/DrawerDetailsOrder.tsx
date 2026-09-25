@@ -45,13 +45,12 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger>
-        <Eye />
+      <DrawerTrigger aria-label="View order details" className="flex size-10 items-center justify-center rounded-md hover:bg-zinc-100">
+        <Eye className="size-5" />
       </DrawerTrigger>
-      <DrawerContent className="w-[700px]">
+      <DrawerContent className="w-[min(44rem,100vw)]">
         <div
-          className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-4 pt-4"
-          style={{ minHeight: '100vh' }}>
+          className="mx-auto flex h-dvh w-full max-w-3xl flex-col overflow-y-auto px-4 pb-4 pt-4 sm:px-6">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Hash className="h-3 w-3" />
@@ -90,7 +89,7 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
           {/* Shipping info (mock) */}
           <div className="mb-6">
             <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Shipping Address</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4">
               <div className="rounded-xl border p-4">
                 <div className="mb-1 flex items-center gap-1 text-xs text-muted-foreground">
                   <Globe className="h-3.5 w-3.5" />
@@ -166,7 +165,7 @@ const DrawerDetailsOrder: FC<Props> = (props) => {
             <Calendar className="h-3 w-3" />
             <span>Placed on {new Date(order.created_at).toLocaleDateString()}</span>
           </div>
-          <div className="mt-auto w-full flex gap-x-5 pt-6">
+          <div className="mt-auto flex w-full flex-col gap-3 pt-6 sm:flex-row sm:gap-x-5">
             {props.type === 'seller' && (
               <>
                 <Button

@@ -11,7 +11,7 @@ interface Props {
 
 const ProductPage: FC<Props> = ({ product }) => {
   return (
-    <div className=" h-[calc(100vh-200px)]  space-y-12.5">
+    <div className="min-w-0 space-y-10 sm:space-y-12">
       <ProductInformation product={product} />
       <ProductReview product={product} />
     </div>

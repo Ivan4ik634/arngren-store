@@ -34,7 +34,7 @@ const WishlistPage: FC<Props> = (props) => {
       {isPending ? (
         <Loading />
       ) : (data?.length || 0) !== 0 ? (
-        <div className="grid mt-5 grid-cols-4 gap-5">
+        <div className="mt-5 grid grid-cols-1 gap-4 min-[600px]:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {data?.map((product) => (
             <ProductCard key={product.id} profile={profile} product={product.product_id} />
           ))}

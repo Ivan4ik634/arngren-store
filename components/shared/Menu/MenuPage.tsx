@@ -21,8 +21,8 @@ export function MenuPage() {
   });
 
   return (
-    <main className="">
-      <div className="mb-6 flex items-center gap-2 text-sm font-medium text-zinc-500">
+    <main className="min-w-0">
+      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm font-medium text-zinc-500">
         <span>Home</span>
         <ChevronRight className="size-4" />
         <span className="font-semibold text-[#0969ff]">Menu</span>
@@ -30,7 +30,7 @@ export function MenuPage() {
 
       <div className="flex flex-col gap-6 border-b border-zinc-200 pb-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-5xl font-black tracking-tight text-black">Menu</h1>
+          <h1 className="text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">Menu</h1>
           <p className="mt-3 max-w-xl text-base leading-6 text-zinc-600">
             Explore thousands of quality products across electronics, home & garden, tools, sports,
             and more. Find everything you need in one place.
@@ -41,14 +41,14 @@ export function MenuPage() {
           <Search className="absolute left-5 top-1/2 size-6 -translate-y-1/2 text-zinc-600" />
           <Input
             placeholder="Search for products..."
-            className="h-12 rounded-full border-zinc-300 pl-14 pr-28 text-base shadow-sm"
+            className="h-12 rounded-full border-zinc-300 pl-12 pr-4 text-sm shadow-sm sm:pl-14 sm:pr-28 sm:text-base"
             value={filters.search}
             onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
           />
         </div>
       </div>
 
-      <div className="mt-4 grid w-full gap-8 lg:grid-cols-[250px_minmax(0,1fr)]">
+      <div className="mt-4 grid w-full min-w-0 gap-5 lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-8">
         <Filters />
         <div className="min-w-0">
           <MenuProducts isPending={isPending} products={products} />

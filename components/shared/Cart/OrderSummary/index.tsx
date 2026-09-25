@@ -91,12 +91,12 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
   };
 
   return (
-    <div className="w-full space-y-8  ml-8">
-      <div className="border w-full p-7  rounded-[10px]">
-        <h1 className="font-bold text-3xl">Order Summary</h1>
+    <div className="w-full min-w-0 space-y-5 lg:space-y-8">
+      <div className="w-full rounded-[10px] border p-4 sm:p-7">
+        <h1 className="text-2xl font-bold sm:text-3xl">Order Summary</h1>
         <div className="py-5 space-y-3">
           <div className="flex  justify-between">
-            <p>Items ({buyNow ? 1 : productCards.length})</p>
+            <p>Items ({product ? 1 : productCards.length})</p>
             <p className="font-semibold">${itemsPrices}</p>
           </div>
           <div className="flex  justify-between">
@@ -109,10 +109,14 @@ const OrderSummary: FC<Props> = ({ buyNow = false }) => {
             <p className="font-semibold">Total</p>
             <p className="font-semibold">${total}</p>
           </div>
-          {!buyNow && productCards.length === 0 && <CheckoutDrawer onCheckout={handleCheckout} />}
+          {productCards.length !== 0 ? (
+            <CheckoutDrawer onCheckout={handleCheckout} />
+          ) : (
+            product && <CheckoutDrawer onCheckout={handleCheckout} />
+          )}
         </div>
       </div>
-      <div className="border space-y-8 w-full  p-7  rounded-[10px]">
+      <div className="w-full space-y-5 rounded-[10px] border p-4 sm:space-y-8 sm:p-7">
         <div className="flex items-start">
           <Truck className="size-7 text-primary" />
           <div className="ml-4">

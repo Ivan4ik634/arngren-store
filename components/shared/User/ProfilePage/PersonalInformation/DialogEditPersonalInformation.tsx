@@ -145,15 +145,15 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
               </Popover>
             )}
           />
-          <div className="flex gap-x-5">
-            <div>
+          <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 sm:gap-x-5">
+            <div className="min-w-0">
               <p className="mb-2">Gender</p>
               <Controller
                 control={control}
                 name="gender"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Gender" />
                     </SelectTrigger>
 
@@ -166,14 +166,14 @@ const DialogEditPersonalInformation: FC<Props> = ({ profile }) => {
                 )}
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="mb-2">Language</p>
               <Controller
                 control={control}
                 name="language"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Language" />
                     </SelectTrigger>
 

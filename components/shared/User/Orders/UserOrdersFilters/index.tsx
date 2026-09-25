@@ -14,7 +14,7 @@ interface Props {
 
 const UserOrdersFilters: FC<Props> = ({ filters, setFilters }) => {
   return (
-    <div className="flex mt-5 gap-x-5 items-center">
+    <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_180px] sm:items-center sm:gap-5">
       <SearchInput
         value={filters.search}
         onChange={(e) => setFilters({ ...filters, search: e.target.value })}

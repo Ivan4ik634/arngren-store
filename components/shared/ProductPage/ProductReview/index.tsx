@@ -27,8 +27,8 @@ const ProductReview: FC<Props> = ({ product }) => {
   useSyncQueryData(data, setReviews);
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="flex gap-x-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <h3 className="text-2xl font-bold">Reviews</h3>
           <div className="flex items-center">
             <Star className="size-4 fill-[#0969ff] text-[#0969ff]" />
@@ -43,13 +43,13 @@ const ProductReview: FC<Props> = ({ product }) => {
       </div>
       <div className="flex flex-col mt-10 gap-y-5">
         {reviews?.map((review) => (
-          <div key={review.id} className="flex gap-x-5">
+          <div key={review.id} className="flex gap-x-3 sm:gap-x-5">
             <Avatar size="lg">
               <AvatarFallback>{review.user_id.name[0]}</AvatarFallback>
               <AvatarImage src={review.user_id.avatar} />
             </Avatar>
             <div className="space-y-2">
-              <div className="flex gap-x-5">
+              <div className="flex flex-wrap gap-x-3 gap-y-1 sm:gap-x-5">
                 <p className="font-bold">{review.user_id.name}</p>
 
                 <p>{dayjs(review.created_at).format('MMM DD YYYY')}</p>

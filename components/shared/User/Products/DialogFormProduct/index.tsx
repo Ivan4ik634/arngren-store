@@ -70,8 +70,8 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
         </DialogHeader>
         <div className="flex flex-col w-full gap-y-3">
           {images[0] && (
-            <div className="w-full flex">
-              <div className="relative w-full aspect-square">
+            <div className="flex w-full flex-col sm:flex-row">
+              <div className="relative aspect-square w-full sm:w-2/5">
                 <button
                   onClick={() => handleImagesDelete(images[0])}
                   className="absolute right-2 top-2 z-10 text-zinc-400 hover:text-red-500">
@@ -83,7 +83,7 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
                   className="w-full rounded-[8px] aspect-square object-cover"
                 />
               </div>
-              <div className="w-full ml-5 gap-5 grid grid-cols-2">
+              <div className="mt-3 grid w-full grid-cols-4 gap-2 sm:ml-4 sm:mt-0 sm:grid-cols-2 sm:gap-3">
                 {images.slice(1).map((image, index) => (
                   <div key={image} className="relative w-full aspect-square">
                     <button
@@ -133,7 +133,7 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
             placeholder="Price..."
             type="number"
           />
-          <div className="flex gap-x-5">
+          <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:flex sm:gap-x-5">
             <SelectFilter
               options={categoryFilters}
               label="Category"
@@ -149,6 +149,7 @@ const DialogFormProduct: FC<Props> = ({ init, className, children, action }) => 
             />
 
             <Input
+              className="min-w-0"
               value={form.count}
               onChange={(e) => setForm({ ...form, count: Number(e.target.value) })}
               placeholder="Count..."

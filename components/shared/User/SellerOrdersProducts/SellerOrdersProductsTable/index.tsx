@@ -1,7 +1,10 @@
 'use client';
 
 import OrderItem from '@/components/orders/OrderItem';
+import DrawerDetailsOrder from '@/components/orders/DrawerDetailsOrder';
 import NotFoundData from '@/components/shared/NotFoundData';
+import { Badge } from '@/components/ui/badge';
+import { statusConfig } from '@/configs/STATUS';
 import {
   Table,
   TableBody,
@@ -16,6 +19,7 @@ import { transactionService } from '@/services/Transaction.service';
 import { userService } from '@/services/User.service';
 import { CartItemWithOrderT } from '@/types/CartItemT';
 import { OrderWithUserT } from '@/types/OrderT';
+import dayjs from 'dayjs';
 import { Dispatch, FC, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 
@@ -86,6 +90,37 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
   };
 
   return (
+    <>
+    <div className="mt-5 space-y-3 lg:hidden">
+      {data?.length ? data.map((item) => {
+        const order = item.order_id;
+        const status = statusConfig[order.status];
+        return (
+          <article key={item.id} className="min-w-0 rounded-lg border border-zinc-200 p-4">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="break-all font-semibold">{order.order_id}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{dayjs(order.created_at).format('MMM DD YYYY')}</p>
+              </div>
+              <Badge className={status.className}>{status.label}</Badge>
+            </div>
+            <div className="mt-4 flex items-end justify-between gap-3">
+              <div className="flex gap-5 text-sm">
+                <p><span className="text-muted-foreground">Order total</span><br /><strong>${order.total}</strong></p>
+                <p><span className="text-muted-foreground">Your item</span><br /><strong>${item.price} × {item.count}</strong></p>
+              </div>
+              <DrawerDetailsOrder
+                type="seller"
+                order={order}
+                handleAccept={(acceptedOrder) => handleAccept(acceptedOrder, item)}
+                handleReject={(rejectedOrder) => handleReject(rejectedOrder, item)}
+              />
+            </div>
+          </article>
+        );
+      }) : <NotFoundData type="seller-orders" />}
+    </div>
+    <div className="hidden lg:block">
     <Table className="mt-5">
       <TableHeader>
         <TableRow>
@@ -117,6 +152,8 @@ const SellerOrdersProductsTable: FC<Props> = ({ data, setCartItems }) => {
         )}
       </TableBody>
     </Table>
+    </div>
+    </>
   );
 };
 

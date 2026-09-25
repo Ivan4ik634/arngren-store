@@ -13,7 +13,7 @@ const Title: FC<Props> = ({ children, className, ...props }) => {
     <h1
       {...props}
       className={cn(
-        `text-[60px] font-extrabold leading-[1.1] tracking-[-0.065em] text-[#071124] `,
+        `text-[clamp(2.25rem,7vw,3.75rem)] font-extrabold leading-[1.1] tracking-[-0.065em] text-[#071124] `,
         className,
       )}>
       {children}

@@ -17,6 +17,7 @@ import { useFilters } from '@/store/useFilters';
 import { useProductBuyNow } from '@/store/useProductBuyNow';
 import { useProductCart } from '@/store/useProductCart';
 import { ProductT } from '@/types/ProductT';
+import { FiltersMenuT } from '@/types/FiltersT';
 import { ShoppingCart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
@@ -56,9 +57,9 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
 
   return (
     <div className="flex min-w-0 w-full flex-col gap-5">
-      <div className="mt-6 mb-4 flex w-full items-center justify-between">
+      <div className="mt-3 mb-2 flex w-full min-w-0 items-start justify-between">
         <div className="min-w-0">
-          <h1 className="font-bold">{products?.length} items found</h1>
+          <h1 className="font-bold">{products?.length ?? 0} items found</h1>
 
           <div className="mt-3 flex flex-wrap gap-2">
             {categoryFilters.map((category) => (
@@ -70,7 +71,8 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
                   })
                 }
                 key={category.value}
-                variant={filters.categories.includes(category.value) ? 'default' : 'outline'}>
+                variant={filters.categories.includes(category.value) ? 'default' : 'outline'}
+                className="h-9 px-3">
                 {category.label}
               </Button>
             ))}
@@ -80,10 +82,10 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
               onValueChange={(value) =>
                 setFilters({
                   ...filters,
-                  sortBy: value as any,
+                  sortBy: value as FiltersMenuT['sortBy'],
                 })
               }>
-              <SelectTrigger className="w-[170px]">
+              <SelectTrigger className="w-[170px] max-w-full">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
 
@@ -102,7 +104,7 @@ const MenuProducts: FC<Props> = ({ products, isPending }) => {
       {isPending ? (
         <Loading className="mt-30" />
       ) : (
-        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid w-full min-w-0 grid-cols-1 gap-4 min-[600px]:grid-cols-2 xl:grid-cols-4">
           {products?.length ? (
             products?.map((product) => {
               const productInCart = productCards.find((card) => card.product?.id === product.id);

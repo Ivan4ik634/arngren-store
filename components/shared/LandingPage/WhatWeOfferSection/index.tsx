@@ -6,8 +6,6 @@ import Title from '@/components/ui/title';
 import { ShieldCheck, ShoppingBag, Sparkles, Truck } from 'lucide-react';
 import { FC } from 'react';
 
-interface Props {}
-
 const benefits = [
   {
     icon: Sparkles,
@@ -30,12 +28,12 @@ const benefits = [
     detail: 'Get your order delivered quickly and safely to your door.',
   },
 ];
-const WhatWeOfferSection: FC<Props> = (props) => {
+const WhatWeOfferSection: FC = () => {
   return (
     <main
       id="about"
-      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden ">
-      <div className="relative flex  max-w-[1400px] items-center  py-16  lg:py-20">
+      className="relative isolate flex flex-col justify-center overflow-hidden py-10 sm:py-14 lg:min-h-[600px] lg:py-24">
+      <div className="relative flex max-w-[1400px] items-center py-6 sm:py-10 lg:py-20">
         <div className="w-full max-w-[600px] ">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
             WHAT WE OFFER
@@ -47,7 +45,7 @@ const WhatWeOfferSection: FC<Props> = (props) => {
           </Description>
         </div>
       </div>
-      <div className="grid-cols-2 grid gap-[30px]">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-[30px]">
         {benefits.map((item, index) => (
           <Card key={index}>
             <CardContent className="flex items-start">

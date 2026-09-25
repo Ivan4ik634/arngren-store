@@ -8,18 +8,16 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { FC } from 'react';
 
-interface Props {}
-
-const BigCtaSection: FC<Props> = (props) => {
+const BigCtaSection: FC = () => {
   return (
     <main
       id="cta"
-      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden ">
+      className="relative isolate flex flex-col justify-center overflow-hidden py-12 sm:py-16 lg:min-h-[600px] lg:py-24">
       <div className="relative flex w-full  flex-col items-center text-center">
         <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
           START SHOPPING
         </p>
-        <Title className="text-5xl sm:text-6xl lg:text-7xl">
+        <Title className="text-[clamp(2.25rem,8vw,4.5rem)] lg:text-7xl">
           Better products.
           <br />
           <span className="text-[#0969ff]">For your life.</span>

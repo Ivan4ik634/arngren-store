@@ -10,14 +10,14 @@ interface Props extends PersonalInformationItemT {
 const PersonalInformationItem: FC<Props> = (props) => {
   return (
     <div
-      className={`grid items-center  grid-cols-[400px_100px] w-full py-3 px-4 ${props.index > 0 && 'border-t'}`}>
-      <div className="flex items-center">
+      className={`grid w-full grid-cols-1 items-start gap-2 px-2 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center sm:px-4 ${props.index > 0 && 'border-t'}`}>
+      <div className="flex min-w-0 items-center">
         <div className="bg-primary/20 rounded-[5px] p-3 mr-3">
           <props.icon />
         </div>
         <p>{props.title}</p>
       </div>
-      <div>{props.info}</div>
+      <div className="break-words pl-12 sm:pl-0">{props.info}</div>
     </div>
   );
 };

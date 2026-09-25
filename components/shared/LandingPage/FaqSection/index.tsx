@@ -10,8 +10,6 @@ import Description from '@/components/ui/description';
 import Title from '@/components/ui/title';
 import { FC } from 'react';
 
-interface Props {}
-
 const faqs = [
   {
     question: 'How long does delivery take?',
@@ -40,12 +38,12 @@ const faqs = [
   },
 ];
 
-const FaqSection: FC<Props> = (props) => {
+const FaqSection: FC = () => {
   return (
     <main
       id="faq"
-      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden ">
-      <div className="relative flex max-w-[1400px] items-center py-16 lg:py-20">
+      className="relative isolate flex flex-col justify-center overflow-hidden py-10 sm:py-14 lg:min-h-[600px] lg:py-24">
+      <div className="relative flex max-w-[1400px] items-center py-6 sm:py-10 lg:py-20">
         <div className="w-full max-w-[800px]">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
             FAQ
@@ -59,8 +57,8 @@ const FaqSection: FC<Props> = (props) => {
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
-              className="rounded-2xl border border-border bg-card px-6 shadow-sm">
-              <AccordionTrigger className="py-5 text-lg font-semibold">
+              className="rounded-2xl border border-border bg-card px-3 sm:px-6 shadow-sm">
+              <AccordionTrigger className="py-4 text-base font-semibold sm:py-5 sm:text-lg">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="text-base text-muted-foreground">

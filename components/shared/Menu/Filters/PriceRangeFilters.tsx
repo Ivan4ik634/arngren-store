@@ -4,9 +4,7 @@ import { Slider } from '@/components/ui/slider';
 import { useFilters } from '@/store/useFilters';
 import { FC } from 'react';
 
-interface Props {}
-
-const PriceRangeFilters: FC<Props> = () => {
+const PriceRangeFilters: FC = () => {
   const { filters, setFilters } = useFilters();
   const handleValueChange = (value: number | readonly number[]) => {
     if (Array.isArray(value) && value.length === 2) {
@@ -21,7 +19,7 @@ const PriceRangeFilters: FC<Props> = () => {
       <Slider
         onValueChange={handleValueChange}
         value={filters.priceRange}
-        className="w-[200px] mt-3 border"
+        className="mt-3 w-full max-w-full px-2"
         min={0}
         max={100}
         step={1}

@@ -5,8 +5,6 @@ import Title from '@/components/ui/title';
 import { FC } from 'react';
 import ZoomableImage from '../../ZoomableImage';
 
-interface Props {}
-
 const steps = [
   {
     image: '/landing/Menu.png',
@@ -30,12 +28,12 @@ const steps = [
   },
 ];
 
-const HowItWorkSection: FC<Props> = (props) => {
+const HowItWorkSection: FC = () => {
   return (
     <main
       id="how-it-works"
-      className="relative isolate flex flex-col justify-center min-h-[600px] py-24 overflow-hidden ">
-      <div className="relative flex  max-w-[1400px] items-center  py-16  lg:py-20">
+      className="relative isolate flex flex-col justify-center overflow-hidden py-10 sm:py-14 lg:min-h-[600px] lg:py-24">
+      <div className="relative flex max-w-[1400px] items-center py-6 sm:py-10 lg:py-20">
         <div className="w-full max-w-[600px] ">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.32em] text-[#0868ff] sm:text-[11px]">
             HOW IT WORKS

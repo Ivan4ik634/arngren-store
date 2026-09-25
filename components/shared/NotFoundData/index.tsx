@@ -16,13 +16,13 @@ const NotFoundData: FC<Props> = ({ type, className }) => {
 
   return (
     <div
-      className={`flex w-full flex-col items-center justify-center gap-4 py-16 text-center ${className ?? ''}`}>
+      className={`flex w-full flex-col items-center justify-center gap-4 py-10 text-center sm:py-16 ${className ?? ''}`}>
       <div className="flex size-20 items-center justify-center rounded-full bg-muted">
         <Icon className="size-10 text-muted-foreground" />
       </div>
       <div>
         <h2 className="text-xl font-bold">{data.title}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{data.description}</p>
+        <p className="mx-auto mt-1 max-w-prose text-sm text-muted-foreground">{data.description}</p>
       </div>
       {data.buttonText && data.buttonLink && (
         <Link href={data.buttonLink}>

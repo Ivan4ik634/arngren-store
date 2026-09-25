@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function SuccessCheckout() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[calc(100dvh-70px)] items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-md text-center space-y-6">
         <div className="flex justify-center">
           <CheckCircle2 className="h-16 w-16 text-green-500" />

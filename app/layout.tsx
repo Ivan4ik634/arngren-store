@@ -40,7 +40,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           <Header />
           {children}
         </QueryProvider>
-        <Toaster />
+        <Toaster
+          position="top-center"
+          toastOptions={{ style: { maxWidth: 'calc(100vw - 2rem)' } }}
+        />
       </body>
     </html>
   );

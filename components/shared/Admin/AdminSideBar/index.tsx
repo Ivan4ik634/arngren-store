@@ -8,7 +8,7 @@ type Props = Record<string, never>;
 
 const AdminSideBar: FC<Props> = (props) => {
   return (
-    <div className="w-[300px] flex flex-col gap-y-3">
+    <div className="flex w-full flex-col gap-y-3 md:w-[200px] xl:w-[300px]">
       {AdminLinks.map((link) => (
         <LinkItem {...link} key={link.name} />
       ))}

@@ -14,8 +14,9 @@ interface Props {
 
 const SellerOrdersProductsFilters: FC<Props> = ({ filters, setFilters }) => {
   return (
-    <div className="flex mt-5 gap-x-5 items-center">
+    <div className="mt-5 grid min-w-0 grid-cols-1 gap-3 min-[420px]:grid-cols-[minmax(0,1fr)_auto] sm:gap-5">
       <SearchInput
+        wrapperClassName="min-w-0"
         value={filters.search}
         onChange={(e) => setFilters({ ...filters, search: e.target.value })}
       />

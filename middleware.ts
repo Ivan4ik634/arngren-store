@@ -32,6 +32,7 @@ const PUBLIC_ROUTES = [
   PAGES.MENU,
   PAGES.LOGIN,
   PAGES.REGISTER,
+  '/faq',
 ];
 
 const isExactRoute = (pathname: string, routes: string[]) => routes.includes(pathname);

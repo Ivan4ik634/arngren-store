@@ -17,7 +17,7 @@ const navLinks = [
 
 const socialLinks = [
   { icon: FaInstagram, label: 'Instagram', href: 'hhttps://www.instagram.com/white_fullstack' },
-  { icon: FaGithub, label: 'Github', href: 'https://github.com/WhiteDev15' },
+  { icon: FaGithub, label: 'Github', href: 'https://github.com/Ivan4ik634' },
   { icon: FaThreads, label: 'Threads', href: 'https://www.threads.com/@white_fullstack' },
   { icon: FaTelegram, label: 'Telegram', href: 'https://t.me/WhiteDev15' },
   { icon: FaTiktok, label: 'TikTok', href: 'https://tiktok.com/@whiteformdeveloper' },
@@ -29,7 +29,7 @@ const Footer: FC<Props> = (props) => {
       <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-10 px-6 py-14 lg:flex-row lg:items-start lg:justify-between lg:px-10">
         <div className="max-w-[320px]">
           <Link href={PAGES.HOME} className="text-2xl font-black tracking-tight text-black">
-            <img src="/logo.png" alt="ARNGREN" className="w-[200px] object-cover aspect-video" />
+            <img src="/logo.png" alt="ARNGREN" className="aspect-[758/122] w-[200px]" />
           </Link>
           <p className="mt-4 text-sm leading-relaxed text-zinc-500">
             A modern marketplace with carefully selected products, reliable brands and a seamless
@@ -48,6 +48,20 @@ const Footer: FC<Props> = (props) => {
               {item.label}
             </Link>
           ))}
+        </nav>
+
+        <nav className="flex flex-col gap-3">
+          <p className="text-sm font-bold uppercase tracking-wider text-zinc-400">Legal</p>
+          <Link
+            href={PAGES.TERMS}
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-[#0969ff]">
+            Terms of Service
+          </Link>
+          <Link
+            href={PAGES.PRIVACY_POLICY}
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-[#0969ff]">
+            Privacy Policy
+          </Link>
         </nav>
 
         <div className="flex flex-col gap-3">

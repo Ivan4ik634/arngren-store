@@ -35,24 +35,25 @@ export const HeaderLinks: LinkT[] = [
 
 export const HeaderUserLinks: LinkT[] = [
   {
-    icon: UserRound,
-    name: 'My profile',
-    href: PAGES.PROFILE,
-  },
-  {
     icon: Wallet,
     name: 'My balance',
     href: PAGES.BALANCE,
   },
   {
-    icon: Heart,
-    name: 'Wishlist',
-    href: PAGES.WISHLIST,
+    icon: UserRound,
+    name: 'My profile',
+    href: PAGES.PROFILE,
   },
+
   {
     icon: ShoppingCart,
     name: 'Cart and checkout',
     href: PAGES.CART,
+  },
+  {
+    icon: Heart,
+    name: 'Wishlist',
+    href: PAGES.WISHLIST,
   },
 ];
 

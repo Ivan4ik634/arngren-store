@@ -1,7 +1,8 @@
 'use client';
 
-import { LinkT } from '@/types/LinkT';
 import { cn } from '@/lib/utils';
+import { LinkT } from '@/types/LinkT';
+import { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
@@ -10,6 +11,7 @@ type Props = LinkT & { className?: string };
 
 const LinkItem: FC<Props> = (props) => {
   const pathname = usePathname();
+  const Icon = props.icon as LucideIcon;
   return (
     <Link
       href={props.href}
@@ -18,7 +20,7 @@ const LinkItem: FC<Props> = (props) => {
         pathname === props.href && 'bg-primary/20',
         props.className,
       )}>
-      <props.icon className="size-5" />
+      <Icon className="size-5" />
       <span>{props.name}</span>
     </Link>
   );

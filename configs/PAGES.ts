@@ -1,20 +1,7 @@
 class Pages {
   HOME = '/';
   ORDERS = '/orders';
-  ORDERS_SELLER = '/orders-seller';
-  ADMIN_ORDERS = '/admin/orders';
-  PRODUCTS = '/products';
-  ADMIN_PRODUCTS = '/admin/products';
-  ADMIN_SETTINGS = '/admin/settings';
-  CUSTOMERS = '/admin/customers';
-  BRANDS = '/brands';
   MENU = '/menu';
-  APPLICATION = '/admin/applications';
-  CHECKOUT_SUCCESS = '/checkout/success';
-
-  SETTINGS = '/settings';
-  LOGIN = '/login';
-  REGISTER = '/register';
 
   FAQ = '/#faq';
   HOW_IT_WORKS = '/#how-it-works';
@@ -22,12 +9,32 @@ class Pages {
   ABOUT = '/#about';
   CONTACT = '/#footer';
 
+  TERMS = '/terms';
+  PRIVACY_POLICY = '/privacy-policy';
+
+  ORDERS_SELLER = '/orders-seller';
+  PRODUCTS = '/products';
+  SETTINGS = '/settings';
+
+  ADMIN_ORDERS = '/admin/orders';
+  ADMIN_PRODUCTS = '/admin/products';
+  ADMIN_SETTINGS = '/admin/settings';
+  CUSTOMERS = '/admin/customers';
+  APPLICATION = '/admin/applications';
   WITHDRAWAL = '/admin/withdrawal';
   ADMIN_DASHBOARD = '/admin/dashboard';
+
+  CHECKOUT_SUCCESS = '/checkout/success';
+
+  LOGIN = '/login';
+  REGISTER = '/register';
+  CALLBACK_GOOGLE = '/callback/google';
+  CALLBACK_X = '/callback/x';
+
   DASHBOARD = '/dashboard';
   WISHLIST = '/wishlist';
-  CALLBACK_GOOGLE = '/callback/google';
   BALANCE = '/balance';
+
   PRODUCT(id: string) {
     return `/product/${id}`;
   }

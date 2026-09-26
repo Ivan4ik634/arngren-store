@@ -22,7 +22,6 @@ const PriceRangeFilters: FC = () => {
         className="mt-3 w-full max-w-full px-2"
         min={0}
         max={100}
-        step={1}
       />
       <div className="flex items-center justify-between mt-3">
         <span className="text-sm text-zinc-600">$0</span>

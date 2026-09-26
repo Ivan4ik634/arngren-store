@@ -21,6 +21,10 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  if (pathname === PAGES.LOGIN || pathname === PAGES.REGISTER) {
+    return null;
+  }
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
@@ -34,7 +38,7 @@ export function Header() {
           <img
             src="/logo.png"
             alt="ARNGREN"
-            className="aspect-video w-[132px] min-[375px]:w-[150px] sm:w-[190px] lg:w-[230px]"
+            className="aspect-[758/122] w-[132px] min-[375px]:w-[150px] sm:w-[190px] lg:w-[230px]"
           />
         </Link>
 
@@ -62,7 +66,7 @@ export function Header() {
                   <Link
                     href={item.href}
                     key={item.name}
-                    className="flex min-h-10 min-w-10 items-center justify-center text-black transition-colors hover:text-[#0969ff]"
+                    className="hidden sm:flex min-h-10 min-w-10 items-center justify-center text-black transition-colors hover:text-[#0969ff]"
                     aria-label={item.name}>
                     {Icon && <Icon className="size-5" />}
                   </Link>

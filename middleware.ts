@@ -26,13 +26,17 @@ const PRIVATE_ROUTES = [
 const PUBLIC_ROUTES = [
   PAGES.HOME,
   PAGES.PRODUCTS,
-  PAGES.BRANDS,
+  PAGES.HOW_IT_WORKS,
   PAGES.CALLBACK_GOOGLE,
   PAGES.CONTACT,
   PAGES.MENU,
+  PAGES.ABOUT,
+  PAGES.FAQ,
+  PAGES.CALLBACK_X,
+  PAGES.TERMS,
+  PAGES.PRIVACY_POLICY,
   PAGES.LOGIN,
   PAGES.REGISTER,
-  '/faq',
 ];
 
 const isExactRoute = (pathname: string, routes: string[]) => routes.includes(pathname);

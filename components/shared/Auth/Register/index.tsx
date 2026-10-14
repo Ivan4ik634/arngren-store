@@ -11,7 +11,7 @@ import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail, UserRound } from 'lucide-re
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Field } from '../ui/Field';
 import SideImage from '../ui/SideImage';
@@ -21,11 +21,12 @@ type RegisterFormT = UserRegisterT & { confirmPassword: string; isAgree: boolean
 
 const RegisterPage: FC = () => {
   const {
+    control,
     register,
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<RegisterFormT>();
+  } = useForm<RegisterFormT>({ defaultValues: { isAgree: false } });
   const [typePassword, setTypePassword] = useState<'password' | 'text'>('password');
   const [typePasswordConfirm, setTypePasswordConfirm] = useState<'password' | 'text'>('password');
 
@@ -144,9 +145,22 @@ const RegisterPage: FC = () => {
               </div>
 
               <label className="mt-5 flex cursor-pointer items-center gap-3 text-sm text-[#687b9b] sm:text-base">
-                <Checkbox
-                  {...register('isAgree', { required: ValidationMessages.AGREE_REQUIRED })}
-                  className="size-6 rounded-md border-[#cfdbea] accent-[#0971f9]"
+                <Controller
+                  control={control}
+                  name="isAgree"
+                  rules={{
+                    validate: (value) => value || ValidationMessages.AGREE_REQUIRED,
+                  }}
+                  render={({ field }) => (
+                    <Checkbox
+                      checked={field.value}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      onCheckedChange={field.onChange}
+                      inputRef={field.ref}
+                      className="size-6 rounded-md border-[#cfdbea] accent-[#0971f9]"
+                    />
+                  )}
                 />
                 <span>
                   I agree to the{' '}
